@@ -4,7 +4,7 @@ The neuralint implementation is MIT licensed. Some benchmark fixtures and derive
 
 ## Home Assistant developer documentation
 
-`benchmark/home-assistant/rules/` contains machine-readable adaptations of the Home Assistant Integration Quality Scale documentation.
+`benchmark/home-assistant/rules/` and policy excerpts in `benchmark/quality/fixtures/` contain machine-readable adaptations of the Home Assistant Integration Quality Scale documentation.
 
 - Source: <https://github.com/home-assistant/developers.home-assistant>
 - Pinned commit: `17a7d242991cd7a22d11087acfe60545fa58ee49`
@@ -16,7 +16,7 @@ The generated rule adaptations are distributed under the same CC BY-NC-SA 4.0 li
 
 ## Home Assistant Core
 
-The Home Assistant patches and source excerpts in `benchmark/home-assistant/` derive from:
+The Home Assistant patches and source excerpts in `benchmark/home-assistant/` and `benchmark/quality/fixtures/` derive from:
 
 - Source: <https://github.com/home-assistant/core>
 - Pinned commit: `40fcd7dc6b37781291745e3d6c39601563e87349`
