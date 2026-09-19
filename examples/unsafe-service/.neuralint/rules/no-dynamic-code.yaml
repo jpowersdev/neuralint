@@ -1,0 +1,18 @@
+version: 1
+id: SECURITY001
+title: Do not execute dynamic source text
+description: Application-controlled strings must not be compiled or evaluated as JavaScript.
+severity: critical
+scope:
+  include: ["src/template.ts"]
+  exclude: []
+instructions: >-
+  Detect newly introduced eval calls, Function constructors, or equivalent APIs that
+  compile a string into executable JavaScript. Ordinary parsing and static function calls
+  are compliant.
+criteria:
+  violation: The change compiles or executes a string as JavaScript.
+  compliant: The changed code never treats a string as executable source code.
+thresholds:
+  screenAt: 0.35
+  violationAt: 0.8

@@ -1,0 +1,23 @@
+version: 1
+id: BOUNDARY001
+title: Unvalidated external input
+description: External input must be decoded or validated before entering domain logic.
+severity: error
+scope:
+  include:
+    - "src/**/*.ts"
+  exclude:
+    - "**/*.test.ts"
+instructions: >-
+  Identify newly added or changed code that trusts request data, environment values,
+  parsed files, subprocess output, or other external values without validation at the boundary.
+criteria:
+  violation: >-
+    The changed code introduces or worsens a path where external data reaches domain logic
+    without explicit validation or decoding.
+  compliant: >-
+    The change validates external data, operates only on already-validated domain values,
+    or is unrelated to an external boundary.
+thresholds:
+  screenAt: 0.35
+  violationAt: 0.8

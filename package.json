@@ -1,0 +1,37 @@
+{
+  "name": "neuralint",
+  "version": "0.0.0",
+  "private": true,
+  "description": "AI code review against your repository's rules, powered by TypeSafe AI's Jev.",
+  "license": "MIT",
+  "type": "module",
+  "bin": {
+    "neuralint": "./dist/Main.js"
+  },
+  "engines": {
+    "node": ">=22"
+  },
+  "packageManager": "pnpm@11.18.0",
+  "scripts": {
+    "build": "tsc -b src",
+    "check": "tsc -b",
+    "clean": "tsc -b --clean && rm -rf dist dist-test",
+    "dev": "node --import tsx src/Main.ts",
+    "start": "node dist/Main.js",
+    "test": "vitest run"
+  },
+  "dependencies": {
+    "@effect/ai-typesafe": "4.0.0-rc.116",
+    "@effect/platform-node": "4.0.0-rc.116",
+    "effect": "4.0.0-rc.116",
+    "minimatch": "10.0.3",
+    "yaml": "2.8.1"
+  },
+  "devDependencies": {
+    "@effect/vitest": "4.0.0-rc.116",
+    "@types/node": "24.10.1",
+    "tsx": "4.20.6",
+    "typescript": "5.9.3",
+    "vitest": "5.0.1"
+  }
+}

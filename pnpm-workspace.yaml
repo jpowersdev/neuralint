@@ -1,0 +1,8 @@
+allowBuilds:
+  esbuild: true
+minimumReleaseAgeExclude:
+  - '@effect/ai-typesafe@4.0.0-rc.116'
+  - '@effect/platform-node-shared@4.0.0-rc.116'
+  - '@effect/platform-node@4.0.0-rc.116'
+  - '@effect/vitest@4.0.0-rc.116'
+  - effect@4.0.0-rc.116
