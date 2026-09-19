@@ -1,0 +1,17 @@
+version: 1
+id: PMAP_BACKPRESSURE
+title: Backpressure is a strict upper bound
+description: pMapIterable must not retain more unresolved mapper promises than the configured backpressure limit.
+severity: error
+scope:
+  include: ["index.js"]
+  exclude: []
+instructions: >-
+  Check queue-bound comparisons and spawn timing. If the queue length already equals backpressure,
+  spawning one more item exceeds the documented maximum.
+criteria:
+  violation: Changed spawning logic permits unresolved buffered promises to exceed backpressure.
+  compliant: Spawning occurs only while the buffered promise count is strictly below backpressure.
+thresholds:
+  screenAt: 0.35
+  violationAt: 0.8

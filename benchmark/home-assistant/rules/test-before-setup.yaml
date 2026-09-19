@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/test-before-setup
+{
+  "version": 1,
+  "id": "HA_IQS_TEST_BEFORE_SETUP",
+  "title": "Check during integration initialization if we are able to set it up correctly",
+  "description": "When we initialize an integration, we should check if we are able to set it up correctly.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Check during integration initialization if we are able to set it up correctly\". Official guidance: When we initialize an integration, we should check if we are able to set it up correctly. This way we can immediately let the user know that it doesn't work. Implementing these checks increases the confidence that the integration will work correctly and provides a user-friendly way to show errors. This will improve the user experience.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Check during integration initialization if we are able to set it up correctly.",
+    "compliant": "The change preserves the requirement \"Check during integration initialization if we are able to set it up correctly\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

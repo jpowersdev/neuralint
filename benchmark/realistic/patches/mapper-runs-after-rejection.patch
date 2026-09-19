@@ -1,0 +1,16 @@
+diff --git a/index.js b/index.js
+index 4a7f98e..505436e 100644
+--- a/index.js
++++ b/index.js
+@@ -124,10 +124,7 @@ export default async function pMap(
+ 				try {
+ 					const element = await nextItem.value;
+ 
+-					if (isResolved) {
+-						return;
+-					}
+-
++					// The mapper result is ignored if the operation has already settled.
+ 					const value = await mapper(element, index);
+ 
+ 					// Use Map to stage the index of the element.

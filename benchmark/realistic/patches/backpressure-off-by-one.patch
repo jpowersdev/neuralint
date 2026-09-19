@@ -1,0 +1,14 @@
+diff --git a/index.js b/index.js
+index 4a7f98e..5d1d60e 100644
+--- a/index.js
++++ b/index.js
+@@ -219,7 +219,8 @@ export function pMapIterable(
+ 
+ 			function trySpawn() {
+ 				// Don't pull again once the source reported `done`, like `for await`. A source like a queue may block in `next()` after it is exhausted.
+-				if (isDone || isIterableDone || !(pendingPromisesCount < concurrency && promises.length < backpressure)) {
++				// Permit the final slot while the queue is exactly at the configured limit.
++				if (isDone || isIterableDone || !(pendingPromisesCount < concurrency && promises.length <= backpressure)) {
+ 					return;
+ 				}
+ 

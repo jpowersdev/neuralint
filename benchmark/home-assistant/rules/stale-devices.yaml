@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/stale-devices
+{
+  "version": 1,
+  "id": "HA_IQS_STALE_DEVICES",
+  "title": "Stale devices are removed",
+  "description": "When a device is removed from a hub or account, it should also be removed from Home Assistant.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Stale devices are removed\". Official guidance: When a device is removed from a hub or account, it should also be removed from Home Assistant. This way, the user interface will not show devices that are no longer available. We should only remove devices that we are sure are no longer available. If you can't be sure if a device is still available, be sure to implement asyncremoveconfigentrydevice. This allows the user to delete the device from the device registry manually.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Stale devices are removed.",
+    "compliant": "The change preserves the requirement \"Stale devices are removed\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/unique-config-entry
+{
+  "version": 1,
+  "id": "HA_IQS_UNIQUE_CONFIG_ENTRY",
+  "title": "Don't allow the same device or service to be able to be set up twice",
+  "description": "Since integrations are easy to set up with the UI, the user could accidentally set up the same device or service twice.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Don't allow the same device or service to be able to be set up twice\". Official guidance: Since integrations are easy to set up with the UI, the user could accidentally set up the same device or service twice. This can lead to duplicated devices and entities with unique identifiers colliding, which has negative side effects. Any discovery flow must also ensure that a config entry is uniquely identifiable, as otherwise, it would discover devices already set up. To prevent this, we need to ensure that the user can only set up a device or service once.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Don't allow the same device or service to be able to be set up twice.",
+    "compliant": "The change preserves the requirement \"Don't allow the same device or service to be able to be set up twice\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

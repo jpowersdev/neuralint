@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-supported-devices
+{
+  "version": 1,
+  "id": "HA_IQS_DOCS_SUPPORTED_DEVICES",
+  "title": "The documentation describes known supported / unsupported devices",
+  "description": "A lot of Home Assistant users buy devices based on if Home Assistant supports them.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"The documentation describes known supported / unsupported devices\". Official guidance: A lot of Home Assistant users buy devices based on if Home Assistant supports them. To make it easier for users to find out if a device is supported, the documentation should describe the known supported or unsupported devices. This will decrease the amount of bad experiences where the user finds out their device is not supported when they try to set it up. Exceptions: This rule does not apply to integrations that do not connect to a device or service. This rule also does not apply to integrations that don't integrate physical devices.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: The documentation describes known supported / unsupported devices.",
+    "compliant": "The change preserves the requirement \"The documentation describes known supported / unsupported devices\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

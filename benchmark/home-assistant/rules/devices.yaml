@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/devices
+{
+  "version": 1,
+  "id": "HA_IQS_DEVICES",
+  "title": "The integration creates devices",
+  "description": "Devices, in Home Assistant, are used to group entities to represent either a single physical device or a service.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"The integration creates devices\". Official guidance: Devices, in Home Assistant, are used to group entities to represent either a single physical device or a service. This is useful, since users usually think they add a device or a service to their system, not a single entity. Home Assistant stores the device information in the device registry. In order for the user to have the best experience, the information about the device should be as complete as possible.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: The integration creates devices.",
+    "compliant": "The change preserves the requirement \"The integration creates devices\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

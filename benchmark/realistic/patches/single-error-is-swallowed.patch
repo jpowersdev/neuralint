@@ -1,0 +1,14 @@
+diff --git a/index.js b/index.js
+index 4a7f98e..caec96c 100644
+--- a/index.js
++++ b/index.js
+@@ -88,7 +88,8 @@ export default async function pMap(
+ 				isIterableDone = true;
+ 
+ 				if (resolvingCount === 0 && !isResolved) {
+-					if (!stopOnError && errors.length > 0) {
++					// Aggregate only when there is more than one failure.
++					if (!stopOnError && errors.length > 1) {
+ 						reject(new AggregateError(errors)); // eslint-disable-line unicorn/error-message
+ 						return;
+ 					}

@@ -1,0 +1,39 @@
+version: 1
+repository:
+  name: sindresorhus/p-map
+  url: https://github.com/sindresorhus/p-map.git
+  commit: f0c43e358a449584c2045c89d1b9ae3cd5a9f293
+rules: rules
+scenarios:
+  - id: abort-bypasses-cleanup
+    title: Optimize the abort rejection path
+    patch: patches/abort-bypasses-cleanup.patch
+    expected:
+      - ruleId: PMAP_ABORT_CLEANUP
+        path: index.js
+      - ruleId: PMAP_NO_WORK_AFTER_SETTLEMENT
+        path: index.js
+  - id: mapper-runs-after-rejection
+    title: Remove a redundant settlement branch
+    patch: patches/mapper-runs-after-rejection.patch
+    expected:
+      - ruleId: PMAP_NO_WORK_AFTER_SETTLEMENT
+        path: index.js
+  - id: single-error-is-swallowed
+    title: Aggregate only multiple mapping failures
+    patch: patches/single-error-is-swallowed.patch
+    expected:
+      - ruleId: PMAP_AGGREGATE_ERRORS
+        path: index.js
+  - id: abandoned-iterator-is-left-open
+    title: Let pending iterable work finish naturally
+    patch: patches/abandoned-iterator-is-left-open.patch
+    expected:
+      - ruleId: PMAP_ITERATOR_CLOSE
+        path: index.js
+  - id: backpressure-off-by-one
+    title: Permit the final backpressure slot
+    patch: patches/backpressure-off-by-one.patch
+    expected:
+      - ruleId: PMAP_BACKPRESSURE
+        path: index.js

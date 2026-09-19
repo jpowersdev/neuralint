@@ -1,0 +1,7 @@
+version: 1
+competitors:
+  - id: terra-low
+    kind: pi
+    model: openai-codex/gpt-5.6-terra
+    thinking: low
+    tools: [read, bash]

@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/discovery
+{
+  "version": 1,
+  "id": "HA_IQS_DISCOVERY",
+  "title": "Devices can be discovered",
+  "description": "A lot of devices have the ability to be discovered.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Devices can be discovered\". Official guidance: A lot of devices have the ability to be discovered. This can happen using one of the following methods: - App (formerly known as add-ons) - Bluetooth - DHCP - HomeKit - mDNS - MQTT - SSDP - USB This is a great way to make it easier for users to find and set up devices, since they don't have to manually look up which integration to use and then enter the host. This greatly reduces the effort required to set up a device and thus improves the user experience. Using a network-based setup, also allows the configuration of the integration to be updated once the device receives a new IP address. Exceptions: The exception to this rule is that not every device can be discovered. Integrations where the devices can't be discovered are exempt from this rule.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Devices can be discovered.",
+    "compliant": "The change preserves the requirement \"Devices can be discovered\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

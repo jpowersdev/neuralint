@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/action-setup
+{
+  "version": 1,
+  "id": "HA_IQS_ACTION_SETUP",
+  "title": "Service actions are registered in async_setup",
+  "description": "Integrations can add their own service actions to Home Assistant.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Service actions are registered in async_setup\". Official guidance: Integrations can add their own service actions to Home Assistant. In the past, they have been frequently registered in the asyncsetupentry method and removed in the asyncunloadentry method. The result of this is that the service actions are only available when there is a loaded entry. This is not ideal, since this way we can't validate automations users create that use these service actions, since it is possible that the configuration entry could not be loaded. We rather prefer integrations to set up their service actions in the asyncsetup method. This way we can let the user know why the service action did not work, if the targeted configuration entry is not loaded. The validation should happen inside the service action, and should raise ServiceValidationError if the input is invalid.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Service actions are registered in async_setup.",
+    "compliant": "The change preserves the requirement \"Service actions are registered in async_setup\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

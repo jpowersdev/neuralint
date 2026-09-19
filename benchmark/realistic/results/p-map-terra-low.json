@@ -1,0 +1,357 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-19T15:17:47.096Z",
+  "repository": {
+    "name": "sindresorhus/p-map",
+    "url": "https://github.com/sindresorhus/p-map.git",
+    "commit": "f0c43e358a449584c2045c89d1b9ae3cd5a9f293"
+  },
+  "scenarios": 5,
+  "rules": 5,
+  "evaluators": {
+    "competitors": {
+      "terra-low": {
+        "kind": "pi",
+        "model": "openai-codex/gpt-5.6-terra",
+        "thinking": "low",
+        "metrics": {
+          "expectedFindings": 6,
+          "confirmedTruePositive": 6,
+          "candidateTruePositive": 6,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 1,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.24,
+          "reviewedRulePrPairs": 25,
+          "latencyMs": 82329,
+          "requests": 5,
+          "inputTokens": 27761,
+          "outputTokens": 1064,
+          "costUsd": 0.068802
+        }
+      }
+    },
+    "neuralint": {
+      "model": "jev-latest",
+      "metrics": {
+        "expectedFindings": 6,
+        "confirmedTruePositive": 3,
+        "candidateTruePositive": 5,
+        "candidateFalsePositive": 1,
+        "confirmedRecall": 0.5,
+        "candidateRecall": 0.8333333333333334,
+        "candidatePrecision": 0.8333333333333334,
+        "prRecall": 1,
+        "routedPrs": 5,
+        "candidateRate": 0.24,
+        "reviewedRulePrPairs": 25,
+        "latencyMs": 2259,
+        "requests": 11,
+        "inputTokens": 12005,
+        "outputTokens": 727,
+        "costUsd": 0.00050421
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "abort-bypasses-cleanup",
+      "title": "Optimize the abort rejection path",
+      "expected": [
+        {
+          "ruleId": "PMAP_ABORT_CLEANUP",
+          "path": "index.js"
+        },
+        {
+          "ruleId": "PMAP_NO_WORK_AFTER_SETTLEMENT",
+          "path": "index.js"
+        }
+      ],
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "PMAP_ABORT_CLEANUP",
+              "status": "violation",
+              "path": "index.js",
+              "explanation": "The abort listener now bypasses the coordinated reject helper, so it neither marks settlement nor removes the listener nor closes an unfinished iterator.",
+              "evidence": [
+                "\"// Reject directly to avoid an extra closure hop on cancellation.\",",
+                "reject_(signal.reason);"
+              ]
+            },
+            {
+              "ruleId": "PMAP_NO_WORK_AFTER_SETTLEMENT",
+              "status": "violation",
+              "path": "index.js",
+              "explanation": "Direct abort rejection settles the returned promise without setting isResolved, allowing pending input paths to proceed to mapper invocation after cancellation.",
+              "evidence": [
+                "\"// Reject directly to avoid an extra closure hop on cancellation.\",",
+                "reject_(signal.reason);"
+              ]
+            }
+          ],
+          "latencyMs": 20994,
+          "usage": {
+            "inputTokens": 6290,
+            "outputTokens": 387,
+            "costUsd": 0.017224
+          }
+        }
+      },
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "PMAP_ABORT_CLEANUP",
+            "status": "inconclusive",
+            "path": "index.js",
+            "violationProbability": 0.69,
+            "screeningProbability": 0.4,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -26,17 +26,18 @@ export default async function pMap(\n \t\tlet isRejected = false;\n \t\tlet isResolved = false;\n \t\tlet isIterableDone = false;\n \t\tlet resolvingCount = 0;\n \t\tlet currentIndex = 0;\n \t\tconst iterator = iterable[Symbol.asyncIterator] === undefined ? iterable[Symbol.iterator]() : iterable[Symbol.asyncIterator]();\n \n \t\tconst signalListener = () => {\n-\t\t\treject(signal.reason);\n+\t\t\t// Reject directly to avoid an extra closure hop on cancellation.\n+\t\t\treject_(signal.reason);\n \t\t};\n \n \t\tconst cleanup = () => {\n \t\t\tsignal?.removeEventListener('abort', signalListener);\n \t\t};\n \n \t\tconst resolve = value => {\n \t\t\tresolve_(value);\n"
+            ]
+          }
+        ],
+        "latencyMs": 499,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 2250,
+          "outputTokens": 140,
+          "costUsd": 0.0000945
+        }
+      }
+    },
+    {
+      "id": "mapper-runs-after-rejection",
+      "title": "Remove a redundant settlement branch",
+      "expected": [
+        {
+          "ruleId": "PMAP_NO_WORK_AFTER_SETTLEMENT",
+          "path": "index.js"
+        }
+      ],
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "PMAP_NO_WORK_AFTER_SETTLEMENT",
+              "status": "violation",
+              "path": "index.js",
+              "explanation": "The diff removes the settlement guard after awaiting an input value. If cancellation or another mapper failure settles pMap while that await is pending, this runner still invokes the user mapper.",
+              "evidence": [
+                "-                    if (isResolved) {",
+                "-                        return;",
+                "-                    }",
+                "                    const value = await mapper(element, index);"
+              ]
+            }
+          ],
+          "latencyMs": 16096,
+          "usage": {
+            "inputTokens": 2225,
+            "outputTokens": 102,
+            "costUsd": 0.0061860000000000005
+          }
+        }
+      },
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "PMAP_NO_WORK_AFTER_SETTLEMENT",
+            "status": "violation",
+            "path": "index.js",
+            "violationProbability": 0.93,
+            "screeningProbability": 0.93,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -119,20 +119,17 @@ export default async function pMap(\n \n \t\t\tresolvingCount++;\n \n \t\t\t// Intentionally detached\n \t\t\t(async () => {\n \t\t\t\ttry {\n \t\t\t\t\tconst element = await nextItem.value;\n \n-\t\t\t\t\tif (isResolved) {\n-\t\t\t\t\t\treturn;\n-\t\t\t\t\t}\n-\n+\t\t\t\t\t// The mapper result is ignored if the operation has already settled.\n \t\t\t\t\tconst value = await mapper(element, index);\n \n \t\t\t\t\t// Use Map to stage the index of the element.\n \t\t\t\t\tif (value === pMapSkip) {\n \t\t\t\t\t\tskippedIndexesMap.set(index, value);\n \t\t\t\t\t}\n \n \t\t\t\t\tresult[index] = value;\n"
+            ]
+          }
+        ],
+        "latencyMs": 464,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 2163,
+          "outputTokens": 140,
+          "costUsd": 0.00009084600000000002
+        }
+      }
+    },
+    {
+      "id": "single-error-is-swallowed",
+      "title": "Aggregate only multiple mapping failures",
+      "expected": [
+        {
+          "ruleId": "PMAP_AGGREGATE_ERRORS",
+          "path": "index.js"
+        }
+      ],
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "PMAP_AGGREGATE_ERRORS",
+              "status": "violation",
+              "path": "index.js",
+              "explanation": "With stopOnError disabled, exactly one collected mapper error no longer rejects and can instead resolve successfully.",
+              "evidence": [
+                "// Aggregate only when there is more than one failure.",
+                "if (!stopOnError && errors.length > 1) {"
+              ]
+            }
+          ],
+          "latencyMs": 17005,
+          "usage": {
+            "inputTokens": 9079,
+            "outputTokens": 176,
+            "costUsd": 0.02027
+          }
+        }
+      },
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "PMAP_AGGREGATE_ERRORS",
+            "status": "violation",
+            "path": "index.js",
+            "violationProbability": 0.95,
+            "screeningProbability": 0.93,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -83,17 +83,18 @@ export default async function pMap(\n \t\t\t// receive a `nextItem` with `done === true`.\n \t\t\t// The shutdown logic that rejects/resolves must be protected\n \t\t\t// so it runs only one time as the `skippedIndex` logic is\n \t\t\t// non-idempotent.\n \t\t\tif (nextItem.done) {\n \t\t\t\tisIterableDone = true;\n \n \t\t\t\tif (resolvingCount === 0 && !isResolved) {\n-\t\t\t\t\tif (!stopOnError && errors.length > 0) {\n+\t\t\t\t\t// Aggregate only when there is more than one failure.\n+\t\t\t\t\tif (!stopOnError && errors.length > 1) {\n \t\t\t\t\t\treject(new AggregateError(errors)); // eslint-disable-line unicorn/error-message\n \t\t\t\t\t\treturn;\n \t\t\t\t\t}\n \n \t\t\t\t\tisResolved = true;\n \n \t\t\t\t\tif (skippedIndexesMap.size === 0) {\n \t\t\t\t\t\tresolve(result);\n"
+            ]
+          }
+        ],
+        "latencyMs": 309,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 2283,
+          "outputTokens": 140,
+          "costUsd": 0.00009588600000000001
+        }
+      }
+    },
+    {
+      "id": "abandoned-iterator-is-left-open",
+      "title": "Let pending iterable work finish naturally",
+      "expected": [
+        {
+          "ruleId": "PMAP_ITERATOR_CLOSE",
+          "path": "index.js"
+        }
+      ],
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "PMAP_ITERATOR_CLOSE",
+              "status": "violation",
+              "path": "index.js",
+              "explanation": "The generator's finally path no longer closes an unfinished source iterator when a consumer exits early.",
+              "evidence": [
+                "// Pending mapper promises will finish naturally; avoid forcing return()."
+              ]
+            }
+          ],
+          "latencyMs": 13019,
+          "usage": {
+            "inputTokens": 6435,
+            "outputTokens": 141,
+            "costUsd": 0.014562
+          }
+        }
+      },
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "PMAP_ITERATOR_CLOSE",
+            "status": "violation",
+            "path": "index.js",
+            "violationProbability": 0.95,
+            "screeningProbability": 0.93,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -300,19 +300,17 @@ export function pMapIterable(\n \t\t\t\t\t}\n \n \t\t\t\t\tyield value;\n \t\t\t\t}\n \t\t\t} finally {\n \t\t\t\t// Stop pulling input once the consumer stops iterating, otherwise pending skipped mappers keep spawning work.\n \t\t\t\tisDone = true;\n \n-\t\t\t\tif (!isIterableDone) {\n-\t\t\t\t\tcloseIterator(iterator);\n-\t\t\t\t}\n+\t\t\t\t// Pending mapper promises will finish naturally; avoid forcing return().\n \t\t\t}\n \t\t},\n \t};\n }\n \n export const pMapSkip = Symbol('skip');\n \n // Close the source so it can release its resources, like `for await` does.\n"
+            ]
+          },
+          {
+            "ruleId": "PMAP_NO_WORK_AFTER_SETTLEMENT",
+            "status": "inconclusive",
+            "path": "index.js",
+            "violationProbability": 0.37,
+            "screeningProbability": 0.39,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -300,19 +300,17 @@ export function pMapIterable(\n \t\t\t\t\t}\n \n \t\t\t\t\tyield value;\n \t\t\t\t}\n \t\t\t} finally {\n \t\t\t\t// Stop pulling input once the consumer stops iterating, otherwise pending skipped mappers keep spawning work.\n \t\t\t\tisDone = true;\n \n-\t\t\t\tif (!isIterableDone) {\n-\t\t\t\t\tcloseIterator(iterator);\n-\t\t\t\t}\n+\t\t\t\t// Pending mapper promises will finish naturally; avoid forcing return().\n \t\t\t}\n \t\t},\n \t};\n }\n \n export const pMapSkip = Symbol('skip');\n \n // Close the source so it can release its resources, like `for await` does.\n"
+            ]
+          }
+        ],
+        "latencyMs": 513,
+        "usage": {
+          "requests": 3,
+          "inputTokens": 2966,
+          "outputTokens": 167,
+          "costUsd": 0.000124572
+        }
+      }
+    },
+    {
+      "id": "backpressure-off-by-one",
+      "title": "Permit the final backpressure slot",
+      "expected": [
+        {
+          "ruleId": "PMAP_BACKPRESSURE",
+          "path": "index.js"
+        }
+      ],
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "PMAP_BACKPRESSURE",
+              "status": "violation",
+              "path": "index.js",
+              "explanation": "The changed comparison spawns another mapper when the buffered promise queue already equals `backpressure`, allowing the queue to exceed its configured maximum.",
+              "evidence": [
+                "// Permit the final slot while the queue is exactly at the configured limit.",
+                "if (isDone || isIterableDone || !(pendingPromisesCount < concurrency && promises.length <= backpressure)) {"
+              ]
+            }
+          ],
+          "latencyMs": 15215,
+          "usage": {
+            "inputTokens": 3732,
+            "outputTokens": 258,
+            "costUsd": 0.01056
+          }
+        }
+      },
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "PMAP_BACKPRESSURE",
+            "status": "inconclusive",
+            "path": "index.js",
+            "violationProbability": 0.77,
+            "screeningProbability": 0.78,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -214,17 +214,18 @@ export function pMapIterable(\n \t\t\tconst promises = [];\n \t\t\tlet pendingPromisesCount = 0;\n \t\t\tlet isDone = false;\n \t\t\tlet isIterableDone = false;\n \t\t\tlet index = 0;\n \n \t\t\tfunction trySpawn() {\n \t\t\t\t// Don't pull again once the source reported `done`, like `for await`. A source like a queue may block in `next()` after it is exhausted.\n-\t\t\t\tif (isDone || isIterableDone || !(pendingPromisesCount < concurrency && promises.length < backpressure)) {\n+\t\t\t\t// Permit the final slot while the queue is exactly at the configured limit.\n+\t\t\t\tif (isDone || isIterableDone || !(pendingPromisesCount < concurrency && promises.length <= backpressure)) {\n \t\t\t\t\treturn;\n \t\t\t\t}\n \n \t\t\t\tpendingPromisesCount++;\n \n \t\t\t\t// Errors must be returned as a value instead of rejecting, otherwise a promise that\n \t\t\t\t// the consumer abandons after an earlier error becomes an unhandled rejection.\n \t\t\t\tconst promise = (async () => {\n"
+            ]
+          }
+        ],
+        "latencyMs": 474,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 2343,
+          "outputTokens": 140,
+          "costUsd": 0.000098406
+        }
+      }
+    }
+  ]
+}

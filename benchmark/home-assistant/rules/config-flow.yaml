@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/config-flow
+{
+  "version": 1,
+  "id": "HA_IQS_CONFIG_FLOW",
+  "title": "Integration needs to be able to be set up via the UI",
+  "description": "Since its introduction in 2018, the config flow has become the standard way to set up integrations in Home Assistant.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Integration needs to be able to be set up via the UI\". Official guidance: Since its introduction in 2018, the config flow has become the standard way to set up integrations in Home Assistant. They allow for a consistent user experience across integrations and provide a way to guide users through the setup process. Because of the better user experience, we want to make sure that all integrations are able to set up via the config flow. Since this is the entrypoint for users to start using an integration, we should make sure that the config flow is very user-friendly and understandable. This means we should use the right selectors at the right place, validate the input where needed, and use datadescription in the strings.json to give context about the input field. The integration should store all configuration in the ConfigEntry.data field, while all settings that are not needed for the connection to be made should be stored in the ConfigEntry.options field. Exceptions: The integrations that are exempt in ADR-0010 are exempt from this rule.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Integration needs to be able to be set up via the UI.",
+    "compliant": "The change preserves the requirement \"Integration needs to be able to be set up via the UI\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

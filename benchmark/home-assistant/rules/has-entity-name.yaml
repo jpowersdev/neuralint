@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/has-entity-name
+{
+  "version": 1,
+  "id": "HA_IQS_HAS_ENTITY_NAME",
+  "title": "Entities use has_entity_name = True",
+  "description": "hasentityname is an entity attribute that is used to improve the naming of entities in Home Assistant.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Entities use has_entity_name = True\". Official guidance: hasentityname is an entity attribute that is used to improve the naming of entities in Home Assistant. It is introduced to show a better name of the entity to the user depending on the context where the name is shown. We consider this a good practice because it allows for consistency in naming between integrations.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Entities use has_entity_name = True.",
+    "compliant": "The change preserves the requirement \"Entities use has_entity_name = True\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

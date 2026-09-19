@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/test-before-configure
+{
+  "version": 1,
+  "id": "HA_IQS_TEST_BEFORE_CONFIGURE",
+  "title": "Test a connection in the config flow",
+  "description": "Apart from being very easy to use, config flows are also a great way to let the user know that something is not going to work when the configuration has been completed.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Test a connection in the config flow\". Official guidance: Apart from being very easy to use, config flows are also a great way to let the user know that something is not going to work when the configuration has been completed. This can catch issues like: - DNS issues - Firewall issues - Wrong credentials - Wrong IP address or port - Unsupported devices Issues like this are often hard to debug once the integration is set up, so it's better to catch them early so users are not stuck with an integration that doesn't work. Since this improves the user experience, it's required to test the connection in the config flow. Exceptions: Integrations that don't have a connection to a device or service (for example helpers) don't need to test a connection in the config flow and are exempt from this rule. Integrations that rely on auto-discovery on runtime (like Google Cast) are also exempt from this rule.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Test a connection in the config flow.",
+    "compliant": "The change preserves the requirement \"Test a connection in the config flow\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

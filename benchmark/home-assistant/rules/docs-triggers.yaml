@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-triggers
+{
+  "version": 1,
+  "id": "HA_IQS_DOCS_TRIGGERS",
+  "title": "The documentation describes the provided triggers that can be used",
+  "description": "Integrations can register triggers to provide additional ways to trigger automations.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"The documentation describes the provided triggers that can be used\". Official guidance: Integrations can register triggers to provide additional ways to trigger automations. These triggers can be harder to use than the standard triggers, so we want to make sure that the documentation describes both what they do, and what the parameters are. To avoid cluttering the integration documentation, we want to have a separate page for each trigger, and link to it from the integration documentation. Each trigger page should have a description of what the trigger does, a list of the parameters that can be used with it and an overview how to use the trigger via the UI and via YAML.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: The documentation describes the provided triggers that can be used.",
+    "compliant": "The change preserves the requirement \"The documentation describes the provided triggers that can be used\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

@@ -1,0 +1,37 @@
+version: 1
+repository:
+  name: home-assistant/core
+  url: https://github.com/home-assistant/core.git
+  commit: 40fcd7dc6b37781291745e3d6c39601563e87349
+rules: rules
+scenarios:
+  - id: remove-unload-entry
+    title: Rely on platform teardown during integration reload
+    patch: patches/remove-unload-entry.patch
+    expected:
+      - ruleId: HA_IQS_CONFIG_ENTRY_UNLOADING
+        path: homeassistant/components/airgradient/__init__.py
+  - id: create-private-websession
+    title: Let the AirGradient client own its HTTP lifecycle
+    patch: patches/create-private-websession.patch
+    expected:
+      - ruleId: HA_IQS_INJECT_WEBSESSION
+        path: homeassistant/components/airgradient/__init__.py
+  - id: remove-sensor-unique-id
+    title: Use device identifiers to distinguish sensors
+    patch: patches/remove-sensor-unique-id.patch
+    expected:
+      - ruleId: HA_IQS_ENTITY_UNIQUE_ID
+        path: homeassistant/components/airgradient/sensor.py
+  - id: untranslated-action-error
+    title: Preserve upstream action failure details
+    patch: patches/untranslated-action-error.patch
+    expected:
+      - ruleId: HA_IQS_EXCEPTION_TRANSLATIONS
+        path: homeassistant/components/airgradient/entity.py
+  - id: remove-parallel-update-limit
+    title: Delegate update concurrency to the entity scheduler
+    patch: patches/remove-parallel-update-limit.patch
+    expected:
+      - ruleId: HA_IQS_PARALLEL_UPDATES
+        path: homeassistant/components/airgradient/update.py

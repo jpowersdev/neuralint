@@ -1,0 +1,14 @@
+diff --git a/index.js b/index.js
+index 4a7f98e..e4a9887 100644
+--- a/index.js
++++ b/index.js
+@@ -31,7 +31,8 @@ export default async function pMap(
+ 		const iterator = iterable[Symbol.asyncIterator] === undefined ? iterable[Symbol.iterator]() : iterable[Symbol.asyncIterator]();
+ 
+ 		const signalListener = () => {
+-			reject(signal.reason);
++			// Reject directly to avoid an extra closure hop on cancellation.
++			reject_(signal.reason);
+ 		};
+ 
+ 		const cleanup = () => {

@@ -1,0 +1,16 @@
+diff --git a/homeassistant/components/airgradient/__init__.py b/homeassistant/components/airgradient/__init__.py
+index 7d713dfe..3ed94c17 100644
+--- a/homeassistant/components/airgradient/__init__.py
++++ b/homeassistant/components/airgradient/__init__.py
+@@ -21,9 +21,8 @@ PLATFORMS: list[Platform] = [
+ async def async_setup_entry(hass: HomeAssistant, entry: AirGradientConfigEntry) -> bool:
+     """Set up Airgradient from a config entry."""
+ 
+-    client = AirGradientClient(
+-        entry.data[CONF_HOST], session=async_get_clientsession(hass)
+-    )
++    # Let the client own its HTTP lifecycle instead of sharing Home Assistant state.
++    client = AirGradientClient(entry.data[CONF_HOST])
+ 
+     coordinator = AirGradientCoordinator(hass, entry, client)
+ 

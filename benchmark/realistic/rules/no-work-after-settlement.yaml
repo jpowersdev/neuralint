@@ -1,0 +1,18 @@
+version: 1
+id: PMAP_NO_WORK_AFTER_SETTLEMENT
+title: Do not start mapper work after settlement
+description: Pending input may resolve after pMap has already rejected or resolved, but its mapper must not start afterward.
+severity: error
+scope:
+  include: ["index.js"]
+  exclude: []
+instructions: >-
+  Check asynchronous gaps before mapper invocation. Cancellation or another mapper failure can
+  settle the operation while awaiting an input value. A guard must prevent new user mapper side
+  effects after that point.
+criteria:
+  violation: Changed code can invoke a mapper after the enclosing pMap operation has settled.
+  compliant: Every asynchronous path checks settlement before starting additional mapper work.
+thresholds:
+  screenAt: 0.35
+  violationAt: 0.8

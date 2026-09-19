@@ -1,0 +1,18 @@
+version: 1
+id: PMAP_ABORT_CLEANUP
+title: Abort must use the coordinated rejection path
+description: pMap cancellation must update settlement state, remove the abort listener, and close an unfinished source iterator.
+severity: error
+scope:
+  include: ["index.js"]
+  exclude: []
+instructions: >-
+  Review changes to AbortSignal handling. The local reject helper coordinates promise rejection
+  with state updates, listener cleanup, and iterator closure; calling the raw Promise reject
+  function from an abort path bypasses those guarantees.
+criteria:
+  violation: An abort or cancellation path rejects directly without performing coordinated cleanup and source shutdown.
+  compliant: Abort handling goes through the coordinated rejection path or performs all equivalent state and cleanup operations itself.
+thresholds:
+  screenAt: 0.35
+  violationAt: 0.8

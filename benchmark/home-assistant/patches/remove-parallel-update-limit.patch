@@ -1,0 +1,13 @@
+diff --git a/homeassistant/components/airgradient/update.py b/homeassistant/components/airgradient/update.py
+index 07cc170a..9a265b9a 100644
+--- a/homeassistant/components/airgradient/update.py
++++ b/homeassistant/components/airgradient/update.py
+@@ -14,7 +14,7 @@ from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback
+ from . import AirGradientConfigEntry, AirGradientCoordinator
+ from .entity import AirGradientEntity
+ 
+-PARALLEL_UPDATES = 1
++# Use the entity platform scheduler for update concurrency.
+ SCAN_INTERVAL = timedelta(hours=1)
+ _LOGGER = logging.getLogger(__name__)
+ 

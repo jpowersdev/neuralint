@@ -1,0 +1,14 @@
+diff --git a/homeassistant/components/airgradient/__init__.py b/homeassistant/components/airgradient/__init__.py
+index 7d713dfe..81d7330d 100644
+--- a/homeassistant/components/airgradient/__init__.py
++++ b/homeassistant/components/airgradient/__init__.py
+@@ -35,9 +35,3 @@ async def async_setup_entry(hass: HomeAssistant, entry: AirGradientConfigEntry)
+ 
+     return True
+ 
+-
+-async def async_unload_entry(
+-    hass: HomeAssistant, entry: AirGradientConfigEntry
+-) -> bool:
+-    """Unload a config entry."""
+-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)

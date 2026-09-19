@@ -6,7 +6,9 @@ AI code review against your repository's rules, powered by TypeSafe AI's Jev.
 
 ## Status
 
-Early prototype. The first vertical slice includes:
+**Alpha.** neuralint is usable for repository-local, diff-scoped policy screening, but its report contains candidates rather than authoritative review findings. Expect rule-format and JSON-report changes before 1.0.
+
+The current vertical slice includes:
 
 - rules discovered from `.neuralint/rules/**/*.yaml`;
 - strict schema validation with duplicate-ID and threshold checks;
@@ -17,7 +19,23 @@ Early prototype. The first vertical slice includes:
 - TypeSafe Jev through Effect's provider-neutral `DecisionModel` and `@effect/ai-typesafe`;
 - text and versioned JSON output.
 
-It does not yet implement request caching, repository configuration, cross-file rule scopes, or token-aware request batching.
+It does not yet implement request caching, repository configuration, cross-file rule scopes, automatic source-context retrieval, or token-aware question batching. Pin alpha versions in automation.
+
+## Install
+
+```sh
+npm install --global neuralint@alpha
+export TYPESAFE_API_KEY="..."
+neuralint --version
+```
+
+Node.js 22 or newer is required. The alpha uses Effect v4 release-candidate packages pinned to matching versions.
+
+To run without a global install:
+
+```sh
+npx neuralint@alpha check --base origin/main
+```
 
 ## Install for development
 
@@ -27,8 +45,6 @@ pnpm check
 pnpm test
 pnpm build
 ```
-
-`@effect/ai-typesafe` and Effect's CLI are currently Effect v4 release-candidate APIs and are pinned together.
 
 ## Repository setup
 
@@ -70,6 +86,14 @@ Exit codes:
 - `0`: no candidate violations or inconclusive findings;
 - `1`: at least one candidate violation;
 - `2`: configuration/provider failure or an inconclusive finding.
+
+## Data handling and safety
+
+neuralint is read-only with respect to the reviewed repository. It invokes Git to compute a diff and does not modify source files or apply suggested changes.
+
+Applicable policy text and unified-diff hunks are sent to the configured TypeSafe API endpoint for classification. Diff content can contain proprietary code or accidentally committed secrets. The alpha does not yet redact sensitive values, so do not run it on data you are not authorized to send to that provider. JSON and text reports also contain relevant diff hunks and should be handled accordingly.
+
+The API key is loaded through Effect's redacted configuration and is not included in reports. `TYPESAFE_API_URL` may be used to select a compatible endpoint.
 
 ### Reading a finding
 
@@ -132,6 +156,18 @@ base ref ── merge-base ── HEAD
 ```
 
 The report calls these **candidate violations**. Jev is a fast policy classifier, not a proof system. A remediation agent should independently inspect the referenced code and rule before proposing changes.
+
+## Benchmark
+
+Two benchmark suites are available:
+
+- [`benchmark/`](benchmark/README.md) is a controlled, equal-evidence classifier comparison.
+- [`benchmark/realistic/`](benchmark/realistic/README.md) creates five PR-shaped regressions against the real `sindresorhus/p-map` repository.
+- [`benchmark/home-assistant/`](benchmark/home-assistant/README.md) checks five PR-shaped regressions against all 54 official Home Assistant Integration Quality Scale rules.
+
+Third-party benchmark fixtures retain their upstream licenses and attribution in [`benchmark/THIRD_PARTY.md`](benchmark/THIRD_PARTY.md).
+
+In the 54-rule benchmark, neuralint routed all five defective PRs in 2.68 seconds for $0.003508. Terra generated complete explanations and suggested alternatives for all five either by reviewing all rules directly or by drafting from neuralint's candidates. The routed workflow was 3.45× faster and 62% cheaper than direct review. Treat these suites as harness validation rather than broad quality claims.
 
 ## Planned next steps
 

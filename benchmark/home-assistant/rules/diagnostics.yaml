@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/diagnostics
+{
+  "version": 1,
+  "id": "HA_IQS_DIAGNOSTICS",
+  "title": "Implements diagnostics",
+  "description": "Diagnostics are an easy way for the user to gather data about the integration and can prove useful when debugging an integration.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Implements diagnostics\". Official guidance: Diagnostics are an easy way for the user to gather data about the integration and can prove useful when debugging an integration. We consider it a good practice to have the diagnostics implemented. Something to keep in mind is that the diagnostics should not expose any sensitive information, such as passwords, tokens, or coordinates.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Implements diagnostics.",
+    "compliant": "The change preserves the requirement \"Implements diagnostics\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

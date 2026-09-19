@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-event-setup
+{
+  "version": 1,
+  "id": "HA_IQS_ENTITY_EVENT_SETUP",
+  "title": "Entity events are subscribed in the correct lifecycle methods",
+  "description": "Entities may need to subscribe to events, for example, from the integration library, and update state when a new event comes in.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Entity events are subscribed in the correct lifecycle methods\". Official guidance: Entities may need to subscribe to events, for example, from the integration library, and update state when a new event comes in. In order to do this correctly, the entities should subscribe and register the update callback in the entity method asyncaddedtohass. This entity method is called after the entity has been registered by the entity platform helper and the entity will now have all its interfaces available to call, such as self.hass and self.asyncwritehastate. Registering an update callback before this stage will cause errors if the callback, for example, tries to access self.hass or write a state update. To avoid memory leaks, the entities should unsubscribe from the events, that is, unregister the update callback, in the entity method asyncwillremovefromhass.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Entity events are subscribed in the correct lifecycle methods.",
+    "compliant": "The change preserves the requirement \"Entity events are subscribed in the correct lifecycle methods\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

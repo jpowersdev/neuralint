@@ -1,0 +1,115 @@
+version: 1
+cases:
+  - id: dynamic-function-constructor
+    ruleId: SECURITY001
+    expected: violation
+    path: src/template.ts
+    diff: |
+      @@ -1,2 +1,2 @@
+      -export const render = (source: string) => source
+      +export const render = (source: string) => Function(`return (${source})`)()
+
+  - id: dynamic-indirect-constructor
+    ruleId: SECURITY001
+    expected: violation
+    path: src/template.ts
+    diff: |
+      @@ -1,2 +1,3 @@
+      -export const render = (source: string) => source
+      +const compile = globalThis.Function
+      +export const render = (source: string) => compile("return " + source)()
+
+  - id: dynamic-timer-string
+    ruleId: SECURITY001
+    expected: violation
+    path: src/template.ts
+    diff: |
+      @@ -1 +1 @@
+      -export const schedule = (callback: () => void) => setTimeout(callback, 0)
+      +export const schedule = (source: string) => setTimeout(source, 0)
+
+  - id: dynamic-json-parse
+    ruleId: SECURITY001
+    expected: compliant
+    path: src/template.ts
+    diff: |
+      @@ -1 +1 @@
+      -export const parse = (source: string) => source
+      +export const parse = (source: string) => JSON.parse(source)
+
+  - id: dynamic-placeholder-replacement
+    ruleId: SECURITY001
+    expected: compliant
+    path: src/template.ts
+    diff: |
+      @@ -1 +1,2 @@
+      -export const render = (source: string) => source
+      +export const render = (source: string, name: string) =>
+      +  source.replaceAll("{{name}}", name)
+
+  - id: dynamic-reference-only
+    ruleId: SECURITY001
+    expected: compliant
+    path: src/template.ts
+    diff: |
+      @@ -1 +1,2 @@
+      +export const supportsDynamicFunctions = typeof Function === "function"
+       export const render = (source: string) => source
+
+  - id: secret-credential-object
+    ruleId: SECURITY002
+    expected: violation
+    path: src/auth.ts
+    diff: |
+      @@ -1 +1 @@
+      -console.info("Connecting user", credentials.username)
+      +console.info("Connecting with credentials", credentials)
+
+  - id: secret-token-directly
+    ruleId: SECURITY002
+    expected: violation
+    path: src/auth.ts
+    diff: |
+      @@ -1 +1 @@
+      -logger.debug("Authentication started")
+      +logger.debug("Using access token", credentials.accessToken)
+
+  - id: secret-indirect-rest-object
+    ruleId: SECURITY002
+    expected: violation
+    path: src/auth.ts
+    diff: |
+      @@ -1 +1,2 @@
+      -logger.info({ username: credentials.username })
+      +const { username, ...authenticationDetails } = credentials
+      +logger.info({ username, authenticationDetails })
+
+  - id: secret-username-only
+    ruleId: SECURITY002
+    expected: compliant
+    path: src/auth.ts
+    diff: |
+      @@ -1 +1 @@
+      -logger.info("Connecting")
+      +logger.info("Connecting user", credentials.username)
+
+  - id: secret-explicit-redaction
+    ruleId: SECURITY002
+    expected: compliant
+    path: src/auth.ts
+    diff: |
+      @@ -1 +1 @@
+      -logger.info({ username: credentials.username })
+      +logger.info({ username: credentials.username, accessToken: "[REDACTED]" })
+
+  - id: secret-presence-boolean
+    ruleId: SECURITY002
+    expected: compliant
+    path: src/auth.ts
+    diff: |
+      @@ -1 +1,4 @@
+      -logger.info("Connecting")
+      +logger.info("Connecting", {
+      +  username: credentials.username,
+      +  tokenPresent: credentials.accessToken.length > 0
+      +})

@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/log-when-unavailable
+{
+  "version": 1,
+  "id": "HA_IQS_LOG_WHEN_UNAVAILABLE",
+  "title": "If internet/device/service is unavailable, log once when unavailable and once when back connected",
+  "description": "When a device or service is not reachable, the entities will usually go to unavailable.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"If internet/device/service is unavailable, log once when unavailable and once when back connected\". Official guidance: When a device or service is not reachable, the entities will usually go to unavailable. To allow the user to find out why this is happening, the integration should log when this happens. Be sure to log only once in total to avoid spamming the logs. When the device or service is reachable again, the integration should log that as well. This can prove useful for using the logs to find out when the device or service was unavailable and when it was back online.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: If internet/device/service is unavailable, log once when unavailable and once when back connected.",
+    "compliant": "The change preserves the requirement \"If internet/device/service is unavailable, log once when unavailable and once when back connected\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

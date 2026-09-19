@@ -18,15 +18,15 @@ importers:
         specifier: 4.0.0-rc.116
         version: 4.0.0-rc.116
       minimatch:
-        specifier: 10.0.3
-        version: 10.0.3
+        specifier: 10.2.6
+        version: 10.2.6
       yaml:
-        specifier: 2.8.1
-        version: 2.8.1
+        specifier: 2.9.1
+        version: 2.9.1
     devDependencies:
       '@effect/vitest':
         specifier: 4.0.0-rc.116
-        version: 4.0.0-rc.116(effect@4.0.0-rc.116)(vitest@5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1)))
+        version: 4.0.0-rc.116(effect@4.0.0-rc.116)(vitest@5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1)))
       '@types/node':
         specifier: 24.10.1
         version: 24.10.1
@@ -38,7 +38,7 @@ importers:
         version: 5.9.3
       vitest:
         specifier: 5.0.1
-        version: 5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1))
+        version: 5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1))
 
 packages:
 
@@ -378,14 +378,6 @@ packages:
     cpu: [x64]
     os: [win32]
 
-  '@isaacs/balanced-match@4.0.1':
-    resolution: {integrity: sha512-yzMTt9lEb8Gv7zRioUilSglI0c0smZ9k5D65677DLWLtWJaXIS3CqcGyUFByYKlnUj6TkjLVs54fBl6+TiGQDQ==}
-    engines: {node: 20 || >=22}
-
-  '@isaacs/brace-expansion@5.0.1':
-    resolution: {integrity: sha512-WMz71T1JS624nWj2n2fnYAuPovhv7EUhk69R6i9dsVyzxt5eM3bjwvgk9L+APE1TRscGysAVMANkB0jh0LQZrQ==}
-    engines: {node: 20 || >=22}
-
   '@jridgewell/resolve-uri@3.1.2':
     resolution: {integrity: sha512-bRISgCIjP20/tbWSPWMEi54QVPRZExkuD9lJL+UIxUKtwVJA8wW1Trb1jMs1RFXo1CBTNZ/5hpC9QvmKWdopKw==}
     engines: {node: '>=6.0.0'}
@@ -610,6 +602,14 @@ packages:
     resolution: {integrity: sha512-Izi8RQcffqCeNVgFigKli1ssklIbpHnCYc6AknXGYoB6grJqyeby7jv12JUQgmTAnIDnbck1uxksT4dzN3PWBA==}
     engines: {node: '>=12'}
 
+  balanced-match@4.0.4:
+    resolution: {integrity: sha512-BLrgEcRTwX2o6gGxGOCNyMvGSp35YofuYzw9h1IMTRmKqttAZZVU67bdb9Pr2vUHA8+j3i2tJfjO6C6+4myGTA==}
+    engines: {node: 18 || 20 || >=22}
+
+  brace-expansion@5.0.12:
+    resolution: {integrity: sha512-YovQ3rzhaLMIrDjNDMkNS01tea93qhEhG5xy8f6+R0l+dw3Ki+5sCoIoI942iuLZTHWogWktgwVDhU09iNEimQ==}
+    engines: {node: 20 || >=22}
+
   chai@6.2.2:
     resolution: {integrity: sha512-NUPRluOfOiTKBKvWPtSD4PhFvWCqOi0BGStNWs57X9js7XGTprSmFoz5F0tWhR4WPjNeR9jXqdC7/UpSJTnlRg==}
     engines: {node: '>=18'}
@@ -661,9 +661,9 @@ packages:
   magic-string@1.4.1:
     resolution: {integrity: sha512-8lyCu36ErXR0J9uaGKlKQoiLZKmtI63YGLE8G2o9jyRPdr4X47LusSOwgOJOzcVtp81fTAAjxR7BwKz682Jhow==}
 
-  minimatch@10.0.3:
-    resolution: {integrity: sha512-IPZ167aShDZZUMdRk66cyQAW3qr0WzbHkPdMYa8bzZhlHhO3jALbKdxcaak7W9FfT2rZNpQuUu4Od7ILEpXSaw==}
-    engines: {node: 20 || >=22}
+  minimatch@10.2.6:
+    resolution: {integrity: sha512-vpLQEs+VLCr1nU0BXS07maYoFwlDAH0gngQuuttxIwutDFEMHq2blX+8vpgxDdK3J1PwjCJiep77OitTZ4Ll1A==}
+    engines: {node: 18 || 20 || >=22}
 
   nanoid@3.3.19:
     resolution: {integrity: sha512-Y2tUNy4ouw6tq5oDSKeQYGOyhkUBhNOcGV/02KC+6kd9eDGqdZd++mjMiIDilrBYvjEnCYvVtsuHCuP+okSfug==}
@@ -837,8 +837,8 @@ packages:
       utf-8-validate:
         optional: true
 
-  yaml@2.8.1:
-    resolution: {integrity: sha512-lcYcMxX2PO9XMGvAJkJ3OsNMw+/7FKes7/hgerGUYWIoWu5j/+YQqcZr5JnPZWzOsEBgMbSbiSTn/dv/69Mkpw==}
+  yaml@2.9.1:
+    resolution: {integrity: sha512-3NxN8+78OdzbT7C/WjGsyfPAtJaN3FNDsWxv7Y7mcDsT/oOmgW8BpyQQFFBnvZE3j9Y2Sdz1ULFLezL7Eb2yFw==}
     engines: {node: '>= 14.6'}
     hasBin: true
 
@@ -867,10 +867,10 @@ snapshots:
       - bufferutil
       - utf-8-validate
 
-  '@effect/vitest@4.0.0-rc.116(effect@4.0.0-rc.116)(vitest@5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1)))':
+  '@effect/vitest@4.0.0-rc.116(effect@4.0.0-rc.116)(vitest@5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1)))':
     dependencies:
       effect: 4.0.0-rc.116
-      vitest: 5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1))
+      vitest: 5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1))
 
   '@esbuild/aix-ppc64@0.25.12':
     optional: true
@@ -1028,12 +1028,6 @@ snapshots:
   '@esbuild/win32-x64@0.28.2':
     optional: true
 
-  '@isaacs/balanced-match@4.0.1': {}
-
-  '@isaacs/brace-expansion@5.0.1':
-    dependencies:
-      '@isaacs/balanced-match': 4.0.1
-
   '@jridgewell/resolve-uri@3.1.2': {}
 
   '@jridgewell/sourcemap-codec@1.6.0': {}
@@ -1158,18 +1152,24 @@ snapshots:
     dependencies:
       '@types/node': 24.10.1
 
-  '@vitest/mocker@5.0.1(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1))':
+  '@vitest/mocker@5.0.1(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1))':
     dependencies:
       '@jridgewell/trace-mapping': 0.3.31
       '@vitest/spy': 5.0.1
       estree-walker: 3.0.3
       magic-string: 1.4.1
     optionalDependencies:
-      vite: 7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1)
+      vite: 7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1)
 
   '@vitest/spy@5.0.1': {}
 
   assertion-error@2.0.1: {}
+
+  balanced-match@4.0.4: {}
+
+  brace-expansion@5.0.12:
+    dependencies:
+      balanced-match: 4.0.4
 
   chai@6.2.2: {}
 
@@ -1258,9 +1258,9 @@ snapshots:
     dependencies:
       '@jridgewell/sourcemap-codec': 1.6.0
 
-  minimatch@10.0.3:
+  minimatch@10.2.6:
     dependencies:
-      '@isaacs/brace-expansion': 5.0.1
+      brace-expansion: 5.0.12
 
   nanoid@3.3.19: {}
 
@@ -1351,7 +1351,7 @@ snapshots:
 
   undici@8.10.2: {}
 
-  vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1):
+  vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1):
     dependencies:
       esbuild: 0.28.2
       fdir: 6.5.0(picomatch@4.0.7)
@@ -1363,12 +1363,12 @@ snapshots:
       '@types/node': 24.10.1
       fsevents: 2.3.3
       tsx: 4.20.6
-      yaml: 2.8.1
+      yaml: 2.9.1
 
-  vitest@5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1)):
+  vitest@5.0.1(@types/node@24.10.1)(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1)):
     dependencies:
       '@types/chai': 5.2.3
-      '@vitest/mocker': 5.0.1(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1))
+      '@vitest/mocker': 5.0.1(vite@7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1))
       chai: 6.2.2
       es-module-lexer: 2.3.2
       expect-type: 1.4.0
@@ -1379,7 +1379,7 @@ snapshots:
       tinybench: 6.1.4
       tinyexec: 1.3.0
       tinyglobby: 0.2.17
-      vite: 7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.8.1)
+      vite: 7.3.6(@types/node@24.10.1)(tsx@4.20.6)(yaml@2.9.1)
       why-is-node-running: 2.3.0
     optionalDependencies:
       '@types/node': 24.10.1
@@ -1393,4 +1393,4 @@ snapshots:
 
   ws@8.21.3: {}
 
-  yaml@2.8.1: {}
+  yaml@2.9.1: {}

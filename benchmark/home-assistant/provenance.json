@@ -1,0 +1,383 @@
+{
+  "schemaVersion": 1,
+  "rules": [
+    {
+      "id": "HA_IQS_ACTION_EXCEPTIONS",
+      "slug": "action-exceptions",
+      "title": "Service actions raise exceptions when encountering failures",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/action-exceptions",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ACTION_SETUP",
+      "slug": "action-setup",
+      "title": "Service actions are registered in async_setup",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/action-setup",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_APPROPRIATE_POLLING",
+      "slug": "appropriate-polling",
+      "title": "If it's a polling integration, set an appropriate polling interval",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/appropriate-polling",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ASYNC_DEPENDENCY",
+      "slug": "async-dependency",
+      "title": "Dependency is async",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/async-dependency",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_BRANDS",
+      "slug": "brands",
+      "title": "Has branding assets available for the integration",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/brands",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_COMMON_MODULES",
+      "slug": "common-modules",
+      "title": "Place common patterns in common modules",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/common-modules",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+      "slug": "config-entry-unloading",
+      "title": "Support config entry unloading",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/config-entry-unloading",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_CONFIG_FLOW_TEST_COVERAGE",
+      "slug": "config-flow-test-coverage",
+      "title": "Full test coverage for the config flow",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/config-flow-test-coverage",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_CONFIG_FLOW",
+      "slug": "config-flow",
+      "title": "Integration needs to be able to be set up via the UI",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/config-flow",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DEPENDENCY_TRANSPARENCY",
+      "slug": "dependency-transparency",
+      "title": "Dependency transparency",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/dependency-transparency",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DEVICES",
+      "slug": "devices",
+      "title": "The integration creates devices",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/devices",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DIAGNOSTICS",
+      "slug": "diagnostics",
+      "title": "Implements diagnostics",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/diagnostics",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DISCOVERY_UPDATE_INFO",
+      "slug": "discovery-update-info",
+      "title": "Integration uses discovery info to update network information",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/discovery-update-info",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DISCOVERY",
+      "slug": "discovery",
+      "title": "Devices can be discovered",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/discovery",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_ACTIONS",
+      "slug": "docs-actions",
+      "title": "The documentation describes the provided service actions that can be used",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-actions",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_CONDITIONS",
+      "slug": "docs-conditions",
+      "title": "The documentation describes the provided conditions that can be used",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-conditions",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_CONFIGURATION_PARAMETERS",
+      "slug": "docs-configuration-parameters",
+      "title": "The documentation describes all integration configuration options",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-configuration-parameters",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_DATA_UPDATE",
+      "slug": "docs-data-update",
+      "title": "The documentation describes how data is updated",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-data-update",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_EXAMPLES",
+      "slug": "docs-examples",
+      "title": "The documentation provides automation examples the user can use.",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-examples",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_HIGH_LEVEL_DESCRIPTION",
+      "slug": "docs-high-level-description",
+      "title": "The documentation includes a high-level description of the integration brand, product, or service",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-high-level-description",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_INSTALLATION_INSTRUCTIONS",
+      "slug": "docs-installation-instructions",
+      "title": "The documentation provides step-by-step installation instructions for the integration, including, if needed, prerequisites",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-installation-instructions",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_INSTALLATION_PARAMETERS",
+      "slug": "docs-installation-parameters",
+      "title": "The documentation describes all integration installation parameters",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-installation-parameters",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_KNOWN_LIMITATIONS",
+      "slug": "docs-known-limitations",
+      "title": "The documentation describes known limitations of the integration (not to be confused with bugs)",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-known-limitations",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_REMOVAL_INSTRUCTIONS",
+      "slug": "docs-removal-instructions",
+      "title": "The documentation provides removal instructions",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-removal-instructions",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_SUPPORTED_DEVICES",
+      "slug": "docs-supported-devices",
+      "title": "The documentation describes known supported / unsupported devices",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-supported-devices",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_SUPPORTED_FUNCTIONS",
+      "slug": "docs-supported-functions",
+      "title": "The documentation describes the supported functionality, including entities, and platforms",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-supported-functions",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_TRIGGERS",
+      "slug": "docs-triggers",
+      "title": "The documentation describes the provided triggers that can be used",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-triggers",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_TROUBLESHOOTING",
+      "slug": "docs-troubleshooting",
+      "title": "The documentation provides troubleshooting information",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-troubleshooting",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DOCS_USE_CASES",
+      "slug": "docs-use-cases",
+      "title": "The documentation describes use cases to illustrate how this integration can be used",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/docs-use-cases",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_DYNAMIC_DEVICES",
+      "slug": "dynamic-devices",
+      "title": "Devices added after integration setup",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/dynamic-devices",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ENTITY_CATEGORY",
+      "slug": "entity-category",
+      "title": "Entities are assigned an appropriate EntityCategory",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-category",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ENTITY_DEVICE_CLASS",
+      "slug": "entity-device-class",
+      "title": "Entities use device classes where possible",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-device-class",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ENTITY_DISABLED_BY_DEFAULT",
+      "slug": "entity-disabled-by-default",
+      "title": "Integration disables less popular (or noisy) entities",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-disabled-by-default",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ENTITY_EVENT_SETUP",
+      "slug": "entity-event-setup",
+      "title": "Entity events are subscribed in the correct lifecycle methods",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-event-setup",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ENTITY_TRANSLATIONS",
+      "slug": "entity-translations",
+      "title": "Entities have translated names",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-translations",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ENTITY_UNAVAILABLE",
+      "slug": "entity-unavailable",
+      "title": "Mark entity unavailable if appropriate",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-unavailable",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ENTITY_UNIQUE_ID",
+      "slug": "entity-unique-id",
+      "title": "Entities have a unique ID",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-unique-id",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_EXCEPTION_TRANSLATIONS",
+      "slug": "exception-translations",
+      "title": "Exception messages are translatable",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/exception-translations",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_HAS_ENTITY_NAME",
+      "slug": "has-entity-name",
+      "title": "Entities use has_entity_name = True",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/has-entity-name",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_ICON_TRANSLATIONS",
+      "slug": "icon-translations",
+      "title": "Entities implement icon translations",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/icon-translations",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_INJECT_WEBSESSION",
+      "slug": "inject-websession",
+      "title": "The integration dependency supports passing in a websession",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/inject-websession",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_INTEGRATION_OWNER",
+      "slug": "integration-owner",
+      "title": "Has an integration owner",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/integration-owner",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_LOG_WHEN_UNAVAILABLE",
+      "slug": "log-when-unavailable",
+      "title": "If internet/device/service is unavailable, log once when unavailable and once when back connected",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/log-when-unavailable",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_PARALLEL_UPDATES",
+      "slug": "parallel-updates",
+      "title": "Number of parallel updates is specified",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/parallel-updates",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_REAUTHENTICATION_FLOW",
+      "slug": "reauthentication-flow",
+      "title": "Reauthentication needs to be available via the UI",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/reauthentication-flow",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_RECONFIGURATION_FLOW",
+      "slug": "reconfiguration-flow",
+      "title": "Integrations should have a reconfigure flow",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/reconfiguration-flow",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_REPAIR_ISSUES",
+      "slug": "repair-issues",
+      "title": "Repair issues and repair flows are used when user intervention is needed",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/repair-issues",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_RUNTIME_DATA",
+      "slug": "runtime-data",
+      "title": "Use ConfigEntry.runtime_data to store runtime data",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/runtime-data",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_STALE_DEVICES",
+      "slug": "stale-devices",
+      "title": "Stale devices are removed",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/stale-devices",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_STRICT_TYPING",
+      "slug": "strict-typing",
+      "title": "Strict typing",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/strict-typing",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_TEST_BEFORE_CONFIGURE",
+      "slug": "test-before-configure",
+      "title": "Test a connection in the config flow",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/test-before-configure",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_TEST_BEFORE_SETUP",
+      "slug": "test-before-setup",
+      "title": "Check during integration initialization if we are able to set it up correctly",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/test-before-setup",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_TEST_COVERAGE",
+      "slug": "test-coverage",
+      "title": "Above 95% test coverage for all integration modules",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/test-coverage",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    },
+    {
+      "id": "HA_IQS_UNIQUE_CONFIG_ENTRY",
+      "slug": "unique-config-entry",
+      "title": "Don't allow the same device or service to be able to be set up twice",
+      "source": "https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/unique-config-entry",
+      "docsCommit": "17a7d242991cd7a22d11087acfe60545fa58ee49"
+    }
+  ]
+}

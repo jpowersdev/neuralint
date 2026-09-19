@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/runtime-data
+{
+  "version": 1,
+  "id": "HA_IQS_RUNTIME_DATA",
+  "title": "Use ConfigEntry.runtime_data to store runtime data",
+  "description": "The ConfigEntry object has a runtimedata attribute that can be used to store runtime data.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Use ConfigEntry.runtime_data to store runtime data\". Official guidance: The ConfigEntry object has a runtimedata attribute that can be used to store runtime data. This is useful for storing data that is not persisted to the configuration file storage, but is needed during the lifetime of the configuration entry. By using runtimedata, we maintain consistency for developers to store runtime data in a consistent and typed way. Because of the added typing, we can use tooling to avoid typing mistakes.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Use ConfigEntry.runtime_data to store runtime data.",
+    "compliant": "The change preserves the requirement \"Use ConfigEntry.runtime_data to store runtime data\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

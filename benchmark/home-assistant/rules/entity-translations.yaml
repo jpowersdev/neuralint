@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/entity-translations
+{
+  "version": 1,
+  "id": "HA_IQS_ENTITY_TRANSLATIONS",
+  "title": "Entities have translated names",
+  "description": "Home Assistant is used by people all over the world.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Entities have translated names\". Official guidance: Home Assistant is used by people all over the world. To also make it easier for non-English speakers to use Home Assistant, it is important that entities have translated names. This makes it easier for people to understand what the entity is.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Entities have translated names.",
+    "compliant": "The change preserves the requirement \"Entities have translated names\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

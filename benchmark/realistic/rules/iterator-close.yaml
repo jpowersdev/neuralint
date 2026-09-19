@@ -1,0 +1,17 @@
+version: 1
+id: PMAP_ITERATOR_CLOSE
+title: Close unfinished iterators when consumption stops
+description: Early consumer exit must call return on an unfinished source iterator so it can release resources and stop producing values.
+severity: error
+scope:
+  include: ["index.js"]
+  exclude: []
+instructions: >-
+  Review pMapIterable shutdown and finally paths. Finishing pending mapper promises does not close
+  the source iterator. Normal exhaustion is exempt because the source is already done.
+criteria:
+  violation: An early-exit path can abandon an unfinished source iterator without calling or scheduling its return method.
+  compliant: Every early-exit path closes an unfinished iterator, while normal exhaustion may skip redundant closure.
+thresholds:
+  screenAt: 0.35
+  violationAt: 0.8

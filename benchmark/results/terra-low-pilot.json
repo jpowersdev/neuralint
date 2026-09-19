@@ -1,0 +1,430 @@
+{
+  "schemaVersion": 1,
+  "generatedAt": "2026-09-19T05:35:57.004Z",
+  "corpus": "benchmark/cases.yaml",
+  "cases": 12,
+  "providers": {
+    "jev": {
+      "model": "jev-latest",
+      "metrics": {
+        "strictAccuracy": 0.9166666666666666,
+        "coverage": 0.9166666666666666,
+        "decidedAccuracy": 1,
+        "precision": 1,
+        "confirmedRecall": 0.8333333333333334,
+        "candidateRecall": 1,
+        "confirmedF1": 0.9090909090909091,
+        "truePositive": 5,
+        "trueNegative": 6,
+        "falsePositive": 0,
+        "falseNegative": 0,
+        "inconclusivePositive": 1,
+        "inconclusiveNegative": 0,
+        "latencyMs": 2330,
+        "inputTokens": 8258,
+        "outputTokens": 378,
+        "costUsd": 0.00034683600000000005
+      }
+    },
+    "agent": {
+      "model": "openai-codex/gpt-5.6-terra",
+      "thinking": "low",
+      "metrics": {
+        "strictAccuracy": 1,
+        "coverage": 1,
+        "decidedAccuracy": 1,
+        "precision": 1,
+        "confirmedRecall": 1,
+        "candidateRecall": 1,
+        "confirmedF1": 1,
+        "truePositive": 6,
+        "trueNegative": 6,
+        "falsePositive": 0,
+        "falseNegative": 0,
+        "inconclusivePositive": 0,
+        "inconclusiveNegative": 0,
+        "latencyMs": 31328,
+        "inputTokens": 8017,
+        "outputTokens": 718,
+        "costUsd": 0.024650000000000002
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "dynamic-function-constructor",
+      "ruleId": "SECURITY001",
+      "expected": "violation",
+      "jev": {
+        "violationProbability": 0.98,
+        "screeningProbability": 0.98,
+        "latencyMs": 341,
+        "usage": {
+          "inputTokens": 918,
+          "outputTokens": 42,
+          "costUsd": 0.00003855600000000001
+        },
+        "status": "violation"
+      },
+      "agent": {
+        "violationProbability": 1,
+        "reportedConfidence": 1,
+        "latencyMs": 2526,
+        "usage": {
+          "inputTokens": 666,
+          "outputTokens": 61,
+          "costUsd": 0.002064
+        },
+        "explanation": "The change uses the Function constructor to compile and execute the application-controlled source string as JavaScript.",
+        "relevantLines": [
+          "+export const render = (source: string) => Function(`return (${source})`)()"
+        ],
+        "status": "violation"
+      }
+    },
+    {
+      "id": "dynamic-indirect-constructor",
+      "ruleId": "SECURITY001",
+      "expected": "violation",
+      "jev": {
+        "violationProbability": 0.98,
+        "screeningProbability": 0.98,
+        "latencyMs": 284,
+        "usage": {
+          "inputTokens": 938,
+          "outputTokens": 42,
+          "costUsd": 0.00003939600000000001
+        },
+        "status": "violation"
+      },
+      "agent": {
+        "violationProbability": 0.99,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2544,
+        "usage": {
+          "inputTokens": 674,
+          "outputTokens": 73,
+          "costUsd": 0.0022240000000000003
+        },
+        "explanation": "The change uses the Function constructor to compile the application-controlled source string into executable JavaScript and immediately executes it.",
+        "relevantLines": [
+          "+const compile = globalThis.Function",
+          "+export const render = (source: string) => compile(\"return \" + source)()"
+        ],
+        "status": "violation"
+      }
+    },
+    {
+      "id": "dynamic-timer-string",
+      "ruleId": "SECURITY001",
+      "expected": "violation",
+      "jev": {
+        "violationProbability": 0.66,
+        "screeningProbability": 0.69,
+        "latencyMs": 186,
+        "usage": {
+          "inputTokens": 926,
+          "outputTokens": 42,
+          "costUsd": 0.000038892000000000006
+        },
+        "status": "inconclusive"
+      },
+      "agent": {
+        "violationProbability": 0.98,
+        "reportedConfidence": 0.98,
+        "latencyMs": 3021,
+        "usage": {
+          "inputTokens": 668,
+          "outputTokens": 64,
+          "costUsd": 0.002104
+        },
+        "explanation": "The changed code passes an application-controlled string to setTimeout, which can execute string content as JavaScript.",
+        "relevantLines": [
+          "+export const schedule = (source: string) => setTimeout(source, 0)"
+        ],
+        "status": "violation"
+      }
+    },
+    {
+      "id": "dynamic-json-parse",
+      "ruleId": "SECURITY001",
+      "expected": "compliant",
+      "jev": {
+        "violationProbability": 0.05,
+        "screeningProbability": 0.05,
+        "latencyMs": 152,
+        "usage": {
+          "inputTokens": 450,
+          "outputTokens": 21,
+          "costUsd": 0.000018900000000000002
+        },
+        "status": "compliant"
+      },
+      "agent": {
+        "violationProbability": 0.010000000000000009,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2450,
+        "usage": {
+          "inputTokens": 658,
+          "outputTokens": 58,
+          "costUsd": 0.002012
+        },
+        "explanation": "JSON.parse parses JSON data and does not compile or execute the string as JavaScript source.",
+        "relevantLines": [
+          "+export const parse = (source: string) => JSON.parse(source)"
+        ],
+        "status": "compliant"
+      }
+    },
+    {
+      "id": "dynamic-placeholder-replacement",
+      "ruleId": "SECURITY001",
+      "expected": "compliant",
+      "jev": {
+        "violationProbability": 0.02,
+        "screeningProbability": 0.02,
+        "latencyMs": 115,
+        "usage": {
+          "inputTokens": 466,
+          "outputTokens": 21,
+          "costUsd": 0.000019572
+        },
+        "status": "compliant"
+      },
+      "agent": {
+        "violationProbability": 0.010000000000000009,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2266,
+        "usage": {
+          "inputTokens": 672,
+          "outputTokens": 55,
+          "costUsd": 0.0020039999999999997
+        },
+        "explanation": "The change performs string replacement only and does not compile or execute source text as JavaScript.",
+        "relevantLines": [
+          "+  source.replaceAll(\"{{name}}\", name)"
+        ],
+        "status": "compliant"
+      }
+    },
+    {
+      "id": "dynamic-reference-only",
+      "ruleId": "SECURITY001",
+      "expected": "compliant",
+      "jev": {
+        "violationProbability": 0.03,
+        "screeningProbability": 0.03,
+        "latencyMs": 126,
+        "usage": {
+          "inputTokens": 455,
+          "outputTokens": 21,
+          "costUsd": 0.00001911
+        },
+        "status": "compliant"
+      },
+      "agent": {
+        "violationProbability": 0.010000000000000009,
+        "reportedConfidence": 0.99,
+        "latencyMs": 3240,
+        "usage": {
+          "inputTokens": 658,
+          "outputTokens": 61,
+          "costUsd": 0.002048
+        },
+        "explanation": "The change only checks whether the Function constructor exists; it does not invoke it or compile any string as JavaScript.",
+        "relevantLines": [
+          "+export const supportsDynamicFunctions = typeof Function === \"function\""
+        ],
+        "status": "compliant"
+      }
+    },
+    {
+      "id": "secret-credential-object",
+      "ruleId": "SECURITY002",
+      "expected": "violation",
+      "jev": {
+        "violationProbability": 0.94,
+        "screeningProbability": 0.93,
+        "latencyMs": 261,
+        "usage": {
+          "inputTokens": 896,
+          "outputTokens": 42,
+          "costUsd": 0.00003763200000000001
+        },
+        "status": "violation"
+      },
+      "agent": {
+        "violationProbability": 0.99,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2201,
+        "usage": {
+          "inputTokens": 664,
+          "outputTokens": 54,
+          "costUsd": 0.001976
+        },
+        "explanation": "The added log writes the complete credentials object, which may contain authentication secrets such as a password.",
+        "relevantLines": [
+          "+console.info(\"Connecting with credentials\", credentials)"
+        ],
+        "status": "violation"
+      }
+    },
+    {
+      "id": "secret-token-directly",
+      "ruleId": "SECURITY002",
+      "expected": "violation",
+      "jev": {
+        "violationProbability": 0.96,
+        "screeningProbability": 0.97,
+        "latencyMs": 247,
+        "usage": {
+          "inputTokens": 900,
+          "outputTokens": 42,
+          "costUsd": 0.000037800000000000004
+        },
+        "status": "violation"
+      },
+      "agent": {
+        "violationProbability": 0.99,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2326,
+        "usage": {
+          "inputTokens": 664,
+          "outputTokens": 49,
+          "costUsd": 0.001916
+        },
+        "explanation": "The added log statement writes an access token to the logger.",
+        "relevantLines": [
+          "+logger.debug(\"Using access token\", credentials.accessToken)"
+        ],
+        "status": "violation"
+      }
+    },
+    {
+      "id": "secret-indirect-rest-object",
+      "ruleId": "SECURITY002",
+      "expected": "violation",
+      "jev": {
+        "violationProbability": 0.88,
+        "screeningProbability": 0.86,
+        "latencyMs": 275,
+        "usage": {
+          "inputTokens": 938,
+          "outputTokens": 42,
+          "costUsd": 0.00003939600000000001
+        },
+        "status": "violation"
+      },
+      "agent": {
+        "violationProbability": 0.99,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2449,
+        "usage": {
+          "inputTokens": 677,
+          "outputTokens": 65,
+          "costUsd": 0.002134
+        },
+        "explanation": "The change logs authenticationDetails, which contains all credential fields except username and may include passwords or tokens.",
+        "relevantLines": [
+          "+const { username, ...authenticationDetails } = credentials",
+          "+logger.info({ username, authenticationDetails })"
+        ],
+        "status": "violation"
+      }
+    },
+    {
+      "id": "secret-username-only",
+      "ruleId": "SECURITY002",
+      "expected": "compliant",
+      "jev": {
+        "violationProbability": 0.17,
+        "screeningProbability": 0.17,
+        "latencyMs": 141,
+        "usage": {
+          "inputTokens": 444,
+          "outputTokens": 21,
+          "costUsd": 0.000018648000000000002
+        },
+        "status": "compliant"
+      },
+      "agent": {
+        "violationProbability": 0.010000000000000009,
+        "reportedConfidence": 0.99,
+        "latencyMs": 3116,
+        "usage": {
+          "inputTokens": 661,
+          "outputTokens": 57,
+          "costUsd": 0.002006
+        },
+        "explanation": "The change logs only credentials.username, a non-sensitive identifier, not a password, token, or credential object.",
+        "relevantLines": [
+          "+logger.info(\"Connecting user\", credentials.username)"
+        ],
+        "status": "compliant"
+      }
+    },
+    {
+      "id": "secret-explicit-redaction",
+      "ruleId": "SECURITY002",
+      "expected": "compliant",
+      "jev": {
+        "violationProbability": 0.12,
+        "screeningProbability": 0.12,
+        "latencyMs": 107,
+        "usage": {
+          "inputTokens": 458,
+          "outputTokens": 21,
+          "costUsd": 0.000019236000000000004
+        },
+        "status": "compliant"
+      },
+      "agent": {
+        "violationProbability": 0.010000000000000009,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2455,
+        "usage": {
+          "inputTokens": 673,
+          "outputTokens": 58,
+          "costUsd": 0.002042
+        },
+        "explanation": "The added access token value is explicitly redacted before logging.",
+        "relevantLines": [
+          "+logger.info({ username: credentials.username, accessToken: \"[REDACTED]\" })"
+        ],
+        "status": "compliant"
+      }
+    },
+    {
+      "id": "secret-presence-boolean",
+      "ruleId": "SECURITY002",
+      "expected": "compliant",
+      "jev": {
+        "violationProbability": 0.11,
+        "screeningProbability": 0.11,
+        "latencyMs": 95,
+        "usage": {
+          "inputTokens": 469,
+          "outputTokens": 21,
+          "costUsd": 0.000019698000000000004
+        },
+        "status": "compliant"
+      },
+      "agent": {
+        "violationProbability": 0.010000000000000009,
+        "reportedConfidence": 0.99,
+        "latencyMs": 2734,
+        "usage": {
+          "inputTokens": 682,
+          "outputTokens": 63,
+          "costUsd": 0.00212
+        },
+        "explanation": "Logs only a username and a boolean indicating token presence; the access token itself is not logged.",
+        "relevantLines": [
+          "+  username: credentials.username,",
+          "+  tokenPresent: credentials.accessToken.length > 0"
+        ],
+        "status": "compliant"
+      }
+    }
+  ]
+}

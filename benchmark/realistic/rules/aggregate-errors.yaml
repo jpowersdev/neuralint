@@ -1,0 +1,17 @@
+version: 1
+id: PMAP_AGGREGATE_ERRORS
+title: Collected mapper errors must reject
+description: With stopOnError disabled, pMap collects mapper failures and must reject with AggregateError after iteration completes.
+severity: error
+scope:
+  include: ["index.js"]
+  exclude: []
+instructions: >-
+  Preserve failure semantics for every non-empty collected error set, including exactly one
+  mapper error. Successful partial results must not hide a mapper failure.
+criteria:
+  violation: A non-empty collected error set can resolve successfully or otherwise fail to produce AggregateError.
+  compliant: Any one or more collected mapper errors cause final rejection with AggregateError.
+thresholds:
+  screenAt: 0.35
+  violationAt: 0.8

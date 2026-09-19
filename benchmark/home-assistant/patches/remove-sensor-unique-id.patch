@@ -1,0 +1,14 @@
+diff --git a/homeassistant/components/airgradient/sensor.py b/homeassistant/components/airgradient/sensor.py
+index 3f5ee2a2..eb790289 100644
+--- a/homeassistant/components/airgradient/sensor.py
++++ b/homeassistant/components/airgradient/sensor.py
+@@ -366,8 +366,8 @@ class AirGradientSensor(AirGradientEntity, SensorEntity):
+     ) -> None:
+         """Initialize airgradient sensor."""
+         super().__init__(coordinator)
++        # Device registry identifiers already distinguish this sensor.
+         self.entity_description = description
+-        self._attr_unique_id = f"{coordinator.serial_number}-{description.key}"
+ 
+ 
+ class AirGradientMeasurementSensor(AirGradientSensor):

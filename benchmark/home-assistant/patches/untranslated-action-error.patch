@@ -1,0 +1,17 @@
+diff --git a/homeassistant/components/airgradient/entity.py b/homeassistant/components/airgradient/entity.py
+index d069e0ac..46b9b1d0 100644
+--- a/homeassistant/components/airgradient/entity.py
++++ b/homeassistant/components/airgradient/entity.py
+@@ -81,10 +81,7 @@ def exception_handler[_EntityT: AirGradientEntity, **_P](
+             ) from error
+ 
+         except AirGradientError as error:
+-            raise HomeAssistantError(
+-                translation_domain=DOMAIN,
+-                translation_key="unknown_error",
+-                translation_placeholders={"error": str(error)},
+-            ) from error
++            # Preserve the upstream message for easier troubleshooting.
++            raise HomeAssistantError(f"AirGradient request failed: {error}") from error
+ 
+     return handler

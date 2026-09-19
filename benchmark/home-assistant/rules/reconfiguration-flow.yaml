@@ -1,0 +1,24 @@
+# Source: https://developers.home-assistant.io/docs/core/integration-quality-scale/rules/reconfiguration-flow
+{
+  "version": 1,
+  "id": "HA_IQS_RECONFIGURATION_FLOW",
+  "title": "Integrations should have a reconfigure flow",
+  "description": "It can happen that a user changes something to a device or service, like changing passwords or changing the IP address.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "homeassistant/components/**/*",
+      "tests/components/**/*"
+    ],
+    "exclude": []
+  },
+  "instructions": "Evaluate the official Home Assistant Integration Quality Scale rule \"Integrations should have a reconfigure flow\". Official guidance: It can happen that a user changes something to a device or service, like changing passwords or changing the IP address. Ideally, Home Assistant catches those events and lets the user know that it requires a reauthentication or attention. A reconfigure flow gives users the power to trigger a reconfiguration and allows them to update the configuration of the device or service, without the need to remove and re-add the device or service. This gives users more ways to try and fix their issues, without the need for the software to be restarted or reauthentication to be triggered. Exceptions: Integrations that don't have settings in their configuration flow are exempt from this rule.",
+  "criteria": {
+    "violation": "The change introduces or worsens a concrete failure to satisfy the integration requirement: Integrations should have a reconfigure flow.",
+    "compliant": "The change preserves the requirement \"Integrations should have a reconfigure flow\", is unrelated to it, or the integration is explicitly covered by an official exception."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

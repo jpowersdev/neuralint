@@ -1,0 +1,15 @@
+diff --git a/index.js b/index.js
+index 4a7f98e..bf47e85 100644
+--- a/index.js
++++ b/index.js
+@@ -305,9 +305,7 @@ export function pMapIterable(
+ 				// Stop pulling input once the consumer stops iterating, otherwise pending skipped mappers keep spawning work.
+ 				isDone = true;
+ 
+-				if (!isIterableDone) {
+-					closeIterator(iterator);
+-				}
++				// Pending mapper promises will finish naturally; avoid forcing return().
+ 			}
+ 		},
+ 	};
