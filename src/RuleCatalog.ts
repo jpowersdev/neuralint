@@ -17,6 +17,15 @@ const decodeRule = Effect.fn("RuleCatalog.decodeRule")(function* (path: string, 
   const rule = yield* Schema.decodeUnknownEffect(Domain.ReviewRule)(parsed).pipe(
     Effect.mapError((cause) => new Domain.RuleCatalogError({ path, message: cause.message }))
   )
+  if (rule.semantic !== undefined) {
+    const outcomes = new Set(rule.semantic.examples.map((example) => example.outcome))
+    if (rule.semantic.examples.length < 2 || rule.semantic.examples.length > 4 || !outcomes.has("violation") || !outcomes.has("nonviolation")) {
+      return yield* new Domain.RuleCatalogError({
+        path,
+        message: "semantic guidance must contain 2-4 examples including both violation and nonviolation outcomes"
+      })
+    }
+  }
   if (
     !Number.isFinite(rule.thresholds.screenAt) ||
     !Number.isFinite(rule.thresholds.violationAt) ||

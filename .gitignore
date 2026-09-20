@@ -2,7 +2,11 @@ node_modules/
 dist/
 dist-test/
 coverage/
+__pycache__/
+*.pyc
 benchmark/.cache/
+# Local feasibility suite derived from a repository without a declared license.
+benchmark/effect-http-play-idioms/
 .env
 .envrc.local
 .neuralint/cache/

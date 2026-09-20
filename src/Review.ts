@@ -6,34 +6,27 @@ import * as DecisionModel from "effect/unstable/ai/DecisionModel"
 import * as Domain from "./Domain.js"
 import * as RuleCatalog from "./RuleCatalog.js"
 
-const ChunkState = Schema.Struct({
+const requestCharacterBudget = 220_000
+const requestSafetyMargin = 4_000
+
+const MatrixRule = Schema.Struct({
+  id: Domain.RuleId,
+  guidance: Schema.String
+})
+
+const MatrixChunk = Schema.Struct({
   id: Schema.String,
+  path: Schema.String,
   header: Schema.String,
   patch: Schema.String
 })
 
-const ScreeningState = Schema.Struct({
-  stage: Schema.Literal("screen"),
+const MatrixState = Schema.Struct({
+  stage: Schema.Literal("matrix"),
   base: Schema.String,
   head: Schema.String,
-  path: Schema.String,
-  chunks: Schema.Array(ChunkState)
-})
-
-const LocalizationRule = Schema.Struct({
-  id: Domain.RuleId,
-  title: Schema.String,
-  description: Schema.String,
-  instructions: Schema.String
-})
-
-const LocalizationState = Schema.Struct({
-  stage: Schema.Literal("localize"),
-  base: Schema.String,
-  head: Schema.String,
-  path: Schema.String,
-  rule: LocalizationRule,
-  chunks: Schema.Array(ChunkState)
+  rules: Schema.Array(MatrixRule),
+  chunks: Schema.Array(MatrixChunk)
 })
 
 export interface Options {
@@ -46,9 +39,18 @@ interface Usage {
   readonly outputTokens: number
 }
 
-interface Pack {
+interface Pair {
+  readonly key: string
+  readonly rule: Domain.ReviewRule
   readonly file: Domain.FileDiff
-  readonly hunks: ReadonlyArray<Domain.DiffHunk>
+  readonly hunk: Domain.DiffHunk
+}
+
+interface MatrixPack {
+  readonly pairs: ReadonlyArray<Pair>
+  readonly rules: ReadonlyArray<Domain.ReviewRule>
+  readonly chunks: ReadonlyArray<{ readonly file: Domain.FileDiff; readonly hunk: Domain.DiffHunk }>
+  readonly estimatedChars: number
 }
 
 const emptyUsage: Usage = { requests: 0, inputTokens: 0, outputTokens: 0 }
@@ -65,118 +67,174 @@ const usageOf = (usage: DecisionModel.DecisionUsage): Usage => ({
   outputTokens: usage.outputTokens ?? 0
 })
 
-const packFile = (
-  file: Domain.FileDiff,
-  maxStateChars: number
-): ReadonlyArray<Pack> | Domain.ReviewError => {
-  const packs: Array<Pack> = []
-  let hunks: Array<Domain.DiffHunk> = []
-  let chars = 0
-  for (const hunk of file.hunks) {
-    if (hunk.patch.length > maxStateChars) {
-      return new Domain.ReviewError({
-        stage: "packing",
-        message: `${hunk.id} is ${hunk.patch.length} characters, above maxStateChars ${maxStateChars}`
-      })
-    }
-    if (hunks.length > 0 && chars + hunk.patch.length > maxStateChars) {
-      packs.push({ file, hunks })
-      hunks = []
-      chars = 0
-    }
-    hunks.push(hunk)
-    chars += hunk.patch.length
-  }
-  if (hunks.length > 0) packs.push({ file, hunks })
-  return packs
+const semanticGuidance = (rule: Domain.ReviewRule): ReadonlyArray<string> => {
+  if (rule.semantic === undefined) return []
+  return [
+    `Background: ${rule.semantic.context}`,
+    `Report when: ${rule.semantic.reportWhen}`,
+    `Do not report when: ${rule.semantic.doNotReport}`,
+    `Guidance: ${rule.semantic.guidance}`,
+    `Evidence scope: ${rule.semantic.evidence}`,
+    ...rule.semantic.examples.map((example, index) =>
+      `Example ${index + 1} (${example.outcome}): ${example.explanation}\n${example.code}`)
+  ]
 }
 
-const chunkState = (hunk: Domain.DiffHunk) => ({
+const guidanceOf = (rule: Domain.ReviewRule): string => [
+  `Title: ${rule.title}`,
+  `Policy: ${rule.description}`,
+  `Instructions: ${rule.instructions}`,
+  `Violation: ${rule.criteria.violation}`,
+  `Compliant: ${rule.criteria.compliant}`,
+  ...semanticGuidance(rule)
+].join("\n")
+
+const matrixDecision = (pair: Pair): Decision.Probability => Decision.probability({
+  instructions: [
+    `Using the rule and changed chunk with the referenced IDs in the input, determine whether chunk ${pair.hunk.id} in ${pair.file.path} introduces or worsens rule ${pair.rule.id}.`,
+    "Judge only the base-to-HEAD change. Unchanged pre-existing problems are false."
+  ].join(" "),
+  criteria: {
+    false: `Chunk ${pair.hunk.id} satisfies or does not implicate rule ${pair.rule.id}.`,
+    true: `Chunk ${pair.hunk.id} introduces or worsens the violation defined by rule ${pair.rule.id}.`
+  }
+})
+
+const chunkState = (file: Domain.FileDiff, hunk: Domain.DiffHunk) => ({
   id: hunk.id,
+  path: file.path,
   header: hunk.header,
   patch: hunk.patch
 })
 
-const probabilityDecision = (rule: Domain.ReviewRule, subject: string): Decision.Probability =>
-  Decision.probability({
-    instructions: [
-      `${subject} introduces or worsens rule ${rule.id}: ${rule.title}.`,
-      rule.description,
-      rule.instructions,
-      "Judge only the supplied base-to-HEAD changes. Pre-existing problems that are not worsened are false."
-    ].join(" "),
-    criteria: {
-      false: rule.criteria.compliant,
-      true: rule.criteria.violation
+const primaryLocation = (file: Domain.FileDiff, hunk: Domain.DiffHunk): Domain.FindingLocation => {
+  if (hunk.newLines > 0) {
+    return {
+      path: file.path,
+      side: "new",
+      startLine: hunk.newStart,
+      endLine: hunk.newStart + hunk.newLines - 1,
+      role: "primary",
+      precision: "hunk"
     }
-  })
+  }
+  return {
+    path: file.path,
+    side: "old",
+    startLine: hunk.oldStart,
+    endLine: hunk.oldStart + Math.max(hunk.oldLines, 1) - 1,
+    role: "primary",
+    precision: "hunk"
+  }
+}
 
-const screenPack = Effect.fn("Review.screenPack")(function* (
+const buildPairs = (
   diff: Domain.DiffSet,
-  pack: Pack,
-  rules: ReadonlyArray<Domain.ReviewRule>
-) {
+  rules: ReadonlyArray<Domain.ReviewRule>,
+  maxStateChars: number
+): ReadonlyArray<Pair> | Domain.ReviewError => {
+  const pairs: Array<Pair> = []
+  for (const rule of rules) {
+    for (const file of diff.files) {
+      if (!RuleCatalog.appliesToPath(rule, file.path)) continue
+      for (const hunk of file.hunks) {
+        const evidenceChars = file.path.length + hunk.header.length + hunk.patch.length
+        if (evidenceChars > maxStateChars) {
+          return new Domain.ReviewError({
+            stage: "packing",
+            message: `${hunk.id} is ${evidenceChars} characters with metadata, above maxStateChars ${maxStateChars}`
+          })
+        }
+        pairs.push({ key: `${rule.id}::${hunk.id}`, rule, file, hunk })
+      }
+    }
+  }
+  return pairs
+}
+
+const packPairs = (pairs: ReadonlyArray<Pair>): ReadonlyArray<MatrixPack> | Domain.ReviewError => {
+  const packs: Array<MatrixPack> = []
+  let currentPairs: Array<Pair> = []
+  let currentRules = new Map<string, Domain.ReviewRule>()
+  let currentChunks = new Map<string, { readonly file: Domain.FileDiff; readonly hunk: Domain.DiffHunk }>()
+  let currentChars = requestSafetyMargin
+
+  const flush = () => {
+    if (currentPairs.length === 0) return
+    packs.push({
+      pairs: currentPairs,
+      rules: [...currentRules.values()],
+      chunks: [...currentChunks.values()],
+      estimatedChars: currentChars
+    })
+    currentPairs = []
+    currentRules = new Map()
+    currentChunks = new Map()
+    currentChars = requestSafetyMargin
+  }
+
+  for (const pair of pairs) {
+    const ruleChars = currentRules.has(pair.rule.id)
+      ? 0
+      : JSON.stringify({ id: pair.rule.id, guidance: guidanceOf(pair.rule) }).length + 2
+    const chunkChars = currentChunks.has(pair.hunk.id)
+      ? 0
+      : JSON.stringify(chunkState(pair.file, pair.hunk)).length + 2
+    const decisionChars = pair.key.length + JSON.stringify(matrixDecision(pair)).length + 4
+    const additionalChars = ruleChars + chunkChars + decisionChars
+    if (currentPairs.length > 0 && currentChars + additionalChars > requestCharacterBudget) flush()
+    if (currentChars + additionalChars > requestCharacterBudget) {
+      return new Domain.ReviewError({
+        stage: "packing",
+        message: `${pair.rule.id} against ${pair.hunk.id} exceeds the Jev request budget`
+      })
+    }
+    currentPairs.push(pair)
+    currentRules.set(pair.rule.id, pair.rule)
+    currentChunks.set(pair.hunk.id, { file: pair.file, hunk: pair.hunk })
+    currentChars += additionalChars
+  }
+  flush()
+  return packs
+}
+
+const evaluatePack = Effect.fn("Review.evaluatePack")(function* (diff: Domain.DiffSet, pack: MatrixPack) {
   const decisions: Record<string, Decision.Probability> = Object.create(null)
-  for (const rule of rules) decisions[rule.id] = probabilityDecision(rule, "At least one chunk in this file")
-  const definition = Decision.make({ input: ScreeningState, decisions })
+  for (const pair of pack.pairs) decisions[pair.key] = matrixDecision(pair)
+  const definition = Decision.make({ input: MatrixState, decisions })
   const response = yield* DecisionModel.decide(definition, {
     input: {
-      stage: "screen",
+      stage: "matrix",
       base: diff.base,
       head: diff.head,
-      path: pack.file.path,
-      chunks: pack.hunks.map(chunkState)
+      rules: pack.rules.map((rule) => ({ id: rule.id, guidance: guidanceOf(rule) })),
+      chunks: pack.chunks.map(({ file, hunk }) => chunkState(file, hunk))
     }
   }).pipe(
-    Effect.mapError((cause) => new Domain.ReviewError({ stage: "screening", message: cause.message }))
-  )
-  return { answers: response.answers, usage: usageOf(response.usage) }
-})
-
-const localizeRule = Effect.fn("Review.localizeRule")(function* (
-  diff: Domain.DiffSet,
-  pack: Pack,
-  rule: Domain.ReviewRule,
-  screeningProbability: number
-) {
-  const decisions: Record<string, Decision.Probability> = Object.create(null)
-  for (const hunk of pack.hunks) decisions[hunk.id] = probabilityDecision(rule, `Chunk ${hunk.id}`)
-  const definition = Decision.make({ input: LocalizationState, decisions })
-  const response = yield* DecisionModel.decide(definition, {
-    input: {
-      stage: "localize",
-      base: diff.base,
-      head: diff.head,
-      path: pack.file.path,
-      rule: {
-        id: rule.id,
-        title: rule.title,
-        description: rule.description,
-        instructions: rule.instructions
-      },
-      chunks: pack.hunks.map(chunkState)
-    }
-  }).pipe(
-    Effect.mapError((cause) => new Domain.ReviewError({ stage: "localization", message: cause.message }))
+    Effect.mapError((cause) => new Domain.ReviewError({
+      stage: "classification",
+      message: `${cause.message}; pack contained ${pack.pairs.length} decisions (${pack.estimatedChars} estimated characters)`
+    }))
   )
 
   const findings: Array<Domain.Finding> = []
-  for (const hunk of pack.hunks) {
-    const probability = response.answers[hunk.id]?.probability
-    if (probability === undefined || probability < rule.thresholds.screenAt) continue
+  for (const pair of pack.pairs) {
+    const probability = response.answers[pair.key]?.probability
+    if (probability === undefined || probability < pair.rule.thresholds.screenAt) continue
     findings.push({
-      ruleId: rule.id,
-      ruleTitle: rule.title,
-      ruleDescription: rule.description,
-      violationCondition: rule.criteria.violation,
-      complianceCondition: rule.criteria.compliant,
-      severity: rule.severity,
-      status: probability >= rule.thresholds.violationAt ? "violation" : "inconclusive",
-      path: pack.file.path,
-      hunkId: hunk.id,
-      hunkHeader: hunk.header,
-      relevantDiff: hunk.patch,
-      screeningProbability,
+      ruleId: pair.rule.id,
+      ruleTitle: pair.rule.title,
+      ruleDescription: pair.rule.description,
+      violationCondition: pair.rule.criteria.violation,
+      complianceCondition: pair.rule.criteria.compliant,
+      severity: pair.rule.severity,
+      status: probability >= pair.rule.thresholds.violationAt ? "violation" : "inconclusive",
+      path: pair.file.path,
+      hunkId: pair.hunk.id,
+      hunkHeader: pair.hunk.header,
+      relevantDiff: pair.hunk.patch,
+      locations: [primaryLocation(pair.file, pair.hunk)],
+      screeningProbability: probability,
       violationProbability: probability
     })
   }
@@ -189,27 +247,27 @@ export const run = Effect.fn("Review.run")(function* (
   options: Options
 ) {
   if (!Number.isFinite(options.maxStateChars) || options.maxStateChars < 1_000) {
-    return yield* new Domain.ReviewError({ stage: "configuration", message: "maxStateChars must be at least 1000" })
+    return yield* new Domain.ReviewError({
+      stage: "configuration",
+      message: "maxStateChars must be at least 1000"
+    })
   }
 
+  const paired = buildPairs(diff, rules, options.maxStateChars)
+  if (paired instanceof Domain.ReviewError) return yield* paired
+  const packed = packPairs(paired)
+  if (packed instanceof Domain.ReviewError) return yield* packed
+
+  const evaluated = yield* Effect.forEach(
+    packed,
+    (pack) => evaluatePack(diff, pack),
+    { concurrency: 4 }
+  )
   let usage = emptyUsage
   const findings: Array<Domain.Finding> = []
-  for (const file of diff.files) {
-    const applicable = rules.filter((rule) => RuleCatalog.appliesToPath(rule, file.path))
-    if (applicable.length === 0) continue
-    const packed = packFile(file, options.maxStateChars)
-    if (packed instanceof Domain.ReviewError) return yield* packed
-    for (const pack of packed) {
-      const screened = yield* screenPack(diff, pack, applicable)
-      usage = combineUsage(usage, screened.usage)
-      for (const rule of applicable) {
-        const probability = screened.answers[rule.id]?.probability
-        if (probability === undefined || probability < rule.thresholds.screenAt) continue
-        const localized = yield* localizeRule(diff, pack, rule, probability)
-        usage = combineUsage(usage, localized.usage)
-        findings.push(...localized.findings)
-      }
-    }
+  for (const result of evaluated) {
+    usage = combineUsage(usage, result.usage)
+    findings.push(...result.findings)
   }
 
   findings.sort((left, right) =>

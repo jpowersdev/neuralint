@@ -31,11 +31,12 @@ export const renderText = (report: Domain.ReviewReport): string => {
       lines.push(`  Violation condition: ${finding.violationCondition}`)
       lines.push(`  Compliant when: ${finding.complianceCondition}`)
     }
-    lines.push(`  ${finding.status === "violation" ? "VIOLATION" : "INCONCLUSIVE"} at ${finding.path} (${finding.hunkId})`)
-    lines.push(
-      `    Jev probability: ${percent(finding.violationProbability)} ` +
-      `(screening: ${percent(finding.screeningProbability)})`
-    )
+    const primary = finding.locations?.find((location) => location.role === "primary")
+    const location = primary === undefined
+      ? `${finding.path} (${finding.hunkId})`
+      : `${primary.path}:${primary.startLine}-${primary.endLine}`
+    lines.push(`  ${finding.status === "violation" ? "VIOLATION" : "INCONCLUSIVE"} at ${location}`)
+    lines.push(`    Jev match probability: ${percent(finding.violationProbability)}`)
     lines.push("    Relevant diff:")
     lines.push(...indent(finding.relevantDiff, 6))
   }

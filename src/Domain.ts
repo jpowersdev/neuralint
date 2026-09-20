@@ -24,6 +24,32 @@ export const RuleThresholds = Schema.Struct({
 })
 export type RuleThresholds = typeof RuleThresholds.Type
 
+export const RuleEvidenceScope = Schema.Literals([
+  "changed-span",
+  "enclosing-symbol",
+  "complete-file",
+  "related-definitions",
+  "repository"
+])
+export type RuleEvidenceScope = typeof RuleEvidenceScope.Type
+
+export const RuleExample = Schema.Struct({
+  outcome: Schema.Literals(["violation", "nonviolation"]),
+  explanation: Schema.NonEmptyString,
+  code: Schema.NonEmptyString
+})
+export type RuleExample = typeof RuleExample.Type
+
+export const RuleSemanticGuidance = Schema.Struct({
+  context: Schema.NonEmptyString,
+  reportWhen: Schema.NonEmptyString,
+  doNotReport: Schema.NonEmptyString,
+  guidance: Schema.NonEmptyString,
+  evidence: RuleEvidenceScope,
+  examples: Schema.Array(RuleExample)
+})
+export type RuleSemanticGuidance = typeof RuleSemanticGuidance.Type
+
 export const ReviewRule = Schema.Struct({
   version: Schema.Literal(1),
   id: RuleId,
@@ -33,7 +59,8 @@ export const ReviewRule = Schema.Struct({
   scope: RuleScope,
   instructions: Schema.NonEmptyString,
   criteria: RuleCriteria,
-  thresholds: RuleThresholds
+  thresholds: RuleThresholds,
+  semantic: Schema.optionalKey(RuleSemanticGuidance)
 })
 export type ReviewRule = typeof ReviewRule.Type
 
@@ -65,6 +92,16 @@ export interface DiffSet {
 export const FindingStatus = Schema.Literals(["violation", "inconclusive"])
 export type FindingStatus = typeof FindingStatus.Type
 
+export const FindingLocation = Schema.Struct({
+  path: Schema.String,
+  side: Schema.Literals(["old", "new"]),
+  startLine: Schema.Number,
+  endLine: Schema.Number,
+  role: Schema.Literals(["primary", "evidence"]),
+  precision: Schema.Literals(["line", "span", "hunk", "symbol"])
+})
+export type FindingLocation = typeof FindingLocation.Type
+
 export const Finding = Schema.Struct({
   ruleId: RuleId,
   ruleTitle: Schema.String,
@@ -77,6 +114,7 @@ export const Finding = Schema.Struct({
   hunkId: Schema.String,
   hunkHeader: Schema.String,
   relevantDiff: Schema.String,
+  locations: Schema.optionalKey(Schema.Array(FindingLocation)),
   screeningProbability: Schema.Number,
   violationProbability: Schema.Number
 })
@@ -99,6 +137,14 @@ export const ReviewReport = Schema.Struct({
   usage: ReviewUsage
 })
 export type ReviewReport = typeof ReviewReport.Type
+
+export class ProjectConfigError extends Schema.TaggedError<ProjectConfigError>()(
+  "ProjectConfigError",
+  {
+    path: Schema.String,
+    message: Schema.String
+  }
+) {}
 
 export class RuleCatalogError extends Schema.TaggedError<RuleCatalogError>()(
   "RuleCatalogError",

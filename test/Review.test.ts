@@ -32,6 +32,15 @@ const diff: Domain.DiffSet = {
       { id: "F001:H001", header: "@@ -1 +1 @@", oldStart: 1, oldLines: 1, newStart: 1, newLines: 1, patch: "+ risky()" },
       { id: "F001:H002", header: "@@ -10 +10 @@", oldStart: 10, oldLines: 1, newStart: 10, newLines: 1, patch: "+ safe()" }
     ]
+  }, {
+    id: "F002",
+    oldPath: "src/b.ts",
+    newPath: "src/b.ts",
+    path: "src/b.ts",
+    patch: "patch",
+    hunks: [
+      { id: "F002:H001", header: "@@ -1 +1 @@", oldStart: 1, oldLines: 1, newStart: 1, newLines: 1, patch: "+ safeAgain()" }
+    ]
   }]
 }
 
@@ -44,7 +53,7 @@ const modelLayer = Layer.effect(
         : undefined
       const answers: Record<string, DecisionModel.ProviderAnswer> = Object.create(null)
       for (const key of Object.keys(decisions)) {
-        const probability = stage === "screen" ? 0.95 : key.endsWith("H001") ? 0.92 : 0.1
+        const probability = stage === "matrix" && key.endsWith("F001:H001") ? 0.92 : 0.1
         answers[key] = { _tag: "Probability", probability }
       }
       return Effect.succeed({ answers, usage: { inputTokens: 100, outputTokens: 2 } })
@@ -53,7 +62,7 @@ const modelLayer = Layer.effect(
 )
 
 it.describe("Review", () => {
-  it.effect("screens rules and localizes positive hunks", () =>
+  it.effect("screens matching files in one global pack and localizes positive hunks", () =>
     Effect.gen(function*() {
       const report = yield* Review.run(diff, [rule], { maxStateChars: 10_000 })
 
@@ -61,6 +70,15 @@ it.describe("Review", () => {
       it.expect(report.findings[0]?.ruleId).toBe("TEST001")
       it.expect(report.findings[0]?.hunkId).toBe("F001:H001")
       it.expect(report.findings[0]?.status).toBe("violation")
-      it.expect(report.usage.requests).toBe(2)
+      it.expect(report.findings[0]?.locations).toEqual([{
+        path: "src/a.ts",
+        side: "new",
+        startLine: 1,
+        endLine: 1,
+        role: "primary",
+        precision: "hunk"
+      }])
+      it.expect(report.filesReviewed).toBe(2)
+      it.expect(report.usage.requests).toBe(1)
     }).pipe(Effect.provide(modelLayer)))
 })

@@ -28,13 +28,13 @@ it.describe("Report", () => {
         screeningProbability: 0.95,
         violationProbability: 0.91
       }],
-      usage: { requests: 2, inputTokens: 100, outputTokens: 4 }
+      usage: { requests: 1, inputTokens: 100, outputTokens: 4 }
     })
 
     it.expect(output).toContain("AUTH001 [critical] Authorization required")
     it.expect(output).toContain("Policy: Mutating endpoints must enforce authorization.")
     it.expect(output).toContain("VIOLATION at src/api.ts (F001:H001)")
-    it.expect(output).toContain("Jev probability: 91% (screening: 95%)")
+    it.expect(output).toContain("Jev match probability: 91%")
     it.expect(output).toContain("+runWithoutAuthorization()")
   })
 })

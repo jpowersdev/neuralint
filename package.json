@@ -1,7 +1,7 @@
 {
   "name": "neuralint",
-  "version": "0.1.0-alpha.1",
-  "description": "AI code review against your repository's rules, powered by TypeSafe AI's Jev.",
+  "version": "0.1.0-alpha.2",
+  "description": "Fast semantic linting against repository-owned engineering rules, powered by TypeSafe AI's Jev.",
   "license": "MIT",
   "repository": {
     "type": "git",
@@ -21,7 +21,7 @@
   },
   "type": "module",
   "bin": {
-    "neuralint": "./dist/Main.js"
+    "neuralint": "dist/Main.js"
   },
   "engines": {
     "node": ">=22"
@@ -33,8 +33,26 @@
     "benchmark": "tsx benchmark/Run.ts",
     "benchmark:realistic": "tsx benchmark/realistic/Run.ts",
     "benchmark:home-assistant": "tsx benchmark/realistic/Run.ts --suite benchmark/home-assistant",
+    "benchmark:scaling": "python benchmark/scaling/run.py",
+    "benchmark:scaling:judge": "python benchmark/scaling/judge.py",
+    "benchmark:scaling:adjudicate": "python benchmark/scaling/adjudicate.py",
+    "benchmark:scaling:report": "python benchmark/scaling/report.py",
+    "benchmark:strong-reviewers": "python benchmark/strong-reviewers/run.py",
+    "benchmark:strong-reviewers:judge": "python benchmark/strong-reviewers/judge.py",
+    "benchmark:strong-reviewers:report": "python benchmark/strong-reviewers/report.py",
+    "benchmark:effect-idioms:fixtures": "python benchmark/effect-http-play-idioms/BuildFixtures.py",
+    "benchmark:effect-idioms": "python benchmark/effect-http-play-idioms/run.py && python benchmark/effect-http-play-idioms/render.py",
+    "benchmark:jev-matrix": "tsx benchmark/jev-matrix/Run.ts",
+    "benchmark:remediation": "tsx benchmark/remediation/Run.ts",
+    "benchmark:remediation:fixture": "python benchmark/remediation/build_fixture.py",
+    "benchmark:remediation:judge": "python benchmark/quality/run.py --fixture benchmark/remediation/fixtures/pilot.json --output benchmark/remediation/results/quality-sol-high.json",
+    "benchmark:remediation:report": "python benchmark/remediation/report.py",
+    "benchmark:effect-idioms-30:build": "python benchmark/effect-idioms-30/BuildCatalog.py && python benchmark/effect-idioms-30/BuildFixtures.py",
+    "benchmark:effect-idioms-30": "python benchmark/effect-idioms-30/run.py && python benchmark/effect-idioms-30/run_pr.py && python benchmark/effect-idioms-30/render.py && python benchmark/effect-idioms-30/render_summary.py && python benchmark/effect-idioms-30/render_pr.py",
     "quality:fixture": "tsx benchmark/quality/BuildFixture.ts",
     "quality:fixture:check": "tsx benchmark/quality/BuildFixture.ts --check",
+    "quality:judge": "python benchmark/quality/run.py",
+    "quality:judge:adversarial": "python benchmark/quality/run.py --mode adversarial",
     "check": "tsc -b && pnpm quality:fixture:check",
     "clean": "tsc -b --clean && rm -rf dist dist-test",
     "dev": "node --import tsx src/Main.ts",
@@ -54,5 +72,13 @@
     "tsx": "4.20.6",
     "typescript": "5.9.3",
     "vitest": "5.0.1"
-  }
+  },
+  "main": "index.js",
+  "directories": {
+    "doc": "docs",
+    "example": "examples",
+    "test": "test"
+  },
+  "keywords": [],
+  "author": ""
 }
