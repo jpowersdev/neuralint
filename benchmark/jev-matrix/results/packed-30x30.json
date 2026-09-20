@@ -1,0 +1,885 @@
+{
+  "schemaVersion": 1,
+  "model": "jev-latest",
+  "execution": "two concurrent requests containing 15 rules × 30 changes each",
+  "packed": {
+    "ruleCount": 30,
+    "changedFiles": 30,
+    "decisions": 900,
+    "requests": 2,
+    "batchRuleCounts": [
+      15,
+      15
+    ],
+    "latencyMs": 719,
+    "usage": {
+      "inputTokens": 119631,
+      "outputTokens": 18908
+    },
+    "estimatedCostUsd": 0.005024502,
+    "metrics": {
+      "primaryRetained": 30,
+      "primaryDefinitive": 30,
+      "primaryInconclusive": 0,
+      "primaryMissed": 0,
+      "unanticipatedCandidates": 66,
+      "unanticipatedDefinitive": 14
+    },
+    "primaries": [
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "effect-gen-wrapper",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_DECODE_EXTERNAL_VALUES",
+        "changeId": "cast-external-json",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BRANDED_IDENTITIES",
+        "changeId": "weaken-user-id",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CLOSED_VOCABULARIES",
+        "changeId": "open-status-string",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_TAGGED_STATE_VARIANTS",
+        "changeId": "optional-state-bag",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_EXPLICIT_ABSENCE",
+        "changeId": "undefined-domain-absence",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+        "changeId": "throw-expected-error",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "changeId": "leak-sdk-error",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_NARROW_ERROR_RECOVERY",
+        "changeId": "swallow-all-causes",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "global-mailer",
+        "probability": 0.96,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CAPTURE_PRIVATE_DEPENDENCIES",
+        "changeId": "leak-filesystem-requirement",
+        "probability": 0.93,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_ROOT_LAYER_COMPOSITION",
+        "changeId": "inline-provide-client",
+        "probability": 0.91,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_REUSE_STATEFUL_LAYERS",
+        "changeId": "per-call-client-layer",
+        "probability": 0.88,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PURE_LOGIC_STAYS_PURE",
+        "changeId": "effectful-uppercase",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "changeId": "node-fs-domain",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "changeId": "promise-service-contract",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+        "changeId": "unscoped-temp-directory",
+        "probability": 0.96,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_BACKGROUND_WORK",
+        "changeId": "daemon-layer-worker",
+        "probability": 0.94,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
+        "changeId": "fire-and-forget-fiber",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDED_CONCURRENCY",
+        "changeId": "unbounded-provider-fanout",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDED_IDEMPOTENT_RETRY",
+        "changeId": "unbounded-payment-retry",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_SCHEDULE_REPEATED_WORK",
+        "changeId": "manual-poll-loop",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_STREAM_FOR_MANY_VALUES",
+        "changeId": "callback-event-service",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_FINITE_STREAM_COLLECTION",
+        "changeId": "collect-subscription",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_HTTP_ADAPTER_CONTRACT",
+        "changeId": "unchecked-fetch-json",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CACHE_LIFETIME",
+        "changeId": "manual-ttl-map",
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CONFIG_BOUNDARY",
+        "changeId": "raw-environment-secret",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_DETERMINISTIC_TEST_TIME",
+        "changeId": "real-sleep-test",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+        "changeId": "mock-private-module",
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "remove-operation-span",
+        "probability": 0.97,
+        "status": "violation"
+      }
+    ],
+    "findings": [
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "effect-gen-wrapper",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "throw-expected-error",
+        "expected": false,
+        "probability": 0.49,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "global-mailer",
+        "expected": false,
+        "probability": 0.5,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "effectful-uppercase",
+        "expected": false,
+        "probability": 0.38,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "node-fs-domain",
+        "expected": false,
+        "probability": 0.44,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "manual-poll-loop",
+        "expected": false,
+        "probability": 0.4,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.68,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "manual-ttl-map",
+        "expected": false,
+        "probability": 0.36,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "changeId": "remove-operation-span",
+        "expected": false,
+        "probability": 0.83,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_DECODE_EXTERNAL_VALUES",
+        "changeId": "cast-external-json",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_DECODE_EXTERNAL_VALUES",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.96,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_DECODE_EXTERNAL_VALUES",
+        "changeId": "raw-environment-secret",
+        "expected": false,
+        "probability": 0.71,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_BRANDED_IDENTITIES",
+        "changeId": "weaken-user-id",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CLOSED_VOCABULARIES",
+        "changeId": "open-status-string",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_TAGGED_STATE_VARIANTS",
+        "changeId": "optional-state-bag",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_EXPLICIT_ABSENCE",
+        "changeId": "undefined-domain-absence",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_EXPLICIT_ABSENCE",
+        "changeId": "raw-environment-secret",
+        "expected": false,
+        "probability": 0.35,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+        "changeId": "throw-expected-error",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+        "changeId": "leak-sdk-error",
+        "expected": false,
+        "probability": 0.63,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+        "changeId": "swallow-all-causes",
+        "expected": false,
+        "probability": 0.79,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+        "changeId": "promise-service-contract",
+        "expected": false,
+        "probability": 0.58,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.53,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "changeId": "leak-sdk-error",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "changeId": "swallow-all-causes",
+        "expected": false,
+        "probability": 0.4,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "changeId": "node-fs-domain",
+        "expected": false,
+        "probability": 0.57,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "changeId": "promise-service-contract",
+        "expected": false,
+        "probability": 0.49,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.86,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_NARROW_ERROR_RECOVERY",
+        "changeId": "swallow-all-causes",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_NARROW_ERROR_RECOVERY",
+        "changeId": "fire-and-forget-fiber",
+        "expected": false,
+        "probability": 0.52,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_NARROW_ERROR_RECOVERY",
+        "changeId": "unbounded-payment-retry",
+        "expected": false,
+        "probability": 0.81,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "global-mailer",
+        "expected": true,
+        "probability": 0.96,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "leak-filesystem-requirement",
+        "expected": false,
+        "probability": 0.52,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "inline-provide-client",
+        "expected": false,
+        "probability": 0.48,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "node-fs-domain",
+        "expected": false,
+        "probability": 0.48,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "promise-service-contract",
+        "expected": false,
+        "probability": 0.46,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "callback-event-service",
+        "expected": false,
+        "probability": 0.53,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.54,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "manual-ttl-map",
+        "expected": false,
+        "probability": 0.73,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "raw-environment-secret",
+        "expected": false,
+        "probability": 0.47,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "changeId": "mock-private-module",
+        "expected": false,
+        "probability": 0.7,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPTURE_PRIVATE_DEPENDENCIES",
+        "changeId": "leak-filesystem-requirement",
+        "expected": true,
+        "probability": 0.93,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CAPTURE_PRIVATE_DEPENDENCIES",
+        "changeId": "inline-provide-client",
+        "expected": false,
+        "probability": 0.38,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_CAPTURE_PRIVATE_DEPENDENCIES",
+        "changeId": "per-call-client-layer",
+        "expected": false,
+        "probability": 0.35,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_ROOT_LAYER_COMPOSITION",
+        "changeId": "inline-provide-client",
+        "expected": true,
+        "probability": 0.91,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_ROOT_LAYER_COMPOSITION",
+        "changeId": "per-call-client-layer",
+        "expected": false,
+        "probability": 0.88,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_ROOT_LAYER_COMPOSITION",
+        "changeId": "manual-ttl-map",
+        "expected": false,
+        "probability": 0.48,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSE_STATEFUL_LAYERS",
+        "changeId": "inline-provide-client",
+        "expected": false,
+        "probability": 0.67,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_REUSE_STATEFUL_LAYERS",
+        "changeId": "per-call-client-layer",
+        "expected": true,
+        "probability": 0.88,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_REUSE_STATEFUL_LAYERS",
+        "changeId": "manual-ttl-map",
+        "expected": false,
+        "probability": 0.73,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_PURE_LOGIC_STAYS_PURE",
+        "changeId": "effectful-uppercase",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "changeId": "leak-filesystem-requirement",
+        "expected": false,
+        "probability": 0.5,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "changeId": "node-fs-domain",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.89,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "changeId": "raw-environment-secret",
+        "expected": false,
+        "probability": 0.95,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "changeId": "real-sleep-test",
+        "expected": false,
+        "probability": 0.36,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "changeId": "global-mailer",
+        "expected": false,
+        "probability": 0.41,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "changeId": "node-fs-domain",
+        "expected": false,
+        "probability": 0.94,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "changeId": "promise-service-contract",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.95,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "changeId": "manual-ttl-map",
+        "expected": false,
+        "probability": 0.84,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "changeId": "mock-private-module",
+        "expected": false,
+        "probability": 0.39,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+        "changeId": "global-mailer",
+        "expected": false,
+        "probability": 0.6,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+        "changeId": "per-call-client-layer",
+        "expected": false,
+        "probability": 0.49,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+        "changeId": "unscoped-temp-directory",
+        "expected": true,
+        "probability": 0.96,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+        "changeId": "daemon-layer-worker",
+        "expected": false,
+        "probability": 0.43,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+        "changeId": "collect-subscription",
+        "expected": false,
+        "probability": 0.39,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+        "changeId": "manual-ttl-map",
+        "expected": false,
+        "probability": 0.78,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_BACKGROUND_WORK",
+        "changeId": "daemon-layer-worker",
+        "expected": true,
+        "probability": 0.94,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_SCOPED_BACKGROUND_WORK",
+        "changeId": "fire-and-forget-fiber",
+        "expected": false,
+        "probability": 0.49,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
+        "changeId": "daemon-layer-worker",
+        "expected": false,
+        "probability": 0.86,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
+        "changeId": "fire-and-forget-fiber",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDED_CONCURRENCY",
+        "changeId": "unbounded-provider-fanout",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDED_CONCURRENCY",
+        "changeId": "manual-ttl-map",
+        "expected": false,
+        "probability": 0.49,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDED_IDEMPOTENT_RETRY",
+        "changeId": "unbounded-payment-retry",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_BOUNDED_IDEMPOTENT_RETRY",
+        "changeId": "manual-poll-loop",
+        "expected": false,
+        "probability": 0.66,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_SCHEDULE_REPEATED_WORK",
+        "changeId": "manual-poll-loop",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_STREAM_FOR_MANY_VALUES",
+        "changeId": "callback-event-service",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_FINITE_STREAM_COLLECTION",
+        "changeId": "collect-subscription",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_HTTP_ADAPTER_CONTRACT",
+        "changeId": "leak-sdk-error",
+        "expected": false,
+        "probability": 0.39,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_HTTP_ADAPTER_CONTRACT",
+        "changeId": "unchecked-fetch-json",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CACHE_LIFETIME",
+        "changeId": "manual-ttl-map",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_CONFIG_BOUNDARY",
+        "changeId": "raw-environment-secret",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_DETERMINISTIC_TEST_TIME",
+        "changeId": "real-sleep-test",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+        "changeId": "global-mailer",
+        "expected": false,
+        "probability": 0.36,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+        "changeId": "leak-filesystem-requirement",
+        "expected": false,
+        "probability": 0.43,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+        "changeId": "mock-private-module",
+        "expected": true,
+        "probability": 0.98,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "effect-gen-wrapper",
+        "expected": false,
+        "probability": 0.85,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "throw-expected-error",
+        "expected": false,
+        "probability": 0.36,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "leak-sdk-error",
+        "expected": false,
+        "probability": 0.44,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "swallow-all-causes",
+        "expected": false,
+        "probability": 0.39,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "global-mailer",
+        "expected": false,
+        "probability": 0.62,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "per-call-client-layer",
+        "expected": false,
+        "probability": 0.45,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "effectful-uppercase",
+        "expected": false,
+        "probability": 0.53,
+        "status": "inconclusive"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "node-fs-domain",
+        "expected": false,
+        "probability": 0.88,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "unchecked-fetch-json",
+        "expected": false,
+        "probability": 0.94,
+        "status": "violation"
+      },
+      {
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "changeId": "remove-operation-span",
+        "expected": true,
+        "probability": 0.97,
+        "status": "violation"
+      }
+    ]
+  }
+}

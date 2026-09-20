@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_FINITE_STREAM_COLLECTION",
+  "title": "Prove stream finiteness before collecting",
+  "description": "Stream.runCollect is appropriate only when the stream is known finite or explicitly bounded before collection.",
+  "severity": "critical",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Tests may collect finite fixtures. A production stream is compliant when take/takeUntil/timeout or source semantics establish a finite bound visible in the pipeline.",
+  "criteria": {
+    "violation": "Changed code collects a subscription, event stream, repeat source, queue stream, or otherwise potentially unbounded stream into memory without a termination bound.",
+    "compliant": "The consumer drains/processes incrementally or establishes a clear finite bound before runCollect."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

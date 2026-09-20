@@ -1,0 +1,275 @@
+{
+  "version": 1,
+  "sources": {
+    "effect-llms": {
+      "title": "Effect library documentation (LLMS.md)",
+      "url": "https://github.com/Effect-TS/effect/blob/3b155e3e24e42b603d48dff5d3280715944998f0/LLMS.md",
+      "revision": "3b155e3e24e42b603d48dff5d3280715944998f0",
+      "license": "MIT"
+    },
+    "jpowers-effect": {
+      "title": "Building maintainable Effect applications",
+      "url": "https://github.com/jpowersdev/effect-pi/blob/2dc0f83136bb17bf2e77746b1e98186c57e49471/EFFECT.md",
+      "revision": "2dc0f83136bb17bf2e77746b1e98186c57e49471",
+      "license": "MIT"
+    },
+    "kit-effect": {
+      "title": "Kit Langton's Effect v4 skill",
+      "url": "https://github.com/kitlangton/skills/tree/22c35cb7fd29f931789253fc3c8eb142f2863a8a/skills/effect",
+      "revision": "22c35cb7fd29f931789253fc3c8eb142f2863a8a",
+      "license": "MIT"
+    }
+  },
+  "rules": [
+    {
+      "id": "EFFECT_REUSABLE_FUNCTIONS",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_DECODE_EXTERNAL_VALUES",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_BRANDED_IDENTITIES",
+      "evidenceScope": "file",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_CLOSED_VOCABULARIES",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_TAGGED_STATE_VARIANTS",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_EXPLICIT_ABSENCE",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_TYPED_EXPECTED_ERRORS",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_NARROW_ERROR_RECOVERY",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_CAPABILITY_SERVICES",
+      "evidenceScope": "file",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_CAPTURE_PRIVATE_DEPENDENCIES",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_ROOT_LAYER_COMPOSITION",
+      "evidenceScope": "file",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_REUSE_STATEFUL_LAYERS",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_PURE_LOGIC_STAYS_PURE",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_PLATFORM_CAPABILITIES",
+      "evidenceScope": "file",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_SCOPED_BACKGROUND_WORK",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_BOUNDED_CONCURRENCY",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_BOUNDED_IDEMPOTENT_RETRY",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_SCHEDULE_REPEATED_WORK",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_STREAM_FOR_MANY_VALUES",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_FINITE_STREAM_COLLECTION",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_HTTP_ADAPTER_CONTRACT",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_CACHE_LIFETIME",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_CONFIG_BOUNDARY",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_DETERMINISTIC_TEST_TIME",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+      "evidenceScope": "file",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    },
+    {
+      "id": "EFFECT_OPERATION_OBSERVABILITY",
+      "evidenceScope": "enclosing-symbol",
+      "sources": [
+        "effect-llms",
+        "jpowers-effect",
+        "kit-effect"
+      ]
+    }
+  ]
+}

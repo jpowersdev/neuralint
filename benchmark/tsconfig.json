@@ -7,5 +7,5 @@
     "tsBuildInfoFile": "../dist-test/benchmark.tsbuildinfo"
   },
   "references": [{ "path": "../src" }],
-  "include": ["*.ts", "quality/*.ts", "realistic/*.ts"]
+  "include": ["*.ts", "jev-matrix/*.ts", "quality/*.ts", "remediation/*.ts", "realistic/*.ts"]
 }

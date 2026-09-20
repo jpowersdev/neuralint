@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_BRANDED_IDENTITIES",
+  "title": "Preserve domain identity brands end to end",
+  "description": "Identifiers that are unsafe to interchange should use constrained branded schemas and retain their brand through APIs, services, persistence, and client state.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply to identity-bearing fields and parameters. Do not demand a brand for arbitrary display strings or values whose interchange is harmless.",
+  "criteria": {
+    "violation": "Changed code weakens a branded identity to string/number, introduces an interchangeable primitive for a domain identity, or recreates a weaker transport identity.",
+    "compliant": "The corresponding branded schema is decoded at the boundary and its type is preserved through domain and service contracts."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

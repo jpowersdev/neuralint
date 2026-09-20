@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_EXPLICIT_ABSENCE",
+  "title": "Represent domain absence explicitly",
+  "description": "Domain and service APIs should use Option for semantic absence and reserve nullish values for encoded contracts or foreign platform boundaries that require them.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply to decoded domain models and service contracts. Do not report optional JSON keys, host APIs requiring undefined, or values whose encoded contract explicitly includes null.",
+  "criteria": {
+    "violation": "Changed domain code introduces null or undefined to mean ordinary absence, or spreads nullish handling through domain operations instead of normalizing it at the boundary.",
+    "compliant": "Absence is represented by Option in domain code and converted to/from nullish values only at an explicit boundary."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

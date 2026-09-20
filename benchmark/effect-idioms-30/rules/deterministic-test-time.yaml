@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_DETERMINISTIC_TEST_TIME",
+  "title": "Use TestClock and synchronization instead of real sleeps",
+  "description": "Effect tests should control time and concurrent readiness deterministically with TestClock, Deferred, Queue, Latch, Ref, or explicit hooks rather than waiting in wall-clock time.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Use it.live only when real time is itself the behavior under test. Fork sleeping effects before advancing TestClock.",
+  "criteria": {
+    "violation": "Changed tests add arbitrary Effect.sleep/setTimeout polling or timing margins to coordinate fibers or await retries, making the test slow or flaky.",
+    "compliant": "The test advances TestClock or waits on a deterministic synchronization signal tied to the behavior being asserted."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

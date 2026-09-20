@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_TYPED_EXPECTED_ERRORS",
+  "title": "Model expected failures as tagged values",
+  "description": "Expected domain and operational failures should be typed tagged values, normally Schema.TaggedError when serialization or schema support matters.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Distinguish expected failure from defects. Native Error values are acceptable as defect causes or when dying on a violated invariant, not as recoverable domain control flow.",
+  "criteria": {
+    "violation": "Changed code throws, rejects, defects, or returns a generic Error for an expected failure that callers should recover from.",
+    "compliant": "The operation fails with a specific tagged error carrying structured fields and callers recover by tag or typed reason."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

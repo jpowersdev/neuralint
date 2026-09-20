@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+  "title": "Tie acquired resources to Scope",
+  "description": "Files, clients, processes, servers, subscriptions, temporary directories, and other resources requiring cleanup should be acquired in Scope with an explicit owner.",
+  "severity": "critical",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Inspect acquisition, use, interruption, and release together. Values with no lifecycle or resources owned by an existing scoped service are compliant.",
+  "criteria": {
+    "violation": "Changed code acquires a cleanup-requiring resource without a scoped constructor/finalizer, creates it at module import time, or relies on process exit/manual happy-path cleanup.",
+    "compliant": "The resource uses a scoped API, Effect.acquireRelease/addFinalizer, or an owning scoped Layer that releases it on success, failure, and interruption."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

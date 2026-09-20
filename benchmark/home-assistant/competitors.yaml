@@ -5,3 +5,18 @@ competitors:
     model: openai-codex/gpt-5.6-terra
     thinking: low
     tools: [read, bash]
+  - id: luna-low
+    kind: pi
+    model: openai-codex/gpt-5.6-luna
+    thinking: low
+    tools: [read, bash]
+  - id: sonnet-low
+    kind: claude
+    model: claude-sonnet-5
+    thinking: low
+    tools: [Read, Bash]
+  - id: haiku-low
+    kind: claude
+    model: claude-haiku-4-5-20251001
+    thinking: low
+    tools: [Read, Bash]

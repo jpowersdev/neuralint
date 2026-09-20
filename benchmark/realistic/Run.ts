@@ -51,11 +51,21 @@ const PiCompetitor = Schema.Struct({
   thinking: Schema.String,
   tools: Schema.Array(Schema.String)
 })
-type PiCompetitor = typeof PiCompetitor.Type
+
+const ClaudeCompetitor = Schema.Struct({
+  id: Schema.String,
+  kind: Schema.Literal("claude"),
+  model: Schema.String,
+  thinking: Schema.String,
+  tools: Schema.Array(Schema.String)
+})
+
+const Competitor = Schema.Union([PiCompetitor, ClaudeCompetitor])
+type Competitor = typeof Competitor.Type
 
 const Competitors = Schema.Struct({
   version: Schema.Literal(1),
-  competitors: Schema.Array(PiCompetitor)
+  competitors: Schema.Array(Competitor)
 })
 
 const FindingStatus = Schema.Literals(["violation", "inconclusive"])
@@ -126,6 +136,7 @@ const argumentAfter = (name: string): string | undefined => {
   return index < 0 ? undefined : process.argv[index + 1]
 }
 const suiteArgument = argumentAfter("--suite")
+const handoffFirst = process.argv.includes("--handoff-first")
 const benchmarkDirectory = suiteArgument === undefined
   ? fileURLToPath(new URL(".", import.meta.url))
   : Path.resolve(projectRoot, suiteArgument)
@@ -351,8 +362,8 @@ Return only a JSON object of this exact shape:
 Use each packet's exact rule ID, path, and status. Evidence entries must quote decisive changed lines. The findings array must contain exactly one entry corresponding to each candidate packet.`
 }
 
-const evaluatePiPrompt = Effect.fn("RealisticBenchmark.evaluatePiPrompt")(function* (
-  competitor: PiCompetitor,
+const evaluatePiPromptOnce = Effect.fn("RealisticBenchmark.evaluatePiPrompt")(function* (
+  competitor: typeof PiCompetitor.Type,
   checkout: string,
   prompt: string
 ) {
@@ -380,8 +391,106 @@ const evaluatePiPrompt = Effect.fn("RealisticBenchmark.evaluatePiPrompt")(functi
   } satisfies Evaluation
 })
 
+const ClaudeCliOutput = Schema.Struct({
+  is_error: Schema.Boolean,
+  result: Schema.String,
+  num_turns: Schema.Number,
+  total_cost_usd: Schema.Number,
+  structured_output: AgentOutput,
+  modelUsage: Schema.Record(
+    Schema.String,
+    Schema.Struct({
+      inputTokens: Schema.Number,
+      outputTokens: Schema.Number,
+      cacheReadInputTokens: Schema.Number,
+      cacheCreationInputTokens: Schema.Number
+    })
+  )
+})
+
+const agentOutputJsonSchema = JSON.stringify({
+  type: "object",
+  properties: {
+    findings: {
+      type: "array",
+      items: {
+        type: "object",
+        properties: {
+          ruleId: { type: "string" },
+          status: { type: "string", enum: ["violation", "inconclusive"] },
+          path: { type: "string" },
+          explanation: { type: "string" },
+          evidence: { type: "array", items: { type: "string" } },
+          suggestion: { type: "string" }
+        },
+        required: ["ruleId", "status", "path", "explanation", "evidence", "suggestion"],
+        additionalProperties: false
+      }
+    }
+  },
+  required: ["findings"],
+  additionalProperties: false
+})
+
+const evaluateClaudePromptOnce = Effect.fn("RealisticBenchmark.evaluateClaudePrompt")(function* (
+  competitor: typeof ClaudeCompetitor.Type,
+  checkout: string,
+  prompt: string
+) {
+  const startedAt = Date.now()
+  const tools = competitor.tools.join(",")
+  const result = yield* runSuccessful("claude", [
+    "--print",
+    "--output-format", "json",
+    "--safe-mode",
+    "--setting-sources", "",
+    "--disable-slash-commands",
+    "--tools", tools,
+    "--allowedTools", tools,
+    "--permission-mode", "dontAsk",
+    "--system-prompt",
+    "Act as a read-only repository policy reviewer. Use only the supplied tools, do not modify files or access the network, and return exactly the requested JSON.",
+    "--model", competitor.model,
+    "--effort", competitor.thinking,
+    "--json-schema", agentOutputJsonSchema,
+    prompt
+  ], checkout)
+  const parsed = yield* Effect.try({
+    try: () => Schema.decodeUnknownSync(ClaudeCliOutput)(JSON.parse(result.stdout) as unknown),
+    catch: (cause) => new BenchmarkError({ message: `Could not parse Claude CLI output: ${String(cause)}` })
+  })
+  if (parsed.is_error) {
+    return yield* new BenchmarkError({ message: `Claude CLI reported an error: ${parsed.result}` })
+  }
+  const agent = parsed.structured_output
+  const modelUsage = Object.values(parsed.modelUsage)
+  return {
+    findings: agent.findings,
+    latencyMs: Date.now() - startedAt,
+    usage: {
+      requests: parsed.num_turns,
+      inputTokens: modelUsage.reduce(
+        (total, usage) => total + usage.inputTokens + usage.cacheReadInputTokens + usage.cacheCreationInputTokens,
+        0
+      ),
+      outputTokens: modelUsage.reduce((total, usage) => total + usage.outputTokens, 0),
+      costUsd: parsed.total_cost_usd
+    }
+  } satisfies Evaluation
+})
+
+const evaluateCompetitorPrompt = (
+  competitor: Competitor,
+  checkout: string,
+  prompt: string
+) => (
+  competitor.kind === "pi"
+    ? evaluatePiPromptOnce(competitor, checkout, prompt)
+    : evaluateClaudePromptOnce(competitor, checkout, prompt)
+).pipe(Effect.retry({ times: 2 }))
+
 const evaluateHandoff = Effect.fn("RealisticBenchmark.evaluateHandoff")(function* (
-  competitor: PiCompetitor,
+  competitor: Competitor,
   checkout: string,
   base: string,
   upstream: Evaluation,
@@ -396,7 +505,7 @@ const evaluateHandoff = Effect.fn("RealisticBenchmark.evaluateHandoff")(function
       drafterUsage: { inputTokens: 0, outputTokens: 0, requests: 0 }
     } satisfies HandoffEvaluation
   }
-  const drafter = yield* evaluatePiPrompt(
+  const drafter = yield* evaluateCompetitorPrompt(
     competitor,
     checkout,
     handoffPrompt(base, upstream.findings, rules)
@@ -533,26 +642,38 @@ const main = Effect.gen(function*() {
     const competitorResults: Record<string, Evaluation> = Object.create(null)
     const handoffResults: Record<string, HandoffEvaluation> = Object.create(null)
     for (const competitor of competitorConfig.competitors) {
-      const direct = yield* evaluatePiPrompt(
-        competitor,
-        checkout,
-        directAgentPrompt(manifest.repository.commit)
-      )
-      competitorResults[competitor.id] = direct
-      yield* Console.error(`  ${competitor.id} direct: ${direct.findings.length} candidate(s), ${direct.latencyMs}ms`)
-
-      const handoff = yield* evaluateHandoff(
-        competitor,
-        checkout,
-        manifest.repository.commit,
-        neuralint,
-        rules
-      )
-      handoffResults[competitor.id] = handoff
-      yield* Console.error(
-        `  neuralint -> ${competitor.id}: ${handoff.findings.length} finding(s), ` +
-        `${handoff.latencyMs}ms end-to-end (${handoff.drafterLatencyMs}ms drafter)`
-      )
+      const runDirect = Effect.gen(function*() {
+        const direct = yield* evaluateCompetitorPrompt(
+          competitor,
+          checkout,
+          directAgentPrompt(manifest.repository.commit)
+        )
+        competitorResults[competitor.id] = direct
+        yield* Console.error(
+          `  ${competitor.id} direct: ${direct.findings.length} candidate(s), ${direct.latencyMs}ms`
+        )
+      })
+      const runHandoff = Effect.gen(function*() {
+        const handoff = yield* evaluateHandoff(
+          competitor,
+          checkout,
+          manifest.repository.commit,
+          neuralint,
+          rules
+        )
+        handoffResults[competitor.id] = handoff
+        yield* Console.error(
+          `  neuralint -> ${competitor.id}: ${handoff.findings.length} finding(s), ` +
+          `${handoff.latencyMs}ms end-to-end (${handoff.drafterLatencyMs}ms drafter)`
+        )
+      })
+      if (handoffFirst) {
+        yield* runHandoff
+        yield* runDirect
+      } else {
+        yield* runDirect
+        yield* runHandoff
+      }
     }
     scenarioResults.push({
       id: scenario.id,

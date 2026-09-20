@@ -1,0 +1,98 @@
+{
+  "schemaVersion": 1,
+  "sourceFixture": "benchmark/quality/fixtures/home-assistant-54.json",
+  "repository": {
+    "name": "home-assistant/core",
+    "commit": "40fcd7dc6b37781291745e3d6c39601563e87349"
+  },
+  "cases": [
+    {
+      "id": "remove-unload-entry",
+      "diagnosis": "The change removes the config-entry unload callback and therefore removes the integration's path for unloading its forwarded platforms during reload or removal.",
+      "requiredFacts": [
+        "The async_unload_entry callback was removed.",
+        "The removed callback delegated to async_unload_platforms for PLATFORMS."
+      ],
+      "acceptableRemediation": [
+        "Restore async_unload_entry and delegate to hass.config_entries.async_unload_platforms(entry, PLATFORMS).",
+        "Retain or add a test that unloads the config entry and verifies successful platform unloading."
+      ],
+      "invalidRemediation": [
+        "Only remove the quality-scale declaration.",
+        "Rely on implicit teardown that the pinned repository does not provide."
+      ],
+      "unsafeRemediation": []
+    },
+    {
+      "id": "create-private-websession",
+      "diagnosis": "The change stops injecting Home Assistant's shared HTTP session into the AirGradient client, causing the integration dependency to own a separate HTTP lifecycle.",
+      "requiredFacts": [
+        "The session=async_get_clientsession(hass) argument was removed.",
+        "The AirGradient integration performs HTTP requests and its client supports session injection."
+      ],
+      "acceptableRemediation": [
+        "Construct AirGradientClient with session=async_get_clientsession(hass).",
+        "If the dependency did not support injection, update the dependency adapter rather than creating an unmanaged session in integration code."
+      ],
+      "invalidRemediation": [
+        "Declare an exception while the integration still performs HTTP requests.",
+        "Merely document the private session without restoring shared-session use."
+      ],
+      "unsafeRemediation": [
+        "Close Home Assistant's shared session from the integration."
+      ]
+    },
+    {
+      "id": "remove-sensor-unique-id",
+      "diagnosis": "The change removes the entity unique ID; device-registry identifiers do not replace the entity-registry identity required for persistence and customization.",
+      "requiredFacts": [
+        "The _attr_unique_id assignment was removed.",
+        "Device identifiers and entity unique IDs serve different registries."
+      ],
+      "acceptableRemediation": [
+        "Restore a stable unique ID based on the coordinator serial number and entity-description key.",
+        "Use an explicit entity-registry migration if the identity format must change."
+      ],
+      "invalidRemediation": [
+        "Rely on device identifiers alone.",
+        "Claim Home Assistant automatically generates an equivalent entity unique ID."
+      ],
+      "unsafeRemediation": []
+    },
+    {
+      "id": "untranslated-action-error",
+      "diagnosis": "The change replaces a structured, translated Home Assistant action error with raw upstream exception text, losing stable translation keys and user-facing localization.",
+      "requiredFacts": [
+        "The translated HomeAssistantError construction was removed.",
+        "The replacement exposes str(error) directly."
+      ],
+      "acceptableRemediation": [
+        "Restore HomeAssistantError with the integration translation domain, a stable translation key, and structured placeholders.",
+        "Preserve the upstream exception as the cause where useful without using raw provider text as the user contract."
+      ],
+      "invalidRemediation": [
+        "Keep raw upstream text as the only user-facing action error.",
+        "Swallow the provider exception and report generic success."
+      ],
+      "unsafeRemediation": []
+    },
+    {
+      "id": "remove-parallel-update-limit",
+      "diagnosis": "The change removes the platform's explicit PARALLEL_UPDATES declaration even though this polling update platform must state its update concurrency under the applicable quality rule.",
+      "requiredFacts": [
+        "The PARALLEL_UPDATES declaration was removed.",
+        "The platform remains an independently polling update platform."
+      ],
+      "acceptableRemediation": [
+        "Restore an explicit PARALLEL_UPDATES value appropriate for the integration's polling behavior.",
+        "Retain tests or repository checks that enforce the platform declaration."
+      ],
+      "invalidRemediation": [
+        "Only document the removal.",
+        "Claim coordinator use automatically satisfies this platform's explicit declaration requirement.",
+        "Claim the constant serializes updates across every config entry."
+      ],
+      "unsafeRemediation": []
+    }
+  ]
+}

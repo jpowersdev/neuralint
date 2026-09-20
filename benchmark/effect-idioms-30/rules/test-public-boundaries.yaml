@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+  "title": "Test behavior through services and production boundaries",
+  "description": "Tests should exercise public service contracts, real schemas, controlled Layers, scoped resources, and generated transport clients rather than mocking implementation modules or reimplementing production logic.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Small pure units may be tested directly. Test doubles should model capabilities and provide control/inspection without coupling assertions to private implementation steps.",
+  "criteria": {
+    "violation": "Changed tests mock modules/private methods, bypass production decoding/contracts, operate on a developer's real workspace, or reproduce the implementation they intend to verify.",
+    "compliant": "Tests provide controlled service Layers, use disposable scoped fixtures, and assert externally meaningful success, typed failure, interruption, and finalization behavior."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

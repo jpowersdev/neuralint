@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_PURE_LOGIC_STAYS_PURE",
+  "title": "Keep deterministic transformations out of Effect services",
+  "description": "Deterministic transformations should remain pure functions; Effect and service boundaries should represent actual effects or meaningful operational capabilities.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Do not report a pure helper merely because it is called from Effect code. Effect.sync is appropriate when evaluating code can actually throw or perform a side effect that must be suspended.",
+  "criteria": {
+    "violation": "Changed code wraps a deterministic transformation in Effect or a service solely for uniformity, dependency injection, or mocking despite having no effectful boundary.",
+    "compliant": "The transformation is an ordinary pure function with explicit inputs and outputs and is composed into Effect workflows where needed."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

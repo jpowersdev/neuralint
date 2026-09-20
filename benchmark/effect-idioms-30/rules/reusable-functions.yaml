@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_REUSABLE_FUNCTIONS",
+  "title": "Define reusable workflows with Effect.fn",
+  "description": "Reusable functions returning Effect should use Effect.fn when they represent a useful traced operation or Effect.fnUntraced for intentionally untraced helpers.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply to a changed reusable function, not an inline one-off workflow. Inspect the complete declaration. Do not require tracing for a small helper deliberately using Effect.fnUntraced.",
+  "criteria": {
+    "violation": "A reusable function merely returns Effect.gen, becomes an anonymous Effect-returning function, or removes an appropriate Effect.fn/Effect.fnUntraced boundary.",
+    "compliant": "Inline workflow code may use Effect.gen; reusable workflows use Effect.fn with a stable name when traced or Effect.fnUntraced when tracing is intentionally unnecessary."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

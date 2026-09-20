@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_HTTP_ADAPTER_CONTRACT",
+  "title": "Own the complete HTTP boundary in a named adapter",
+  "description": "Outgoing HTTP adapters should construct requests, attach auth, classify statuses, decode unknown bodies, map typed failures, and apply cancellation/retry policy in one named boundary.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Raw fetch is acceptable in constrained adapters, browser transports, or libraries avoiding unstable APIs, but it still needs cancellation, status classification, decoding, and typed errors.",
+  "criteria": {
+    "violation": "Changed HTTP code returns response.json unchecked, treats non-2xx as success, leaks transport errors, omits cancellation, or scatters auth/decoding/retry through business code.",
+    "compliant": "A named HttpClient/raw-fetch adapter owns request and response semantics, decodes through Schema, maps typed errors, redacts evidence, and retries only idempotent operations."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

@@ -1,0 +1,435 @@
+{
+  "version": 1,
+  "cases": [
+    {
+      "id": "effect-gen-wrapper",
+      "title": "Wrap a reusable workflow in a plain function",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const load = Effect.fn(\"Users.load\")(function* (id: string) {\n  return yield* Effect.succeed(id)\n})\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const load = (id: string) => Effect.gen(function* () {\n  return yield* Effect.succeed(id)\n})\n"
+    },
+    {
+      "id": "cast-external-json",
+      "title": "Trust an SDK response through a cast",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_DECODE_EXTERNAL_VALUES",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as Schema from \"effect/Schema\"\nconst User = Schema.Struct({ id: Schema.String })\nexport const decodeUser = (input: unknown) => Schema.decodeUnknownEffect(User)(input)\n",
+      "after": "import * as Effect from \"effect/Effect\"\nimport * as Schema from \"effect/Schema\"\nconst User = Schema.Struct({ id: Schema.String })\nexport const decodeUser = (input: unknown) => Effect.succeed(input as typeof User.Type)\n"
+    },
+    {
+      "id": "weaken-user-id",
+      "title": "Replace a domain identity with string",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_BRANDED_IDENTITIES",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Schema from \"effect/Schema\"\nexport const UserId = Schema.NonEmptyString.pipe(Schema.brand(\"UserId\"))\nexport type UserId = typeof UserId.Type\nexport interface Request { readonly userId: UserId }\n",
+      "after": "import * as Schema from \"effect/Schema\"\nexport const UserId = Schema.NonEmptyString.pipe(Schema.brand(\"UserId\"))\nexport type UserId = typeof UserId.Type\nexport interface Request { readonly userId: string }\n"
+    },
+    {
+      "id": "open-status-string",
+      "title": "Allow any workflow status string",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_CLOSED_VOCABULARIES",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Schema from \"effect/Schema\"\nexport const Status = Schema.Literals([\"pending\", \"running\", \"complete\"])\n",
+      "after": "import * as Schema from \"effect/Schema\"\nexport const Status = Schema.String\n"
+    },
+    {
+      "id": "optional-state-bag",
+      "title": "Flatten lifecycle variants into optional fields",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_TAGGED_STATE_VARIANTS",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Schema from \"effect/Schema\"\nexport const State = Schema.Union([\n  Schema.Struct({ _tag: Schema.Literal(\"Running\"), startedAt: Schema.String }),\n  Schema.Struct({ _tag: Schema.Literal(\"Complete\"), result: Schema.String }),\n])\n",
+      "after": "import * as Schema from \"effect/Schema\"\nexport const State = Schema.Struct({\n  status: Schema.Literals([\"running\", \"complete\"]),\n  startedAt: Schema.optional(Schema.String),\n  result: Schema.optional(Schema.String),\n})\n"
+    },
+    {
+      "id": "undefined-domain-absence",
+      "title": "Expose undefined from a service contract",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_EXPLICIT_ABSENCE",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as Option from \"effect/Option\"\ninterface Users { readonly find: (id: string) => Effect.Effect<Option.Option<string>> }\n",
+      "after": "import * as Effect from \"effect/Effect\"\nimport * as Option from \"effect/Option\"\ninterface Users { readonly find: (id: string) => Effect.Effect<string | undefined> }\n"
+    },
+    {
+      "id": "throw-expected-error",
+      "title": "Throw a generic error for missing input",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as Schema from \"effect/Schema\"\nclass MissingName extends Schema.TaggedError<MissingName>()(\"MissingName\", {}) {}\nexport const requireName = (name: string | undefined) => name ? Effect.succeed(name) : Effect.fail(new MissingName())\n",
+      "after": "import * as Effect from \"effect/Effect\"\nimport * as Schema from \"effect/Schema\"\nexport const requireName = (name: string | undefined) => Effect.sync(() => {\n  if (!name) throw new Error(\"missing name\")\n  return name\n})\n"
+    },
+    {
+      "id": "leak-sdk-error",
+      "title": "Leak a provider rejection from the adapter",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as Schema from \"effect/Schema\"\nclass ProviderError extends Schema.TaggedError<ProviderError>()(\"ProviderError\", { operation: Schema.String, cause: Schema.Defect }) {}\nexport const invoke = Effect.tryPromise({ try: () => sdk.invoke(), catch: cause => new ProviderError({ operation: \"invoke\", cause }) })\n",
+      "after": "import * as Effect from \"effect/Effect\"\nimport * as Schema from \"effect/Schema\"\nexport const invoke = Effect.tryPromise(() => sdk.invoke())\n"
+    },
+    {
+      "id": "swallow-all-causes",
+      "title": "Turn every cause into success",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_NARROW_ERROR_RECOVERY",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const run = operation.pipe(Effect.catchTag(\"NotFound\", () => Effect.succeed(\"missing\")))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const run = operation.pipe(Effect.catchAllCause(() => Effect.succeed(\"ok\")))\n"
+    },
+    {
+      "id": "global-mailer",
+      "title": "Construct an operational capability as a singleton",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_CAPABILITY_SERVICES",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Context from \"effect/Context\"\nimport * as Effect from \"effect/Effect\"\ninterface Mailer { readonly send: (to: string) => Effect.Effect<void> }\nexport class Mailers extends Context.Service<Mailers, Mailer>()(\"app/Mailers\") {}\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const mailer = {\n  send: (to: string) => Effect.tryPromise(() => sdk.send(to)),\n}\n"
+    },
+    {
+      "id": "leak-filesystem-requirement",
+      "title": "Make consumers provide a private filesystem dependency",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_CAPTURE_PRIVATE_DEPENDENCIES",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\ninterface Documents { readonly load: (id: string) => Effect.Effect<string, Error> }\nconst make = Effect.gen(function* () {\n  const fs = yield* FileSystem.FileSystem\n  return { load: (id: string) => fs.readFileString(id) } satisfies Documents\n})\n",
+      "after": "import * as Effect from \"effect/Effect\"\ninterface Documents { readonly load: (id: string) => Effect.Effect<string, Error, FileSystem.FileSystem> }\nconst make = Effect.succeed({\n  load: (id: string) => Effect.flatMap(FileSystem.FileSystem, fs => fs.readFileString(id)),\n} satisfies Documents)\n"
+    },
+    {
+      "id": "inline-provide-client",
+      "title": "Provide an API client inside each operation",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_ROOT_LAYER_COMPOSITION",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const load = Effect.fn(\"Users.load\")(function* () {\n  const client = yield* ApiClient\n  return yield* client.load()\n})\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const load = Effect.fn(\"Users.load\")(function* () {\n  return yield* ApiClient.pipe(Effect.flatMap(client => client.load()), Effect.provide(ApiClientLive))\n})\n"
+    },
+    {
+      "id": "per-call-client-layer",
+      "title": "Rebuild a stateful client Layer per request",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_REUSE_STATEFUL_LAYERS",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const UsersLive = Layer.effect(Users, makeUsers).pipe(Layer.provide(ApiClientLive))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const loadUser = (id: string) =>\n  Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(ApiClientLive))\n"
+    },
+    {
+      "id": "effectful-uppercase",
+      "title": "Put a deterministic transformation in Effect",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_PURE_LOGIC_STAYS_PURE",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "export const normalizeName = (name: string): string => name.trim().toUpperCase()\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const normalizeName = (name: string) => Effect.sync(() => name.trim().toUpperCase())\n"
+    },
+    {
+      "id": "node-fs-domain",
+      "title": "Read files directly in a domain operation",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as FileSystem from \"effect/FileSystem\"\nexport const load = Effect.fn(\"Documents.load\")(function* (path: string) {\n  const fs = yield* FileSystem.FileSystem\n  return yield* fs.readFileString(path)\n})\n",
+      "after": "import { readFile } from \"node:fs/promises\"\nexport const load = async (path: string) => readFile(path, \"utf8\")\n"
+    },
+    {
+      "id": "promise-service-contract",
+      "title": "Expose a raw Promise from a service",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\ninterface Vendor { readonly invoke: (id: string) => Effect.Effect<string, VendorError> }\n",
+      "after": "interface Vendor { readonly invoke: (id: string) => Promise<string> }\n"
+    },
+    {
+      "id": "unscoped-temp-directory",
+      "title": "Acquire a temporary directory without Scope",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const work = Effect.scoped(Effect.gen(function* () {\n  const directory = yield* fs.makeTempDirectoryScoped()\n  return yield* process(directory)\n}))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const work = Effect.gen(function* () {\n  const directory = yield* fs.makeTempDirectory()\n  return yield* process(directory)\n})\n"
+    },
+    {
+      "id": "daemon-layer-worker",
+      "title": "Detach a forever worker from its Layer",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_SCOPED_BACKGROUND_WORK",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkScoped))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkDaemon, Effect.asVoid))\n"
+    },
+    {
+      "id": "fire-and-forget-fiber",
+      "title": "Detach request work to return early",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const handle = work.pipe(Effect.forkScoped, Effect.flatMap(Fiber.join))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const handle = work.pipe(Effect.forkDaemon, Effect.asVoid)\n"
+    },
+    {
+      "id": "unbounded-provider-fanout",
+      "title": "Remove the provider concurrency limit",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_BOUNDED_CONCURRENCY",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const loadAll = (ids: ReadonlyArray<string>) => Effect.forEach(ids, load, { concurrency: 8 })\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const loadAll = (ids: ReadonlyArray<string>) => Effect.forEach(ids, load, { concurrency: \"unbounded\" })\n"
+    },
+    {
+      "id": "unbounded-payment-retry",
+      "title": "Retry payment submission forever",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_BOUNDED_IDEMPOTENT_RETRY",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as Schedule from \"effect/Schedule\"\nexport const submit = payment.pipe(Effect.retry(Schedule.exponential(\"100 millis\").pipe(Schedule.upTo({ times: 3 }))))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nimport * as Schedule from \"effect/Schedule\"\nexport const submit = payment.pipe(Effect.retry(Schedule.forever))\n"
+    },
+    {
+      "id": "manual-poll-loop",
+      "title": "Poll through a while loop and sleep",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_SCHEDULE_REPEATED_WORK",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as Schedule from \"effect/Schedule\"\nexport const poll = runPass.pipe(Effect.repeat(Schedule.spaced(\"1 second\")))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const poll = Effect.gen(function* () {\n  while (true) {\n    yield* runPass\n    yield* Effect.sleep(\"1 second\")\n  }\n})\n"
+    },
+    {
+      "id": "callback-event-service",
+      "title": "Expose callback registration for a many-valued source",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_STREAM_FOR_MANY_VALUES",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Stream from \"effect/Stream\"\ninterface Events { readonly events: Stream.Stream<Event, EventError> }\n",
+      "after": "interface Events {\n  readonly onEvent: (listener: (event: Event) => void) => () => void\n}\n"
+    },
+    {
+      "id": "collect-subscription",
+      "title": "Collect an open subscription into memory",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_FINITE_STREAM_COLLECTION",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Stream from \"effect/Stream\"\nexport const firstHundred = events.pipe(Stream.take(100), Stream.runCollect)\n",
+      "after": "import * as Stream from \"effect/Stream\"\nexport const allEvents = events.pipe(Stream.runCollect)\n"
+    },
+    {
+      "id": "unchecked-fetch-json",
+      "title": "Return unchecked JSON from a provider",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_HTTP_ADAPTER_CONTRACT",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as Schema from \"effect/Schema\"\nexport const request = Effect.fn(\"Provider.request\")(function* () {\n  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n})\n",
+      "after": "export const request = async () => {\n  const response = await fetch(\"/users\")\n  return response.json()\n}\n"
+    },
+    {
+      "id": "manual-ttl-map",
+      "title": "Build an unbounded TTL map inside a service",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_CACHE_LIFETIME",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Cache from \"effect/Cache\"\nconst cache = yield* Cache.make({ capacity: 500, timeToLive: \"5 minutes\", lookup })\nexport const get = (id: string) => Cache.get(cache, id)\n",
+      "after": "const cache = new Map<string, { value: User; expiresAt: number }>()\nexport const get = async (id: string) => {\n  const hit = cache.get(id)\n  if (hit && hit.expiresAt > Date.now()) return hit.value\n  const value = await lookup(id)\n  cache.set(id, { value, expiresAt: Date.now() + 300000 })\n  return value\n}\n"
+    },
+    {
+      "id": "raw-environment-secret",
+      "title": "Read an API key directly from process.env",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_CONFIG_BOUNDARY",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Config from \"effect/Config\"\nexport const apiKey = Config.redacted(\"VENDOR_API_KEY\")\n",
+      "after": "export const apiKey = process.env.VENDOR_API_KEY ?? \"\"\n"
+    },
+    {
+      "id": "real-sleep-test",
+      "title": "Wait for a worker with wall-clock sleep",
+      "path": "test/Worker.test.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_DETERMINISTIC_TEST_TIME",
+          "path": "test/Worker.test.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nimport * as TestClock from \"effect/TestClock\"\nit.effect(\"finishes\", () => Effect.gen(function* () {\n  const fiber = yield* worker.pipe(Effect.fork)\n  yield* TestClock.adjust(\"1 second\")\n  yield* Fiber.join(fiber)\n}))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nit.effect(\"finishes\", () => Effect.gen(function* () {\n  const fiber = yield* worker.pipe(Effect.fork)\n  yield* Effect.sleep(\"1100 millis\")\n  yield* Fiber.join(fiber)\n}))\n"
+    },
+    {
+      "id": "mock-private-module",
+      "title": "Mock a private implementation instead of the service",
+      "path": "test/Users.test.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+          "path": "test/Users.test.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nit.effect(\"loads\", () => Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(UsersTestLayer)))\n",
+      "after": "import { vi } from \"vitest\"\nvi.mock(\"../src/internal/database.js\", () => ({ query: vi.fn(() => row) }))\nit(\"loads\", async () => expect(await load(id)).toEqual(user))\n"
+    },
+    {
+      "id": "remove-operation-span",
+      "title": "Remove the capability tracing boundary",
+      "path": "src/Example.ts",
+      "expected": [
+        {
+          "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+          "path": "src/Example.ts"
+        }
+      ],
+      "before": "import * as Effect from \"effect/Effect\"\nexport const load = Effect.fn(\"Users.load\")(function* (id: string) {\n  yield* Effect.annotateCurrentSpan({ userId: id })\n  return yield* repository.load(id)\n})\n",
+      "after": "import * as Effect from \"effect/Effect\"\nexport const load = (id: string) => repository.load(id)\n"
+    },
+    {
+      "id": "clean-untraced-helper",
+      "title": "Use an intentionally untraced internal helper",
+      "path": "src/Example.ts",
+      "expected": [],
+      "before": "import * as Effect from \"effect/Effect\"\nconst normalize = Effect.fnUntraced(function* (value: string) { return value.trim() })\n",
+      "after": "import * as Effect from \"effect/Effect\"\nconst normalize = Effect.fnUntraced(function* (value: string) { return value.trim().toLowerCase() })\n"
+    },
+    {
+      "id": "clean-browser-fetch-adapter",
+      "title": "Wire cancellation into a constrained browser fetch adapter",
+      "path": "src/integrations/BrowserTransport.ts",
+      "expected": [],
+      "before": "import * as Effect from \"effect/Effect\"\nconst request = Effect.fn(\"Browser.request\")(() => Effect.succeed(\"idle\"))\n",
+      "after": "import * as Effect from \"effect/Effect\"\nconst request = Effect.fn(\"Browser.request\")(() => Effect.tryPromise({\n  try: signal => fetch(\"/health\", { signal }),\n  catch: cause => new BrowserTransportError({ cause }),\n}))\n"
+    },
+    {
+      "id": "clean-pure-function",
+      "title": "Extend a pure deterministic transformation",
+      "path": "src/Example.ts",
+      "expected": [],
+      "before": "export const normalize = (value: string) => value.trim()\n",
+      "after": "export const normalize = (value: string) => value.trim().toLowerCase()\n"
+    },
+    {
+      "id": "clean-bounded-retry",
+      "title": "Add a bounded retry for an idempotent lookup",
+      "path": "src/Example.ts",
+      "expected": [],
+      "before": "export const lookup = provider.lookup\n",
+      "after": "import * as Effect from \"effect/Effect\"\nimport * as Schedule from \"effect/Schedule\"\nexport const lookup = provider.lookup.pipe(\n  Effect.retry(Schedule.exponential(\"100 millis\").pipe(Schedule.jittered, Schedule.upTo({ times: 4 }))),\n)\n"
+    },
+    {
+      "id": "clean-isolated-test-layer",
+      "title": "Freshen a Layer intentionally inside a test",
+      "path": "test/Service.test.ts",
+      "expected": [],
+      "before": "it.effect(\"uses service\", () => program.pipe(Effect.provide(ServiceLive)))\n",
+      "after": "it.effect(\"uses isolated service\", () => program.pipe(Effect.provide(Layer.fresh(ServiceLive))))\n"
+    }
+  ]
+}

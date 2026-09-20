@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_PLATFORM_CAPABILITIES",
+  "title": "Use Effect platform services in application code",
+  "description": "Application and domain code should use Effect services for filesystem, path, time, randomness, processes, HTTP, configuration, and other supported platform capabilities.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Raw host APIs are allowed in named platform adapters, entrypoints, and genuine library/runtime gaps. Do not report an adapter merely for containing the foreign call it encapsulates.",
+  "criteria": {
+    "violation": "Changed ordinary application/domain code directly imports or calls a replaced Node/browser global capability instead of depending on the corresponding Effect service.",
+    "compliant": "Host-specific operations are isolated in an adapter/entrypoint or use the Effect platform service so dependencies, errors, and tests remain explicit."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

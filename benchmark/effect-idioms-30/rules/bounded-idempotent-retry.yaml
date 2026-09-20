@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_BOUNDED_IDEMPOTENT_RETRY",
+  "title": "Retry only idempotent operations with finite policy",
+  "description": "Retries should occur at the narrowest boundary, only for failures and operations proven safe to repeat, with finite attempt/time bounds and visible exhaustion.",
+  "severity": "critical",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Inspect operation semantics, schedule, and terminal behavior. Provider-directed retry delays may augment backoff; non-idempotent operations need a durable idempotency mechanism.",
+  "criteria": {
+    "violation": "Changed code adds unbounded retry, retries a non-idempotent operation without protection, catches defects/interruption for retry, or hides exhausted failure without a truthful fallback.",
+    "compliant": "A typed transient-failure policy uses a bounded Schedule, optional jitter/backoff, preserves interruption, and exposes exhaustion or a real fallback."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

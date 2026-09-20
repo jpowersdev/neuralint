@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_SCHEDULE_REPEATED_WORK",
+  "title": "Use Schedule for retry, polling, and repeated work",
+  "description": "Retries, polling, pacing, and recurring passes should use Schedule with Effect.retry/repeat rather than manual loops and sleeps.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "A single deliberate delay is not recurring work. Use Stream instead when emitted values and stream transformations/backpressure are the core abstraction.",
+  "criteria": {
+    "violation": "Changed code implements recurring Effect work with while/recursive loops plus sleep or ad hoc counters instead of an explicit Schedule.",
+    "compliant": "Effect.retry/repeat/retryOrElse composes an explicit bounded or paced Schedule whose semantics are visible and testable."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

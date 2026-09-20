@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_STREAM_FOR_MANY_VALUES",
+  "title": "Use Stream for effectful many-valued sources",
+  "description": "Time-ordered effectful sources with multiple values, transformation, interruption, or backpressure should expose Stream rather than callbacks, raw async iterables, or public producer queues.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Do not use Stream merely for one repeated effect whose emitted values are irrelevant; Effect.repeat with Schedule is clearer there.",
+  "criteria": {
+    "violation": "Changed service code exposes callback registration, AsyncIterable, Queue/PubSub mutation, or ad hoc event loops directly to consumers when a Stream is the appropriate read interface.",
+    "compliant": "The implementation keeps producers private and exposes a typed Stream with lifecycle, errors, and backpressure owned by the service."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

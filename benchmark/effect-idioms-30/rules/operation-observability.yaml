@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_OPERATION_OBSERVABILITY",
+  "title": "Instrument capability and integration boundaries",
+  "description": "Meaningful public operations and integration boundaries should have stable Effect.fn/withSpan names plus structured context that supports diagnosis without exposing secrets.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Do not require a span for every trivial helper or hot-path library function. Logs should describe boundary events and outcomes rather than scatter formatted prose through domain logic.",
+  "criteria": {
+    "violation": "Changed code removes the only useful tracing boundary from a capability/integration operation, emits unstructured context-only logs, or records credentials/unbounded sensitive payloads.",
+    "compliant": "The operation has a stable span where useful, attaches bounded structured identity/operation fields, preserves correlation, and excludes secrets."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

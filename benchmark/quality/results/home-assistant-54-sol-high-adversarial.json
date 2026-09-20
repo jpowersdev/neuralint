@@ -1,0 +1,204 @@
+{
+  "schemaVersion": 1,
+  "judge": {
+    "model": "openai-codex/gpt-5.6-sol",
+    "thinking": "high"
+  },
+  "usage": {
+    "latencyMs": 55412,
+    "inputTokens": 4328,
+    "outputTokens": 2377,
+    "costUsd": 0.09295
+  },
+  "summary": {
+    "assertions": 25,
+    "matched": 25,
+    "agreement": 1.0,
+    "controlsPassingAllAssertions": 6,
+    "controls": 6
+  },
+  "results": [
+    {
+      "reviewId": "control-valid",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "AirGradient config entries must support runtime unloading through async_unload_entry.",
+      "extractedLocation": "homeassistant/components/airgradient/__init__.py, removed async_unload_entry callback.",
+      "extractedImpact": "Config entries may no longer be reloaded or removed without restarting Home Assistant, and platform cleanup may be skipped.",
+      "extractedRemediation": "Restore async_unload_entry, delegate to async_unload_platforms, and test successful unloading.",
+      "rationale": "The review accurately identifies the removed unload callback, explains the runtime consequence, cites matching diff evidence, and proposes the correct restoration.",
+      "informationSufficient": true,
+      "actionable": true,
+      "expected": {
+        "informationSufficient": true,
+        "actionable": true,
+        "materialError": false,
+        "unsafeRemediation": false
+      },
+      "matches": {
+        "informationSufficient": true,
+        "actionable": true,
+        "materialError": true,
+        "unsafeRemediation": true
+      }
+    },
+    {
+      "reviewId": "missing-impact",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": false,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "The integration must support config entry unloading.",
+      "extractedLocation": "homeassistant/components/airgradient/__init__.py, removed async_unload_entry callback.",
+      "extractedImpact": "",
+      "extractedRemediation": "Restore async_unload_entry and delegate to async_unload_platforms.",
+      "rationale": "The removed construct and appropriate fix are clear and grounded, but the review never explains what user-visible or engineering consequence follows from its removal.",
+      "informationSufficient": false,
+      "actionable": false,
+      "expected": {
+        "impactIdentifiable": false,
+        "informationSufficient": false,
+        "actionable": false
+      },
+      "matches": {
+        "impactIdentifiable": true,
+        "informationSufficient": true,
+        "actionable": true
+      }
+    },
+    {
+      "reviewId": "vague-review",
+      "invariantIdentifiable": false,
+      "locationIdentifiable": false,
+      "impactIdentifiable": false,
+      "remediationUnderstandable": false,
+      "remediationAppropriate": false,
+      "evidenceGrounded": false,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "Entities have a unique ID.",
+      "extractedLocation": "homeassistant/components/airgradient/sensor.py only; no changed construct is identified.",
+      "extractedImpact": "",
+      "extractedRemediation": "Please fix it.",
+      "rationale": "The review merely names the policy and file. It does not identify the removed unique-ID assignment, explain an impact, provide evidence, or give an actionable correction.",
+      "informationSufficient": false,
+      "actionable": false,
+      "expected": {
+        "invariantIdentifiable": false,
+        "locationIdentifiable": false,
+        "impactIdentifiable": false,
+        "remediationUnderstandable": false,
+        "evidenceGrounded": false,
+        "informationSufficient": false,
+        "actionable": false
+      },
+      "matches": {
+        "invariantIdentifiable": true,
+        "locationIdentifiable": true,
+        "impactIdentifiable": true,
+        "remediationUnderstandable": true,
+        "evidenceGrounded": true,
+        "informationSufficient": true,
+        "actionable": true
+      }
+    },
+    {
+      "reviewId": "unsafe-wrong-remediation",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": false,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": true,
+      "extractedInvariant": "AirGradientClient should receive Home Assistant's shared HTTP session rather than owning a separate session lifecycle.",
+      "extractedLocation": "homeassistant/components/airgradient/__init__.py, AirGradientClient construction in async_setup_entry.",
+      "extractedImpact": "Creating separate client HTTP lifecycles increases connection and session overhead.",
+      "extractedRemediation": "Delete network polling and return fabricated empty sensor data.",
+      "rationale": "The diagnosis and cited constructor are grounded, but the proposed fix does not restore session injection and would deliberately produce incorrect sensor behavior.",
+      "informationSufficient": true,
+      "actionable": false,
+      "expected": {
+        "remediationAppropriate": false,
+        "unsafeRemediation": true,
+        "actionable": false
+      },
+      "matches": {
+        "remediationAppropriate": true,
+        "unsafeRemediation": true,
+        "actionable": true
+      }
+    },
+    {
+      "reviewId": "fabricated-location-evidence",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": false,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": false,
+      "evidenceGrounded": false,
+      "materialError": true,
+      "unsafeRemediation": false,
+      "extractedInvariant": "User-facing HomeAssistantError messages should use translation metadata rather than untranslated text.",
+      "extractedLocation": "Claimed homeassistant/components/airgradient/config_flow.py invalid_auth handling, conflicting with the actual entity.py exception-handler change.",
+      "extractedImpact": "An exception would be shown as an untranslated message.",
+      "extractedRemediation": "Restore an invalid_auth translation in config_flow.py.",
+      "rationale": "The actual diff replaces translated unknown-error handling in entity.py with a literal message. The review fabricates a config_flow.py authentication change and evidence, so its location and remediation do not address the supplied violation.",
+      "informationSufficient": false,
+      "actionable": false,
+      "expected": {
+        "locationIdentifiable": false,
+        "evidenceGrounded": false,
+        "materialError": true,
+        "actionable": false
+      },
+      "matches": {
+        "locationIdentifiable": true,
+        "evidenceGrounded": true,
+        "materialError": true,
+        "actionable": true
+      }
+    },
+    {
+      "reviewId": "missing-remediation",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": false,
+      "remediationAppropriate": false,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "The update platform must explicitly specify its parallel-update limit.",
+      "extractedLocation": "homeassistant/components/airgradient/update.py, removed PARALLEL_UPDATES = 1 declaration.",
+      "extractedImpact": "Update requests may execute concurrently and overlap.",
+      "extractedRemediation": "",
+      "rationale": "The review correctly identifies the removed concurrency declaration and its consequence with matching evidence, but supplies no remediation.",
+      "informationSufficient": false,
+      "actionable": false,
+      "expected": {
+        "remediationUnderstandable": false,
+        "remediationAppropriate": false,
+        "informationSufficient": false,
+        "actionable": false
+      },
+      "matches": {
+        "remediationUnderstandable": true,
+        "remediationAppropriate": true,
+        "informationSufficient": true,
+        "actionable": true
+      }
+    }
+  ]
+}

@@ -1,0 +1,1537 @@
+{
+  "schemaVersion": 3,
+  "generatedAt": "2026-09-20T00:19:54.294Z",
+  "repository": {
+    "name": "home-assistant/core",
+    "url": "https://github.com/home-assistant/core.git",
+    "commit": "40fcd7dc6b37781291745e3d6c39601563e87349"
+  },
+  "scenarios": 5,
+  "rules": 54,
+  "evaluators": {
+    "neuralint": {
+      "model": "jev-latest",
+      "metrics": {
+        "expectedFindings": 5,
+        "confirmedTruePositive": 4,
+        "candidateTruePositive": 5,
+        "candidateFalsePositive": 0,
+        "confirmedRecall": 0.8,
+        "candidateRecall": 1,
+        "candidatePrecision": 1,
+        "prRecall": 1,
+        "routedPrs": 5,
+        "candidateRate": 0.018518518518518517,
+        "reviewedRulePrPairs": 270,
+        "latencyMs": 3407,
+        "requests": 10,
+        "inputTokens": 83524,
+        "outputTokens": 6370,
+        "costUsd": 0.003508008
+      }
+    },
+    "competitors": {
+      "terra-low": {
+        "kind": "pi",
+        "model": "openai-codex/gpt-5.6-terra",
+        "thinking": "low",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 5,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 1,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 225644,
+          "requests": 5,
+          "inputTokens": 21761,
+          "outputTokens": 1413,
+          "costUsd": 0.09232440000000001
+        }
+      },
+      "luna-low": {
+        "kind": "pi",
+        "model": "openai-codex/gpt-5.6-luna",
+        "thinking": "low",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 5,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 1,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 162109,
+          "requests": 5,
+          "inputTokens": 27968,
+          "outputTokens": 1154,
+          "costUsd": 0.008586080000000001
+        }
+      },
+      "sonnet-low": {
+        "kind": "claude",
+        "model": "claude-sonnet-5",
+        "thinking": "low",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 5,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 1,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 110204,
+          "requests": 37,
+          "inputTokens": 341888,
+          "outputTokens": 6780,
+          "costUsd": 0.34816359999999996
+        }
+      },
+      "haiku-low": {
+        "kind": "claude",
+        "model": "claude-haiku-4-5-20251001",
+        "thinking": "low",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 396872,
+          "requests": 300,
+          "inputTokens": 2997796,
+          "outputTokens": 39103,
+          "costUsd": 0.8833358999999998
+        }
+      }
+    },
+    "handoffs": {
+      "terra-low": {
+        "upstream": "neuralint",
+        "drafter": "openai-codex/gpt-5.6-terra",
+        "thinking": "low",
+        "costScope": "end-to-end; Jev input priced at $0.042/MTok with free output",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 57851,
+          "requests": 15,
+          "inputTokens": 98035,
+          "outputTokens": 7592,
+          "costUsd": 0.047194008
+        },
+        "drafterMetrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 54444,
+          "requests": 5,
+          "inputTokens": 14511,
+          "outputTokens": 1222,
+          "costUsd": 0.043686
+        }
+      },
+      "luna-low": {
+        "upstream": "neuralint",
+        "drafter": "openai-codex/gpt-5.6-luna",
+        "thinking": "low",
+        "costScope": "end-to-end; Jev input priced at $0.042/MTok with free output",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 61750,
+          "requests": 15,
+          "inputTokens": 93975,
+          "outputTokens": 7561,
+          "costUsd": 0.007088848
+        },
+        "drafterMetrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 58343,
+          "requests": 5,
+          "inputTokens": 10451,
+          "outputTokens": 1191,
+          "costUsd": 0.00358084
+        }
+      },
+      "sonnet-low": {
+        "upstream": "neuralint",
+        "drafter": "claude-sonnet-5",
+        "thinking": "low",
+        "costScope": "end-to-end; Jev input priced at $0.042/MTok with free output",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 72394,
+          "requests": 18,
+          "inputTokens": 148471,
+          "outputTokens": 9965,
+          "costUsd": 0.11852040800000001
+        },
+        "drafterMetrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 68987,
+          "requests": 8,
+          "inputTokens": 64947,
+          "outputTokens": 3595,
+          "costUsd": 0.11501240000000001
+        }
+      },
+      "haiku-low": {
+        "upstream": "neuralint",
+        "drafter": "claude-haiku-4-5-20251001",
+        "thinking": "low",
+        "costScope": "end-to-end; Jev input priced at $0.042/MTok with free output",
+        "metrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 153631,
+          "requests": 70,
+          "inputTokens": 495485,
+          "outputTokens": 20299,
+          "costUsd": 0.211038008
+        },
+        "drafterMetrics": {
+          "expectedFindings": 5,
+          "confirmedTruePositive": 4,
+          "candidateTruePositive": 5,
+          "candidateFalsePositive": 0,
+          "confirmedRecall": 0.8,
+          "candidateRecall": 1,
+          "candidatePrecision": 1,
+          "prRecall": 1,
+          "routedPrs": 5,
+          "candidateRate": 0.018518518518518517,
+          "reviewedRulePrPairs": 270,
+          "latencyMs": 150224,
+          "requests": 60,
+          "inputTokens": 411961,
+          "outputTokens": 13929,
+          "costUsd": 0.20753
+        }
+      }
+    }
+  },
+  "results": [
+    {
+      "id": "remove-unload-entry",
+      "title": "Rely on platform teardown during integration reload",
+      "expected": [
+        {
+          "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+          "path": "homeassistant/components/airgradient/__init__.py"
+        }
+      ],
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+            "status": "violation",
+            "path": "homeassistant/components/airgradient/__init__.py",
+            "violationProbability": 0.91,
+            "screeningProbability": 0.77,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -30,14 +30,8 @@ async def async_setup_entry(hass: HomeAssistant, entry: AirGradientConfigEntry)\n     await coordinator.async_config_entry_first_refresh()\n \n     entry.runtime_data = coordinator\n \n     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)\n \n     return True\n \n-\n-async def async_unload_entry(\n-    hass: HomeAssistant, entry: AirGradientConfigEntry\n-) -> bool:\n-    \"\"\"Unload a config entry.\"\"\"\n-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)\n"
+            ]
+          }
+        ],
+        "latencyMs": 812,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 16572,
+          "outputTokens": 1274,
+          "costUsd": 0.0006960240000000001
+        }
+      },
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "Removing the unload handler means Home Assistant cannot unload or reload an AirGradient config entry at runtime; removal/reload operations will fail as unsupported and leave its platforms loaded until restart.",
+              "evidence": [
+                "-async def async_unload_entry(",
+                "-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)"
+              ],
+              "suggestion": "Restore async_unload_entry and delegate to hass.config_entries.async_unload_platforms(entry, PLATFORMS), with a test covering successful config-entry unload."
+            }
+          ],
+          "latencyMs": 29073,
+          "usage": {
+            "inputTokens": 1506,
+            "outputTokens": 197,
+            "costUsd": 0.015104000000000001
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "Removing async_unload_entry prevents the AirGradient integration's config entry from unloading its six forwarded platforms, so users cannot reliably reload or remove the integration at runtime.",
+              "evidence": [
+                "-async def async_unload_entry(",
+                "-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)"
+              ],
+              "suggestion": "Restore async_unload_entry and return async_unload_platforms(entry, PLATFORMS) so all forwarded platforms are unloaded cleanly."
+            }
+          ],
+          "latencyMs": 21423,
+          "usage": {
+            "inputTokens": 10505,
+            "outputTokens": 256,
+            "costUsd": 0.00254132
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The PR deletes the async_unload_entry function entirely. In this codebase's homeassistant/config_entries.py, ConfigEntries.async_unload checks `supports_unload = hasattr(component, \"async_unload_entry\")`; if the attribute is absent, unload is refused and the entry state is set to FAILED_UNLOAD. Removing the function therefore breaks the ability to unload/reload the airgradient config entry at runtime (users can no longer reload or remove the integration without a full Home Assistant restart), directly worsening compliance with the config-entry-unloading quality rule.",
+              "evidence": [
+                "-async def async_unload_entry(\n-    hass: HomeAssistant, entry: AirGradientConfigEntry\n-) -> bool:\n-    \"\"\"Unload a config entry.\"\"\"\n-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)",
+                "supports_unload = hasattr(component, \"async_unload_entry\")\n\n        if not supports_unload:\n            if domain_is_integration:\n                self._async_set_state(\n                    hass, ConfigEntryState.FAILED_UNLOAD, \"Unload not supported\"\n                )\n            return False"
+              ],
+              "suggestion": "Restore the async_unload_entry function (return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)) unless/until Home Assistant core is updated to automatically infer unload support for integrations that only forward platforms without side effects; verify against the actual installed core version before removing this method."
+            }
+          ],
+          "latencyMs": 46307,
+          "usage": {
+            "requests": 12,
+            "inputTokens": 134139,
+            "outputTokens": 2334,
+            "costUsd": 0.13210509999999998
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "inconclusive",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The explicit `async_unload_entry()` function has been removed from the integration. This function was the explicit mechanism for config entry unloading, calling `hass.config_entries.async_unload_platforms(entry, PLATFORMS)` to unload all defined platforms. The commit message indicates reliance on automatic 'platform teardown during integration reload', but this creates ambiguity about whether implicit framework-level platform teardown fully satisfies the IQS requirement for 'Support config entry unloading'. While Home Assistant's modern architecture may handle implicit unloading through platform teardown, the explicit implementation was the standard pattern used across the codebase (evidenced by most other integrations retaining `async_unload_entry`). There is genuine uncertainty whether implicit behavior is a complete equivalent.",
+              "evidence": [
+                "async def async_unload_entry(hass: HomeAssistant, entry: AirGradientConfigEntry) -> bool:",
+                "    \"\"\"Unload a config entry.\"\"\"",
+                "    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)"
+              ],
+              "suggestion": "Either: (1) Verify through integration tests that platform teardown properly unloads all PLATFORMS and any coordinator resources without explicit `async_unload_entry`, or (2) Retain the explicit `async_unload_entry` function to maintain clear, auditable config entry unloading support. If implicit platform teardown is indeed sufficient in modern Home Assistant, this should be documented in code comments explaining why the explicit function is omitted, to prevent future maintainers from re-adding it based on the common pattern."
+            }
+          ],
+          "latencyMs": 144063,
+          "usage": {
+            "requests": 72,
+            "inputTokens": 596248,
+            "outputTokens": 13211,
+            "costUsd": 0.21290919999999997
+          }
+        }
+      },
+      "handoffs": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "Removing the integration's unload callback leaves the platforms forwarded during setup without a config-entry unload path. Users can no longer reliably reload or remove this entry at runtime, and its platform entities may remain loaded until Home Assistant restarts.",
+              "evidence": [
+                "-async def async_unload_entry(",
+                "-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)"
+              ],
+              "suggestion": "Restore `async_unload_entry` and delegate to `hass.config_entries.async_unload_platforms(entry, PLATFORMS)`. If the coordinator later owns additional resources, clean those up only after platform unloading succeeds."
+            }
+          ],
+          "latencyMs": 10048,
+          "usage": {
+            "inputTokens": 18843,
+            "outputTokens": 1443,
+            "requests": 3,
+            "costUsd": 0.007266023999999999
+          },
+          "drafterLatencyMs": 9236,
+          "drafterUsage": {
+            "inputTokens": 2271,
+            "outputTokens": 169,
+            "costUsd": 0.0065699999999999995
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The change removes the integration's `async_unload_entry` hook, so Home Assistant no longer unloads the AirGradient platforms when the config entry is removed or reloaded. This prevents runtime cleanup and requires a restart for those actions.",
+              "evidence": [
+                "\"-async def async_unload_entry(\\n-    hass: HomeAssistant, entry: AirGradientConfigEntry\\n-) -> bool:\",\"-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)\""
+              ],
+              "suggestion": "Restore `async_unload_entry` and return `await hass.config_entries.async_unload_platforms(entry, PLATFORMS)` so the forwarded platforms can be unloaded cleanly."
+            }
+          ],
+          "latencyMs": 12645,
+          "usage": {
+            "inputTokens": 18333,
+            "outputTokens": 1568,
+            "requests": 3,
+            "costUsd": 0.0014010240000000003
+          },
+          "drafterLatencyMs": 11833,
+          "drafterUsage": {
+            "inputTokens": 1761,
+            "outputTokens": 294,
+            "costUsd": 0.0007050000000000001
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The diff deletes the `async_unload_entry` function entirely, along with its call to `hass.config_entries.async_unload_platforms(entry, PLATFORMS)`. Without this function, Home Assistant can no longer unload the AirGradient config entry at runtime: users will not be able to reload the integration (e.g. after changing options) or remove/re-add it without a full Home Assistant restart. This directly regresses the Integration Quality Scale rule requiring config entry unload support, and is confirmed by inspecting the current `__init__.py`, which now ends immediately after `async_setup_entry` with no unload handler defined.",
+              "evidence": [
+                "-async def async_unload_entry(\n-    hass: HomeAssistant, entry: AirGradientConfigEntry\n-) -> bool:\n-    \"\"\"Unload a config entry.\"\"\"\n-    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)"
+              ],
+              "suggestion": "Restore the `async_unload_entry` function so the integration continues to support unloading:\n\n```python\nasync def async_unload_entry(\n    hass: HomeAssistant, entry: AirGradientConfigEntry\n) -> bool:\n    \"\"\"Unload a config entry.\"\"\"\n    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)\n```\n\nIf there was a deliberate reason to drop unload support (e.g. background listeners/tasks that can't be cleanly torn down), that should be called out explicitly in the PR description and any relevant cleanup (e.g. cancelling coordinator listeners) should be added inside the restored function rather than removing unload support altogether."
+            }
+          ],
+          "latencyMs": 37327,
+          "usage": {
+            "inputTokens": 48644,
+            "outputTokens": 2267,
+            "requests": 6,
+            "costUsd": 0.03875292400000001
+          },
+          "drafterLatencyMs": 36515,
+          "drafterUsage": {
+            "requests": 4,
+            "inputTokens": 32072,
+            "outputTokens": 993,
+            "costUsd": 0.038056900000000005
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The commit removes the `async_unload_entry()` function, which is required by Home Assistant's Integration Quality Scale. This function explicitly tells Home Assistant how to unload the integration by calling `async_unload_platforms(entry, PLATFORMS)`. Without it, Home Assistant cannot properly unload the integration at runtime, preventing users from reloading or removing the integration without a full Home Assistant restart. While the commit message mentions relying on platform teardown, the integration-level unload handler remains mandatory for proper lifecycle management according to Home Assistant standards.",
+              "evidence": [
+                "async def async_unload_entry(\n    hass: HomeAssistant, entry: AirGradientConfigEntry\n) -> bool:\n    \"\"\"Unload a config entry.\"\"\"\n    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)"
+              ],
+              "suggestion": "Restore the `async_unload_entry()` function to the file. This is the standard Home Assistant integration pattern for supporting unloading. The function should remain as: `async def async_unload_entry(hass: HomeAssistant, entry: AirGradientConfigEntry) -> bool: return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)`. Individual platforms can still implement their own unload logic in parallel, but the integration-level handler is required for Home Assistant to manage the integration lifecycle."
+            }
+          ],
+          "latencyMs": 28112,
+          "usage": {
+            "inputTokens": 60317,
+            "outputTokens": 3739,
+            "requests": 15,
+            "costUsd": 0.026757124000000004
+          },
+          "drafterLatencyMs": 27300,
+          "drafterUsage": {
+            "requests": 13,
+            "inputTokens": 43745,
+            "outputTokens": 2465,
+            "costUsd": 0.026061100000000004
+          }
+        }
+      }
+    },
+    {
+      "id": "create-private-websession",
+      "title": "Let the AirGradient client own its HTTP lifecycle",
+      "expected": [
+        {
+          "ruleId": "HA_IQS_INJECT_WEBSESSION",
+          "path": "homeassistant/components/airgradient/__init__.py"
+        }
+      ],
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "HA_IQS_INJECT_WEBSESSION",
+            "status": "violation",
+            "path": "homeassistant/components/airgradient/__init__.py",
+            "violationProbability": 0.86,
+            "screeningProbability": 0.85,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -16,19 +16,18 @@ PLATFORMS: list[Platform] = [\n     Platform.SWITCH,\n     Platform.UPDATE,\n ]\n \n \n async def async_setup_entry(hass: HomeAssistant, entry: AirGradientConfigEntry) -> bool:\n     \"\"\"Set up Airgradient from a config entry.\"\"\"\n \n-    client = AirGradientClient(\n-        entry.data[CONF_HOST], session=async_get_clientsession(hass)\n-    )\n+    # Let the client own its HTTP lifecycle instead of sharing Home Assistant state.\n+    client = AirGradientClient(entry.data[CONF_HOST])\n \n     coordinator = AirGradientCoordinator(hass, entry, client)\n \n     await coordinator.async_config_entry_first_refresh()\n \n     entry.runtime_data = coordinator\n \n     await hass.config_entries.async_forward_entry_setups(entry, PLATFORMS)\n"
+            ]
+          }
+        ],
+        "latencyMs": 739,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 16788,
+          "outputTokens": 1274,
+          "costUsd": 0.0007050960000000001
+        }
+      },
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The runtime client now creates/owns its own HTTP session instead of using Home Assistant's shared session. This defeats shared connection pooling and lifecycle management for a local polling integration, potentially leaving redundant sessions/connections per config entry.",
+              "evidence": [
+                "\"client = AirGradientClient(entry.data[CONF_HOST])\""
+              ],
+              "suggestion": "Continue passing `async_get_clientsession(hass)` to `AirGradientClient` during entry setup, as the config flow already does. Keep the client dependent on Home Assistant's managed aiohttp session rather than creating its own."
+            }
+          ],
+          "latencyMs": 42568,
+          "usage": {
+            "inputTokens": 4146,
+            "outputTokens": 226,
+            "costUsd": 0.0174552
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The integration now constructs the HTTP client without Home Assistant's shared web session. This can create an independent aiohttp session per config entry, increasing connection/resource usage and bypassing Home Assistant session management.",
+              "evidence": [
+                "-    client = AirGradientClient( entry.data[CONF_HOST], session=async_get_clientsession(hass) )",
+                "+-    client = AirGradientClient(entry.data[CONF_HOST])"
+              ],
+              "suggestion": "Continue injecting `async_get_clientsession(hass)` into `AirGradientClient`, and ensure the client lifecycle does not close Home Assistant's shared session."
+            }
+          ],
+          "latencyMs": 15683,
+          "usage": {
+            "inputTokens": 1713,
+            "outputTokens": 158,
+            "costUsd": 0.00080868
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The AirGradientClient previously reused Home Assistant's shared aiohttp ClientSession (via async_get_clientsession) during config-entry setup. The diff removes the session argument, causing the client to create and own its own HTTP session/connector for the lifetime of the config entry. This increases the number of open web sessions/connections (one per integration entry instead of a shared pool), contradicts the integration's own config_flow.py which still correctly injects the shared session, and violates the Integration Quality Scale rule requiring dependency clients to accept an injected websession where supported (as the same dependency already supports the `session` kwarg).",
+              "evidence": [
+                "- client = AirGradientClient(\n-     entry.data[CONF_HOST], session=async_get_clientsession(hass)\n- )\n+ # Let the client own its HTTP lifecycle instead of sharing Home Assistant state.\n+ client = AirGradientClient(entry.data[CONF_HOST])"
+              ],
+              "suggestion": "Revert this change and continue passing `session=async_get_clientsession(hass)` to AirGradientClient in async_setup_entry, consistent with its usage in config_flow.py, so the integration reuses Home Assistant's shared aiohttp session instead of creating a new one per config entry."
+            }
+          ],
+          "latencyMs": 17357,
+          "usage": {
+            "requests": 5,
+            "inputTokens": 44253,
+            "outputTokens": 1026,
+            "costUsd": 0.0530884
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The change removes the injection of a shared web session to the AirGradientClient during integration setup. Previously, the client was instantiated with session=async_get_clientsession(hass), but now it's created without this parameter. This violates the requirement that 'the integration dependency supports passing in a websession.' The AirGradientClient clearly supports receiving a session parameter, as evidenced by its continued use in config_flow.py (lines 74-78, 127). By removing this injection, the client will now create its own HTTP session instead of reusing Home Assistant's shared session, wasting system resources and creating an efficiency regression.",
+              "evidence": [
+                "Line 25 (after): client = AirGradientClient(entry.data[CONF_HOST])",
+                "Previous version: client = AirGradientClient(entry.data[CONF_HOST], session=async_get_clientsession(hass))",
+                "config_flow.py line 76: AirGradientClient(host, session=session, ...)",
+                "config_flow.py line 127: AirGradientClient(user_input[CONF_HOST], session=session)"
+              ],
+              "suggestion": "Restore the websession injection to maintain compliance with the integration quality scale and consistency with the config_flow: client = AirGradientClient(entry.data[CONF_HOST], session=async_get_clientsession(hass)). This will ensure efficient resource usage by reusing Home Assistant's shared HTTP session pool rather than creating separate sessions for the client."
+            }
+          ],
+          "latencyMs": 75629,
+          "usage": {
+            "requests": 68,
+            "inputTokens": 502250,
+            "outputTokens": 7037,
+            "costUsd": 0.15771149999999998
+          }
+        }
+      },
+      "handoffs": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The setup path no longer injects Home Assistant's shared aiohttp session into an HTTP client that supports a `session` argument. Each configured AirGradient entry will instead let the dependency create and manage its own session, increasing connection/session overhead and potentially leaving lifecycle management outside Home Assistant.",
+              "evidence": [
+                "# Let the client own its HTTP lifecycle instead of sharing Home Assistant state.",
+                "client = AirGradientClient(entry.data[CONF_HOST])"
+              ],
+              "suggestion": "Continue passing `session=async_get_clientsession(hass)` when constructing `AirGradientClient`, and retain the aiohttp client helper import. This reuses Home Assistant's managed web session while still allowing the dependency to support session injection."
+            }
+          ],
+          "latencyMs": 12078,
+          "usage": {
+            "inputTokens": 20946,
+            "outputTokens": 1529,
+            "requests": 3,
+            "costUsd": 0.012081096000000001
+          },
+          "drafterLatencyMs": 11339,
+          "drafterUsage": {
+            "inputTokens": 4158,
+            "outputTokens": 255,
+            "costUsd": 0.011376
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The AirGradient client performs HTTP requests, but this change removes Home Assistant's shared aiohttp session and constructs the dependency without a session. That causes the integration to manage its own HTTP lifecycle, preventing connection pooling and shared session/resource management across Home Assistant integrations.",
+              "evidence": [
+                "\"# Let the client own its HTTP lifecycle instead of sharing Home Assistant state.\"",
+                "\"client = AirGradientClient(entry.data[CONF_HOST])\""
+              ],
+              "suggestion": "Retain session injection by passing Home Assistant's shared session to the client, for example `AirGradientClient(entry.data[CONF_HOST], session=async_get_clientsession(hass))`. Remove the comment advocating client-owned lifecycle."
+            }
+          ],
+          "latencyMs": 13153,
+          "usage": {
+            "inputTokens": 18743,
+            "outputTokens": 1451,
+            "requests": 3,
+            "costUsd": 0.0013392160000000003
+          },
+          "drafterLatencyMs": 12414,
+          "drafterUsage": {
+            "inputTokens": 1955,
+            "outputTokens": 177,
+            "costUsd": 0.0006341200000000001
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The change removes the shared Home Assistant aiohttp ClientSession from the AirGradientClient constructor, causing the client library to create and own its own HTTP session instead of reusing HA's managed websession. This violates the Integration Quality Scale rule requiring dependency clients to support an injected websession. Practically, this means each config entry (and each reload) will spin up a separate, unmanaged aiohttp session that HA cannot track, close on unload, or share across integrations \u2014 leading to potential connection/resource leaks, higher memory/socket usage, and inconsistent proxy/SSL/timeout configuration compared to sessions created via async_get_clientsession(hass). The removed comment even acknowledges the change is intentional ('Let the client own its HTTP lifecycle instead of sharing Home Assistant state'), but this is exactly the anti-pattern the quality scale rule warns against.",
+              "evidence": [
+                "client = AirGradientClient(\n        entry.data[CONF_HOST], session=async_get_clientsession(hass)\n    )",
+                "# Let the client own its HTTP lifecycle instead of sharing Home Assistant state.\n    client = AirGradientClient(entry.data[CONF_HOST])"
+              ],
+              "suggestion": "Revert to passing HA's shared aiohttp session into the client: `client = AirGradientClient(entry.data[CONF_HOST], session=async_get_clientsession(hass))`. If the underlying `AirGradientClient`/py library no longer accepts a `session` kwarg, that is itself a regression that should be fixed upstream in the dependency (restore websession support) rather than dropping session injection in the integration. Also ensure the client's own session (if created internally) is properly closed on unload to avoid resource leaks."
+            }
+          ],
+          "latencyMs": 8528,
+          "usage": {
+            "inputTokens": 25089,
+            "outputTokens": 1933,
+            "requests": 3,
+            "costUsd": 0.022391496
+          },
+          "drafterLatencyMs": 7789,
+          "drafterUsage": {
+            "requests": 1,
+            "inputTokens": 8301,
+            "outputTokens": 659,
+            "costUsd": 0.0216864
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "explanation": "The change violates the Home Assistant Integration Quality Scale requirement by removing the websession parameter from the AirGradientClient constructor. Previously, the integration passed Home Assistant's managed aiohttp session via `session=async_get_clientsession(hass)`, which allows the framework to pool HTTP connections efficiently across all integrations and services. The new code instantiates the client with only the hostname (`AirGradientClient(entry.data[CONF_HOST])`), forcing the client to create its own private HTTP session. This increases the total number of active web sessions in the system, contradicting the policy's core objective to improve HTTP session efficiency. The comment \"Let the client own its HTTP lifecycle instead of sharing Home Assistant state\" indicates this was intentional, but the intentionality does not override the IQS requirement. Additionally, the import of `async_get_clientsession` on line 7 is now unused.",
+              "evidence": [
+                "client = AirGradientClient(entry.data[CONF_HOST], session=async_get_clientsession(hass))",
+                "client = AirGradientClient(entry.data[CONF_HOST])"
+              ],
+              "suggestion": "Restore the websession parameter to the AirGradientClient constructor: `client = AirGradientClient(entry.data[CONF_HOST], session=async_get_clientsession(hass))`. If the underlying airgradient library has been updated to support session injection, verify it accepts a `session` parameter (or equivalent) and continue passing Home Assistant's managed session. If the library does not support session injection, this integration cannot comply with the IQS requirement and an exception or library update would be necessary. Also remove the unused import of `async_get_clientsession` from line 7 if it is not used elsewhere in the file."
+            }
+          ],
+          "latencyMs": 31626,
+          "usage": {
+            "inputTokens": 82920,
+            "outputTokens": 3961,
+            "requests": 14,
+            "costUsd": 0.041884896000000005
+          },
+          "drafterLatencyMs": 30887,
+          "drafterUsage": {
+            "requests": 12,
+            "inputTokens": 66132,
+            "outputTokens": 2687,
+            "costUsd": 0.0411798
+          }
+        }
+      }
+    },
+    {
+      "id": "remove-sensor-unique-id",
+      "title": "Use device identifiers to distinguish sensors",
+      "expected": [
+        {
+          "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+          "path": "homeassistant/components/airgradient/sensor.py"
+        }
+      ],
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+            "status": "violation",
+            "path": "homeassistant/components/airgradient/sensor.py",
+            "violationProbability": 0.87,
+            "screeningProbability": 0.74,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -361,18 +361,18 @@ class AirGradientSensor(AirGradientEntity, SensorEntity):\n \n     def __init__(\n         self,\n         coordinator: AirGradientCoordinator,\n         description: SensorEntityDescription,\n     ) -> None:\n         \"\"\"Initialize airgradient sensor.\"\"\"\n         super().__init__(coordinator)\n+        # Device registry identifiers already distinguish this sensor.\n         self.entity_description = description\n-        self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"\n \n \n class AirGradientMeasurementSensor(AirGradientSensor):\n     \"\"\"Defines an AirGradient sensor.\"\"\"\n \n     entity_description: AirGradientMeasurementSensorEntityDescription\n \n     @property\n"
+            ]
+          }
+        ],
+        "latencyMs": 617,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 16822,
+          "outputTokens": 1274,
+          "costUsd": 0.000706524
+        }
+      },
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "Removing the sensor unique ID makes these entities ineligible for stable entity-registry tracking. Device identifiers group entities under a device but do not identify each individual sensor, so users can lose registry-backed customization, naming, and persistence across restarts.",
+              "evidence": [
+                "-        self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"",
+                "+        # Device registry identifiers already distinguish this sensor."
+              ],
+              "suggestion": "Retain a stable per-entity unique ID, such as the serial number combined with `description.key`. Device registry identifiers should remain only for device association."
+            }
+          ],
+          "latencyMs": 51998,
+          "usage": {
+            "inputTokens": 1109,
+            "outputTokens": 237,
+            "costUsd": 0.011308400000000001
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "The change removes the only entity unique ID assignment from AirGradient sensors. Device registry identifiers identify the device, not each individual sensor entity, so these sensors can no longer be reliably persisted or customized in the entity registry. Existing sensor registry entries may also be orphaned or recreated after the upgrade.",
+              "evidence": [
+                "-        self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"",
+                "+        # Device registry identifiers already distinguish this sensor."
+              ],
+              "suggestion": "Retain a stable per-entity unique ID, such as `f\"{coordinator.serial_number}-{description.key}\"`. Device identifiers should remain in `device_info` for device grouping, but should not replace entity unique IDs."
+            }
+          ],
+          "latencyMs": 46655,
+          "usage": {
+            "inputTokens": 3720,
+            "outputTokens": 322,
+            "costUsd": 0.00161168
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "The `_attr_unique_id` assignment on `AirGradientSensor.__init__` was removed and replaced only with a comment claiming device registry identifiers already distinguish the sensor. Device identifiers scope entities to a device, but they do not substitute for a per-entity `unique_id`; without it, Home Assistant cannot track the entity across restarts in the entity registry, so users lose the ability to rename it, customize it, or have it survive re-creation, and the entity may be recreated with a new registry entry (or fail to register at all if multiple sensors on the same device now collide without unique identification).",
+              "evidence": [
+                "+ # Device registry identifiers already distinguish this sensor.\n self.entity_description = description\n- self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\""
+              ],
+              "suggestion": "Restore the unique_id assignment, e.g. `self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"`, so each entity has a stable, integration-unique identifier as required by the Integration Quality Scale; if the goal was to fix duplicate IDs across devices, incorporate the device identifier into the unique_id string instead of removing it entirely."
+            }
+          ],
+          "latencyMs": 17685,
+          "usage": {
+            "requests": 5,
+            "inputTokens": 38631,
+            "outputTokens": 1020,
+            "costUsd": 0.04320639999999999
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "The change removes the unique_id assignment from AirGradientSensor entities. The rule requires that entities have a unique ID to allow customizations (renaming, unit changes) and proper persistence across restarts. In Home Assistant, device registry identifiers (used for device deduplication) are separate from entity unique IDs (used for entity deduplication and persistence in the entity registry). Removing the explicit unique_id will cause these sensors to not have proper unique identification in the entity registry, degrading user experience and breaking entity customization capabilities. This violates the integration's platinum quality scale commitment that declares this rule as 'done' in quality_scale.yaml:30.",
+              "evidence": [
+                "Before: self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"",
+                "After: (line removed entirely)",
+                "Comment in change: \"Device registry identifiers already distinguish this sensor\" - This reasoning conflates device-level identifiers with entity-level identifiers, which are distinct concepts in Home Assistant"
+              ],
+              "suggestion": "Restore the unique_id assignment: 'self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"'. Device registry identifiers alone are insufficient for entity persistence and customization. Every entity needs an explicit, stable unique_id that remains constant across Home Assistant restarts. The pattern used here (coordinator.serial_number + description.key) is the standard approach across other entity types in this integration (number.py, select.py, switch.py, button.py all use the same pattern)."
+            }
+          ],
+          "latencyMs": 70545,
+          "usage": {
+            "requests": 75,
+            "inputTokens": 896932,
+            "outputTokens": 8113,
+            "costUsd": 0.21812210000000004
+          }
+        }
+      },
+      "handoffs": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "Removing the sensor unique ID leaves every measurement and configuration sensor without an entity-registry identity. Device registry identifiers identify the physical AirGradient device, not its individual sensor entities, so they cannot preserve per-entity customizations or registry state across restarts.",
+              "evidence": [
+                "+        # Device registry identifiers already distinguish this sensor.",
+                "-        self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\""
+              ],
+              "suggestion": "Restore a stable per-sensor unique ID, such as `f\"{coordinator.serial_number}-{description.key}\"`. Keep the device identifier for device association, but retain the entity unique ID for each sensor registry entry."
+            }
+          ],
+          "latencyMs": 12353,
+          "usage": {
+            "inputTokens": 19807,
+            "outputTokens": 1524,
+            "requests": 3,
+            "costUsd": 0.009676523999999999
+          },
+          "drafterLatencyMs": 11736,
+          "drafterUsage": {
+            "inputTokens": 2985,
+            "outputTokens": 250,
+            "costUsd": 0.008969999999999999
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "The sensor entities no longer set a unique ID. Device registry identifiers identify the device, not individual entities, so they cannot distinguish multiple sensors on the same AirGradient device or provide stable entity-registry customization across restarts.",
+              "evidence": [
+                "+        # Device registry identifiers already distinguish this sensor.",
+                "-        self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\""
+              ],
+              "suggestion": "Retain an entity-level unique ID derived from the device serial number and sensor description key, or provide an equivalent stable per-entity identifier; do not rely solely on device registry identifiers."
+            }
+          ],
+          "latencyMs": 13208,
+          "usage": {
+            "inputTokens": 18848,
+            "outputTokens": 1499,
+            "requests": 3,
+            "costUsd": 0.0014124440000000001
+          },
+          "drafterLatencyMs": 12591,
+          "drafterUsage": {
+            "inputTokens": 2026,
+            "outputTokens": 225,
+            "costUsd": 0.0007059200000000001
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "The diff removes the line that assigns `self._attr_unique_id` in `AirGradientSensor.__init__`, replacing it with only a comment claiming device registry identifiers already distinguish the sensor. Device identifiers are used to group entities under a device in the device registry, but they do not serve as a per-entity unique ID in the entity registry. Without `_attr_unique_id` (or an overridden `unique_id` property) set for each `AirGradientSensor` instance, Home Assistant cannot persist these sensor entities across restarts, and users lose the ability to rename them, change entity IDs, disable them, or otherwise customize them via the entity registry. This directly regresses the 'Entities have a unique ID' integration quality requirement for every sensor built from this base class (including subclasses like `AirGradientMeasurementSensor`) unless a unique ID is set elsewhere (e.g., in a subclass override), which is not evident in the shown diff.",
+              "evidence": [
+                "+        # Device registry identifiers already distinguish this sensor.\n         self.entity_description = description\n-        self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\""
+              ],
+              "suggestion": "Restore the unique ID assignment, e.g. keep `self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"` in `AirGradientSensor.__init__`. Device identifiers and entity unique IDs serve different purposes (device grouping vs. entity registry persistence) and both are needed; do not remove the unique_id assignment based on the presence of device identifiers alone. If there was a reason to change unique ID generation (e.g., avoiding collisions), do so by adjusting the format string rather than deleting the assignment entirely."
+            }
+          ],
+          "latencyMs": 8380,
+          "usage": {
+            "inputTokens": 25121,
+            "outputTokens": 1945,
+            "requests": 3,
+            "costUsd": 0.022520923999999998
+          },
+          "drafterLatencyMs": 7763,
+          "drafterUsage": {
+            "requests": 1,
+            "inputTokens": 8299,
+            "outputTokens": 671,
+            "costUsd": 0.021814399999999998
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "explanation": "The change removes the explicit unique ID assignment from sensor entities, violating Home Assistant's Integration Quality Scale requirement. The removed line `self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"` was the only mechanism providing unique IDs that distinguish each sensor type (pm01, pm02, temperature, humidity, etc.) within a device. The replacement comment claiming \"Device registry identifiers already distinguish this sensor\" is incorrect\u2014device registry identifiers identify devices, not individual entities. Multiple sensor entities exist per device, and each requires a distinct unique ID in the entity registry to allow user customizations (renaming, unit changes) to persist across Home Assistant restarts. Without this unique ID, the entity registry cannot properly track these entities, degrading the user experience as documented in the IQS policy.",
+              "evidence": [
+                "         super().__init__(coordinator)",
+                "+        # Device registry identifiers already distinguish this sensor.",
+                "         self.entity_description = description",
+                "-        self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\""
+              ],
+              "suggestion": "Restore the removed line `self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"` in the `AirGradientSensor.__init__` method. This combines the coordinator's serial number (device identifier) with the description key (sensor type identifier) to create a unique ID that properly fulfills the IQS requirement. The comment should be removed as it contains a misconception about how Home Assistant's entity registry works."
+            }
+          ],
+          "latencyMs": 31390,
+          "usage": {
+            "inputTokens": 117072,
+            "outputTokens": 4043,
+            "requests": 12,
+            "costUsd": 0.05579252400000001
+          },
+          "drafterLatencyMs": 30773,
+          "drafterUsage": {
+            "requests": 10,
+            "inputTokens": 100250,
+            "outputTokens": 2769,
+            "costUsd": 0.05508600000000001
+          }
+        }
+      }
+    },
+    {
+      "id": "untranslated-action-error",
+      "title": "Preserve upstream action failure details",
+      "expected": [
+        {
+          "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+          "path": "homeassistant/components/airgradient/entity.py"
+        }
+      ],
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+            "status": "violation",
+            "path": "homeassistant/components/airgradient/entity.py",
+            "violationProbability": 0.95,
+            "screeningProbability": 0.92,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -76,15 +76,12 @@ def exception_handler[_EntityT: AirGradientEntity, **_P](\n         except AirGradientNotSupportedError as error:\n             raise HomeAssistantError(\n                 translation_domain=DOMAIN,\n                 translation_key=\"unsupported_error\",\n                 translation_placeholders={\"error\": str(error)},\n             ) from error\n \n         except AirGradientError as error:\n-            raise HomeAssistantError(\n-                translation_domain=DOMAIN,\n-                translation_key=\"unknown_error\",\n-                translation_placeholders={\"error\": str(error)},\n-            ) from error\n+            # Preserve the upstream message for easier troubleshooting.\n+            raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error\n \n     return handler\n"
+            ]
+          }
+        ],
+        "latencyMs": 739,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 16686,
+          "outputTokens": 1274,
+          "costUsd": 0.000700812
+        }
+      },
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The generic AirGradient action failure is now shown as a hard-coded English message rather than through Home Assistant's exception translation mechanism. Users with non-English locales will receive this error untranslated when button, number, select, or switch actions fail.",
+              "evidence": [
+                "# Preserve the upstream message for easier troubleshooting.",
+                "raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error"
+              ],
+              "suggestion": "Keep using the existing `unknown_error` translation key with `translation_placeholders={\"error\": str(error)}`. This preserves the upstream detail while allowing the surrounding message to be localized."
+            }
+          ],
+          "latencyMs": 49503,
+          "usage": {
+            "inputTokens": 9150,
+            "outputTokens": 351,
+            "costUsd": 0.027120000000000002
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The generic AirGradient error path now raises HomeAssistantError with a literal, non-translatable message, bypassing the existing translated `unknown_error` exception definition. Users running a non-English locale will see this error in English.",
+              "evidence": [
+                "+            raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error"
+              ],
+              "suggestion": "Keep using a translated HomeAssistantError with `translation_domain=DOMAIN`, `translation_key=\"unknown_error\"`, and the upstream error as a placeholder. If the new wording is required, update the translated exception message in `strings.json` instead."
+            }
+          ],
+          "latencyMs": 37093,
+          "usage": {
+            "inputTokens": 4211,
+            "outputTokens": 161,
+            "costUsd": 0.0014347600000000002
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The exception_handler decorator previously raised HomeAssistantError with translation_domain/translation_key (backed by the existing strings.json entry 'unknown_error'), enabling the frontend to localize the error message. The change replaces this with a raw f-string message ('AirGradient request failed: {error}'), which is always rendered in English regardless of the user's locale, directly regressing the 'Exception messages are translatable' requirement.",
+              "evidence": [
+                "- raise HomeAssistantError(\n-     translation_domain=DOMAIN,\n-     translation_key=\"unknown_error\",\n-     translation_placeholders={\"error\": str(error)},\n- ) from error\n+ # Preserve the upstream message for easier troubleshooting.\n+ raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error"
+              ],
+              "suggestion": "Revert to raising HomeAssistantError with translation_domain=DOMAIN and translation_key='unknown_error' (passing the raw error string via translation_placeholders as before) so the message stays translatable; if more detail is needed for troubleshooting, add it as a placeholder in the existing translation string rather than hardcoding an English sentence."
+            }
+          ],
+          "latencyMs": 13304,
+          "usage": {
+            "requests": 7,
+            "inputTokens": 60088,
+            "outputTokens": 1138,
+            "costUsd": 0.059021000000000004
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The change removes translatable exception message handling for the generic AirGradientError catch block. The original code used HomeAssistantError with translation_domain, translation_key, and translation_placeholders to provide a translatable error message (defined in strings.json as 'unknown_error'). The new code replaces this with a hardcoded English string 'AirGradient request failed: {error}', which cannot be translated. This violates the Home Assistant Integration Quality Scale requirement that exception messages are translatable, as Home Assistant is used by people around the world and error messages must support localization.",
+              "evidence": [
+                "Original: raise HomeAssistantError(translation_domain=DOMAIN, translation_key=\"unknown_error\", translation_placeholders={\"error\": str(error)}) from error",
+                "Changed to: raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error",
+                "Translation string exists in strings.json: \"unknown_error\": { \"message\": \"An unknown error occurred while communicating with the Airgradient device: {error}\" }"
+              ],
+              "suggestion": "Restore the use of HomeAssistantError with translation support. Keep the translation_domain=DOMAIN, translation_key=\"unknown_error\", and translation_placeholders parameters. If the goal is to preserve upstream error details for troubleshooting, consider updating the translation string in strings.json to include the upstream error details with a placeholder, rather than embedding them in a hardcoded string. For example, the strings.json message could be updated to 'An error occurred while communicating with the Airgradient device: {error}' to capture more context while maintaining translatability."
+            }
+          ],
+          "latencyMs": 48338,
+          "usage": {
+            "requests": 15,
+            "inputTokens": 370894,
+            "outputTokens": 3478,
+            "costUsd": 0.12403360000000001
+          }
+        }
+      },
+      "handoffs": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The generic AirGradient error path now constructs an English-only user-facing exception instead of using Home Assistant's translation-backed error support. This replaces the existing `unknown_error` translation key, so users with a non-English UI will see the hard-coded prefix rather than a localized error message.",
+              "evidence": [
+                "# Preserve the upstream message for easier troubleshooting.",
+                "raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error"
+              ],
+              "suggestion": "Restore a translation-backed `HomeAssistantError` using `translation_domain=DOMAIN`, `translation_key=\"unknown_error\"`, and an `error` placeholder. If the upstream message is needed for diagnostics, log it separately or continue passing it through the translated placeholder."
+            }
+          ],
+          "latencyMs": 11834,
+          "usage": {
+            "inputTokens": 19160,
+            "outputTokens": 1512,
+            "requests": 3,
+            "costUsd": 0.008504812
+          },
+          "drafterLatencyMs": 11095,
+          "drafterUsage": {
+            "inputTokens": 2474,
+            "outputTokens": 238,
+            "costUsd": 0.007804
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The generic AirGradient exception path now raises a plain HomeAssistantError with a hard-coded English message. Because it lacks a translation domain and translation key, users cannot translate this failure message, unlike the specific exception paths above it.",
+              "evidence": [
+                "\"raise HomeAssistantError(f\\\"AirGradient request failed: {error}\\\") from error\""
+              ],
+              "suggestion": "Restore a translated HomeAssistantError using translation_domain=DOMAIN and a translation_key such as \"unknown_error\", passing the upstream exception text through translation_placeholders if needed."
+            }
+          ],
+          "latencyMs": 9179,
+          "usage": {
+            "inputTokens": 18896,
+            "outputTokens": 1473,
+            "requests": 3,
+            "costUsd": 0.001381612
+          },
+          "drafterLatencyMs": 8440,
+          "drafterUsage": {
+            "inputTokens": 2210,
+            "outputTokens": 199,
+            "costUsd": 0.0006808000000000001
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The change replaces a translatable HomeAssistantError (using translation_domain/translation_key/translation_placeholders) with a hardcoded, untranslated f-string message. This regresses the integration's compliance with the Home Assistant Integration Quality Scale rule requiring exception messages to be translatable, since users of non-English locales will now see a raw English error string ('AirGradient request failed: ...') instead of a localized message pulled from strings.json. It also loses the structured error-string interpolation pattern that keeps translations consistent across the codebase.",
+              "evidence": [
+                "except AirGradientError as error:",
+                "-            raise HomeAssistantError(\n-                translation_domain=DOMAIN,\n-                translation_key=\"unknown_error\",\n-                translation_placeholders={\"error\": str(error)},\n-            ) from error",
+                "+            # Preserve the upstream message for easier troubleshooting.\n+            raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error"
+              ],
+              "suggestion": "Revert to raising a translatable HomeAssistantError, e.g. keep translation_domain=DOMAIN, translation_key=\"unknown_error\", translation_placeholders={\"error\": str(error)}, and ensure the \"unknown_error\" key exists in strings.json/en.json with a placeholder for {error}. If more debugging detail is desired, log the full exception via LOGGER.debug/exception separately rather than embedding it in the user-facing, non-translated exception message."
+            }
+          ],
+          "latencyMs": 8025,
+          "usage": {
+            "inputTokens": 24814,
+            "outputTokens": 1865,
+            "requests": 3,
+            "costUsd": 0.012788112
+          },
+          "drafterLatencyMs": 7286,
+          "drafterUsage": {
+            "requests": 1,
+            "inputTokens": 8128,
+            "outputTokens": 591,
+            "costUsd": 0.0120873
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "explanation": "The catch block for `AirGradientError` (line 83-85) raises a `HomeAssistantError` with a hardcoded f-string message instead of using Home Assistant's translation infrastructure. This violates the Integration Quality Scale requirement that exception messages must be translatable. The integration's strings.json file already defines an appropriate translation key \"unknown_error\" (line 247-249 of strings.json) with placeholders for the error message. The current implementation will always display the untranslated English message \"AirGradient request failed: {error}\" to users regardless of their language settings, reducing usability for non-English speakers. All other exception handlers in this decorator correctly use translation_domain, translation_key, and translation_placeholders parameters, making this inconsistency problematic.",
+              "evidence": [
+                "raise HomeAssistantError(f\"AirGradient request failed: {error}\") from error"
+              ],
+              "suggestion": "Restore the translation-aware exception structure for the `AirGradientError` catch block. Replace the f-string with the proper translation parameters: `raise HomeAssistantError(translation_domain=DOMAIN, translation_key=\"unknown_error\", translation_placeholders={\"error\": str(error)}) from error`. This matches the pattern used in the preceding except blocks (lines 55-81) and aligns with the existing translation definition in strings.json that provides a user-friendly message: \"An unknown error occurred while communicating with the Airgradient device: {error}\""
+            }
+          ],
+          "latencyMs": 20727,
+          "usage": {
+            "inputTokens": 73783,
+            "outputTokens": 3316,
+            "requests": 10,
+            "costUsd": 0.028773111999999997
+          },
+          "drafterLatencyMs": 19988,
+          "drafterUsage": {
+            "requests": 8,
+            "inputTokens": 57097,
+            "outputTokens": 2042,
+            "costUsd": 0.028072299999999998
+          }
+        }
+      }
+    },
+    {
+      "id": "remove-parallel-update-limit",
+      "title": "Delegate update concurrency to the entity scheduler",
+      "expected": [
+        {
+          "ruleId": "HA_IQS_PARALLEL_UPDATES",
+          "path": "homeassistant/components/airgradient/update.py"
+        }
+      ],
+      "neuralint": {
+        "findings": [
+          {
+            "ruleId": "HA_IQS_PARALLEL_UPDATES",
+            "status": "inconclusive",
+            "path": "homeassistant/components/airgradient/update.py",
+            "violationProbability": 0.74,
+            "screeningProbability": 0.65,
+            "hunkId": "F001:H001",
+            "evidence": [
+              "@@ -9,17 +9,17 @@ from propcache.api import cached_property\n \n from homeassistant.components.update import UpdateDeviceClass, UpdateEntity\n from homeassistant.core import HomeAssistant\n from homeassistant.helpers.entity_platform import AddConfigEntryEntitiesCallback\n \n from . import AirGradientConfigEntry, AirGradientCoordinator\n from .entity import AirGradientEntity\n \n-PARALLEL_UPDATES = 1\n+# Use the entity platform scheduler for update concurrency.\n SCAN_INTERVAL = timedelta(hours=1)\n _LOGGER = logging.getLogger(__name__)\n \n \n async def async_setup_entry(\n     hass: HomeAssistant,\n     config_entry: AirGradientConfigEntry,\n     async_add_entities: AddConfigEntryEntitiesCallback,\n"
+            ]
+          }
+        ],
+        "latencyMs": 500,
+        "usage": {
+          "requests": 2,
+          "inputTokens": 16656,
+          "outputTokens": 1274,
+          "costUsd": 0.0006995520000000001
+        }
+      },
+      "competitors": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "Removing the explicit limit leaves this async-only platform without a `PARALLEL_UPDATES` semaphore; the entity-platform default only creates a limit for synchronous `update` methods. Concurrent firmware-version requests can therefore reach the AirGradient service, contrary to the prior serialized behavior.",
+              "evidence": [
+                "-PARALLEL_UPDATES = 1",
+                "+ # Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "Retain `PARALLEL_UPDATES = 1` (or set another deliberately justified explicit limit) so firmware update checks remain bounded."
+            }
+          ],
+          "latencyMs": 52502,
+          "usage": {
+            "inputTokens": 5850,
+            "outputTokens": 402,
+            "costUsd": 0.021336800000000003
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "Removing the explicit concurrency limit allows update requests to use the platform scheduler's default rather than preserving the integration's deliberate limit of one. Concurrent firmware-version requests could overload or be rejected by the AirGradient service.",
+              "evidence": [
+                "-PARALLEL_UPDATES = 1",
+                "+# Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "Restore an explicit `PARALLEL_UPDATES = 1` limit (or another documented, justified value) instead of relying on the platform default."
+            }
+          ],
+          "latencyMs": 41255,
+          "usage": {
+            "inputTokens": 7819,
+            "outputTokens": 257,
+            "costUsd": 0.00218964
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "The diff removes the explicit `PARALLEL_UPDATES = 1` module-level constant from the update platform and replaces it with only a comment. Home Assistant's integration quality scale requires each platform module to explicitly declare `PARALLEL_UPDATES` so the number of concurrent entity updates/service calls sent to the device is controlled. Removing this constant reverts the platform to the framework default (unlimited parallel updates for entities without update methods, or 1 for platforms with update methods depending on context), which is an implicit and undocumented behavior rather than an explicit declaration, and for a firmware update entity that issues real network/device requests (install), unconstrained concurrency risks overwhelming the device.",
+              "evidence": [
+                "-PARALLEL_UPDATES = 1",
+                "+# Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "Restore an explicit `PARALLEL_UPDATES = 1` (or an appropriate justified value) in homeassistant/components/airgradient/update.py instead of relying on implicit platform-scheduler defaults, per the Home Assistant quality scale rule on parallel updates."
+            }
+          ],
+          "latencyMs": 15551,
+          "usage": {
+            "requests": 8,
+            "inputTokens": 64777,
+            "outputTokens": 1262,
+            "costUsd": 0.060742700000000004
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "violation",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "The change removes the explicit PARALLEL_UPDATES specification, which violates the policy requirement that 'Number of parallel updates is specified'. The integration was previously explicitly setting PARALLEL_UPDATES = 1 to limit concurrent update requests, but this line has been removed and replaced with only a comment about delegating to the entity platform scheduler. While the intent may be to use a different mechanism for concurrency control, the policy explicitly requires that the number of parallel updates be defined in the module, as stated in the guidance: 'We consider it a good practice to explicitly set the number of parallel updates.'",
+              "evidence": [
+                "-PARALLEL_UPDATES = 1",
+                "+# Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "To comply with the HA_IQS_PARALLEL_UPDATES policy, either: (1) restore an explicit PARALLEL_UPDATES definition (e.g., PARALLEL_UPDATES = 0 or PARALLEL_UPDATES = 1) that matches the device's capability, or (2) if delegating to the entity platform scheduler is the intended approach, explicitly set PARALLEL_UPDATES to the value that the scheduler will enforce, rather than omitting the definition entirely. This ensures the concurrency limit is explicitly specified and clearly visible in the integration code for maintainability."
+            }
+          ],
+          "latencyMs": 58297,
+          "usage": {
+            "requests": 70,
+            "inputTokens": 631472,
+            "outputTokens": 7264,
+            "costUsd": 0.1705595
+          }
+        }
+      },
+      "handoffs": {
+        "terra-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "inconclusive",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "This removes the explicit per-platform concurrency limit while this polling update entity performs a remote firmware-version request in `async_update`. The entity-platform scheduler does not itself document a chosen request limit here, so the integration no longer explicitly specifies the required parallel-update behavior. Although this platform currently creates one entity per config entry, retaining an explicit limit protects against concurrent update/action paths and makes the device/service constraint intentional.",
+              "evidence": [
+                "-PARALLEL_UPDATES = 1",
+                "+ # Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "Restore an explicit `PARALLEL_UPDATES` value (for example, the prior `PARALLEL_UPDATES = 1`) unless there is a documented official exception or a platform-level mechanism that explicitly configures the equivalent request limit."
+            }
+          ],
+          "latencyMs": 11538,
+          "usage": {
+            "inputTokens": 19279,
+            "outputTokens": 1584,
+            "requests": 3,
+            "costUsd": 0.009665552
+          },
+          "drafterLatencyMs": 11038,
+          "drafterUsage": {
+            "inputTokens": 2623,
+            "outputTokens": 310,
+            "costUsd": 0.008966
+          }
+        },
+        "luna-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "inconclusive",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "The change removes the explicit `PARALLEL_UPDATES = 1` limit from a platform whose `async_update` makes an external firmware-version request. Unless the entity platform scheduler provides an equivalent bounded limit here, updates from multiple AirGradient config entries may run concurrently and overload the service. The replacement comment does not itself establish a limit, but the repository context is insufficient to determine the scheduler's exact default behavior.",
+              "evidence": [
+                "-PARALLEL_UPDATES = 1",
+                "+ # Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "Retain `PARALLEL_UPDATES = 1`, or replace it with an explicitly bounded concurrency mechanism if the platform scheduler is intentionally being used. Document why that mechanism safely limits concurrent firmware-version requests."
+            }
+          ],
+          "latencyMs": 13565,
+          "usage": {
+            "inputTokens": 19155,
+            "outputTokens": 1570,
+            "requests": 3,
+            "costUsd": 0.001554552
+          },
+          "drafterLatencyMs": 13065,
+          "drafterUsage": {
+            "inputTokens": 2499,
+            "outputTokens": 296,
+            "costUsd": 0.000855
+          }
+        },
+        "sonnet-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "inconclusive",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "The diff removes the explicit `PARALLEL_UPDATES = 1` constant and replaces it with only a comment claiming the entity platform scheduler now handles concurrency. However, Home Assistant does not implicitly limit parallel updates/service calls for a platform unless `PARALLEL_UPDATES` is set in the platform module; omitting it defaults to unlimited parallel updates for entities with `should_poll = True`, or unlimited action-call concurrency otherwise. Since this integration polls a physical device (AirGradient) for updates, removing the explicit limit risks the same device being hit with multiple concurrent requests, which the IQS rule specifically warns against. Without seeing whether coordinator-based updates make this moot (coordinator entities typically don't poll individually, so PARALLEL_UPDATES for update-fetching may be less relevant), or whether action calls in this platform justify no limit, it's inconclusive whether this is a real regression or an intentional/acceptable removal given the coordinator pattern.",
+              "evidence": [
+                "-PARALLEL_UPDATES = 1\n+# Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "Re-add an explicit `PARALLEL_UPDATES` constant (e.g., `PARALLEL_UPDATES = 1` if this entity performs actions like triggering firmware installs, or `PARALLEL_UPDATES = 0` if concurrency truly doesn't matter because all fetching is done centrally via the DataUpdateCoordinator and there are no per-entity action calls). Relying on an unexplained comment instead of the documented constant makes intent unclear to future maintainers and to the IQS automated/manual review, and risks unintentionally allowing unbounded concurrent requests to the device/API."
+            }
+          ],
+          "latencyMs": 10134,
+          "usage": {
+            "inputTokens": 24803,
+            "outputTokens": 1955,
+            "requests": 3,
+            "costUsd": 0.022066952000000004
+          },
+          "drafterLatencyMs": 9634,
+          "drafterUsage": {
+            "requests": 1,
+            "inputTokens": 8147,
+            "outputTokens": 681,
+            "costUsd": 0.021367400000000005
+          }
+        },
+        "haiku-low": {
+          "findings": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "status": "inconclusive",
+              "path": "homeassistant/components/airgradient/update.py",
+              "explanation": "The change removes explicit `PARALLEL_UPDATES = 1` specification and replaces it with only a comment referencing the entity platform scheduler. This removes compliance with the Home Assistant Integration Quality Scale requirement to explicitly specify the number of parallel updates. According to the entity_platform.py framework code, when PARALLEL_UPDATES is not specified and the entity has async updates (as AirGradientUpdate does), the default is None (unlimited parallel updates) rather than sequential (1). This changes the concurrency behavior from explicitly limited to potentially unlimited, which could stress the AirGradient service and contradicts the policy guidance that 'devices or services don't like receiving a lot of requests at the same time.' All other platforms in the airgradient component (button, select, sensor, switch, number) retain explicit PARALLEL_UPDATES specifications.",
+              "evidence": [
+                "- PARALLEL_UPDATES = 1",
+                "+ # Use the entity platform scheduler for update concurrency."
+              ],
+              "suggestion": "Restore the explicit `PARALLEL_UPDATES = 1` declaration to maintain sequential updates and comply with the IQS requirement. If the intent is to delegate concurrency control to the framework, provide explicit documentation or code evidence that Home Assistant now automatically enforces appropriate limits for update entities without explicit specification. Alternatively, if unlimited parallel updates are now safe for this service, add a comment explaining this change in concurrency behavior and why the AirGradient API can handle it."
+            }
+          ],
+          "latencyMs": 41776,
+          "usage": {
+            "inputTokens": 161393,
+            "outputTokens": 5240,
+            "requests": 19,
+            "costUsd": 0.05783035199999999
+          },
+          "drafterLatencyMs": 41276,
+          "drafterUsage": {
+            "requests": 17,
+            "inputTokens": 144737,
+            "outputTokens": 3966,
+            "costUsd": 0.05713079999999999
+          }
+        }
+      }
+    }
+  ],
+  "experiment": {
+    "kind": "nested-catalog-scaling",
+    "catalogSize": 54,
+    "catalogSeed": 20260919,
+    "ruleOrder": [
+      "HA_IQS_DOCS_TRIGGERS",
+      "HA_IQS_ENTITY_DEVICE_CLASS",
+      "HA_IQS_CONFIG_ENTRY_UNLOADING",
+      "HA_IQS_CONFIG_FLOW_TEST_COVERAGE",
+      "HA_IQS_RUNTIME_DATA",
+      "HA_IQS_DEVICES",
+      "HA_IQS_ENTITY_CATEGORY",
+      "HA_IQS_DISCOVERY_UPDATE_INFO",
+      "HA_IQS_DOCS_CONDITIONS",
+      "HA_IQS_PARALLEL_UPDATES",
+      "HA_IQS_INJECT_WEBSESSION",
+      "HA_IQS_TEST_BEFORE_SETUP",
+      "HA_IQS_DIAGNOSTICS",
+      "HA_IQS_DOCS_HIGH_LEVEL_DESCRIPTION",
+      "HA_IQS_ENTITY_TRANSLATIONS",
+      "HA_IQS_DYNAMIC_DEVICES",
+      "HA_IQS_DOCS_SUPPORTED_DEVICES",
+      "HA_IQS_ASYNC_DEPENDENCY",
+      "HA_IQS_COMMON_MODULES",
+      "HA_IQS_REAUTHENTICATION_FLOW",
+      "HA_IQS_EXCEPTION_TRANSLATIONS",
+      "HA_IQS_REPAIR_ISSUES",
+      "HA_IQS_ACTION_SETUP",
+      "HA_IQS_ICON_TRANSLATIONS",
+      "HA_IQS_BRANDS",
+      "HA_IQS_ENTITY_UNAVAILABLE",
+      "HA_IQS_RECONFIGURATION_FLOW",
+      "HA_IQS_DISCOVERY",
+      "HA_IQS_TEST_COVERAGE",
+      "HA_IQS_STALE_DEVICES",
+      "HA_IQS_DOCS_SUPPORTED_FUNCTIONS",
+      "HA_IQS_DEPENDENCY_TRANSPARENCY",
+      "HA_IQS_DOCS_TROUBLESHOOTING",
+      "HA_IQS_ENTITY_UNIQUE_ID",
+      "HA_IQS_DOCS_INSTALLATION_PARAMETERS",
+      "HA_IQS_APPROPRIATE_POLLING",
+      "HA_IQS_DOCS_EXAMPLES",
+      "HA_IQS_DOCS_ACTIONS",
+      "HA_IQS_STRICT_TYPING",
+      "HA_IQS_DOCS_REMOVAL_INSTRUCTIONS",
+      "HA_IQS_TEST_BEFORE_CONFIGURE",
+      "HA_IQS_DOCS_CONFIGURATION_PARAMETERS",
+      "HA_IQS_LOG_WHEN_UNAVAILABLE",
+      "HA_IQS_ENTITY_EVENT_SETUP",
+      "HA_IQS_UNIQUE_CONFIG_ENTRY",
+      "HA_IQS_DOCS_DATA_UPDATE",
+      "HA_IQS_DOCS_INSTALLATION_INSTRUCTIONS",
+      "HA_IQS_HAS_ENTITY_NAME",
+      "HA_IQS_INTEGRATION_OWNER",
+      "HA_IQS_ENTITY_DISABLED_BY_DEFAULT",
+      "HA_IQS_DOCS_USE_CASES",
+      "HA_IQS_CONFIG_FLOW",
+      "HA_IQS_DOCS_KNOWN_LIMITATIONS",
+      "HA_IQS_ACTION_EXCEPTIONS"
+    ]
+  }
+}

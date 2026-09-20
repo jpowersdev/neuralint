@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_CONFIG_BOUNDARY",
+  "title": "Read and validate runtime configuration through Config",
+  "description": "Runtime settings and credentials should be decoded through Config in a Layer or configuration service rather than read from process.env throughout workflows.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Entrypoints/providers may establish ConfigProvider. Defaults are for missing data, not malformed values; credentials should remain redacted.",
+  "criteria": {
+    "violation": "Changed application code reads process.env directly, leaves configuration unvalidated, threads settings through many layer factories, or represents credentials as ordinary strings.",
+    "compliant": "A Config recipe validates/refines values, uses option/default semantics deliberately, redacts credentials, and the owning Layer exposes decoded configuration."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

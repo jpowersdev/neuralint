@@ -1,0 +1,638 @@
+{
+  "schemaVersion": 1,
+  "startedAt": "2026-09-20T16:19:22.378Z",
+  "completedAt": "2026-09-20T16:29:19.077Z",
+  "model": "openai-codex/gpt-5.6-terra",
+  "thinking": "low",
+  "repository": {
+    "name": "home-assistant/core",
+    "commit": "40fcd7dc6b37781291745e3d6c39601563e87349"
+  },
+  "results": [
+    {
+      "id": "remove-unload-entry",
+      "title": "Rely on platform teardown during integration reload",
+      "expected": {
+        "expectedViolation": true,
+        "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+        "path": "homeassistant/components/airgradient/__init__.py"
+      },
+      "order": [
+        "gold",
+        "direct"
+      ],
+      "goldPacket": {
+        "diagnosis": "The change removes the config-entry unload callback and therefore removes the integration's path for unloading its forwarded platforms during reload or removal.",
+        "supportingFacts": [
+          "The async_unload_entry callback was removed.",
+          "The removed callback delegated to async_unload_platforms for PLATFORMS."
+        ]
+      },
+      "direct": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "summary": "Removing async_unload_entry removes config-entry unload support.",
+              "impact": "AirGradient entries now enter FAILED_UNLOAD when users reload or remove them, leaving their platforms and entities loaded until Home Assistant restarts.",
+              "remediation": "Restore async_unload_entry and return await hass.config_entries.async_unload_platforms(entry, PLATFORMS).",
+              "validation": [
+                "Add a test that sets up an AirGradient entry, calls hass.config_entries.async_unload(entry.entry_id), and asserts success, ConfigEntryState.NOT_LOADED, and removed platform entities.",
+                "Run pytest -q tests/components/airgradient/test_init.py."
+              ]
+            }
+          ],
+          "summary": "One policy violation found."
+        },
+        "latencyMs": 98400,
+        "usage": {
+          "inputTokens": 1403,
+          "outputTokens": 317,
+          "requests": 1,
+          "costUsd": 0.01429
+        },
+        "filesRead": [
+          ".neuralint/rules/action-exceptions.yaml",
+          ".neuralint/rules/action-setup.yaml",
+          ".neuralint/rules/appropriate-polling.yaml",
+          ".neuralint/rules/async-dependency.yaml",
+          ".neuralint/rules/brands.yaml",
+          ".neuralint/rules/common-modules.yaml",
+          ".neuralint/rules/config-entry-unloading.yaml",
+          ".neuralint/rules/config-flow-test-coverage.yaml",
+          ".neuralint/rules/config-flow.yaml",
+          ".neuralint/rules/dependency-transparency.yaml",
+          ".neuralint/rules/devices.yaml",
+          ".neuralint/rules/diagnostics.yaml",
+          ".neuralint/rules/discovery-update-info.yaml",
+          ".neuralint/rules/discovery.yaml",
+          ".neuralint/rules/docs-actions.yaml",
+          ".neuralint/rules/docs-conditions.yaml",
+          ".neuralint/rules/docs-configuration-parameters.yaml",
+          ".neuralint/rules/docs-data-update.yaml",
+          ".neuralint/rules/docs-examples.yaml",
+          ".neuralint/rules/docs-high-level-description.yaml",
+          ".neuralint/rules/docs-installation-instructions.yaml",
+          ".neuralint/rules/docs-installation-parameters.yaml",
+          ".neuralint/rules/docs-known-limitations.yaml",
+          ".neuralint/rules/docs-removal-instructions.yaml",
+          ".neuralint/rules/docs-supported-devices.yaml",
+          ".neuralint/rules/docs-supported-functions.yaml",
+          ".neuralint/rules/docs-triggers.yaml",
+          ".neuralint/rules/docs-troubleshooting.yaml",
+          ".neuralint/rules/docs-use-cases.yaml",
+          ".neuralint/rules/dynamic-devices.yaml",
+          ".neuralint/rules/entity-category.yaml",
+          ".neuralint/rules/entity-device-class.yaml",
+          ".neuralint/rules/entity-disabled-by-default.yaml",
+          ".neuralint/rules/entity-event-setup.yaml",
+          ".neuralint/rules/entity-translations.yaml",
+          ".neuralint/rules/entity-unavailable.yaml",
+          ".neuralint/rules/entity-unique-id.yaml",
+          ".neuralint/rules/exception-translations.yaml",
+          ".neuralint/rules/has-entity-name.yaml",
+          ".neuralint/rules/icon-translations.yaml",
+          ".neuralint/rules/inject-websession.yaml",
+          ".neuralint/rules/integration-owner.yaml",
+          ".neuralint/rules/log-when-unavailable.yaml",
+          ".neuralint/rules/parallel-updates.yaml",
+          ".neuralint/rules/reauthentication-flow.yaml",
+          ".neuralint/rules/reconfiguration-flow.yaml",
+          ".neuralint/rules/repair-issues.yaml",
+          ".neuralint/rules/runtime-data.yaml",
+          ".neuralint/rules/stale-devices.yaml",
+          ".neuralint/rules/strict-typing.yaml",
+          ".neuralint/rules/test-before-configure.yaml",
+          ".neuralint/rules/test-before-setup.yaml",
+          ".neuralint/rules/test-coverage.yaml",
+          ".neuralint/rules/unique-config-entry.yaml",
+          "tests/components/airgradient/test_init.py"
+        ]
+      },
+      "goldHandoff": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_CONFIG_ENTRY_UNLOADING",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "summary": "The config-entry unload callback was removed.",
+              "impact": "AirGradient entries can no longer unload their forwarded platforms during reload or removal, forcing users to restart Home Assistant and potentially leaving entities active.",
+              "remediation": "Restore an async_unload_entry callback that unloads the integration's PLATFORMS through hass.config_entries.async_unload_platforms(entry, PLATFORMS). Any alternative must fully unload all resources and forwarded platforms.",
+              "validation": [
+                "Add or restore an integration test that sets up an AirGradient config entry, unloads it, and asserts unloading succeeds and the entry reaches the unloaded state.",
+                "Run the AirGradient integration test suite."
+              ]
+            }
+          ],
+          "summary": "Restore config-entry unloading for the AirGradient integration."
+        },
+        "latencyMs": 20735,
+        "usage": {
+          "inputTokens": 1949,
+          "outputTokens": 227,
+          "requests": 1,
+          "costUsd": 0.006929199999999999
+        },
+        "filesRead": [
+          "homeassistant/components/airgradient/__init__.py",
+          "tests/components/airgradient/test_init.py"
+        ]
+      }
+    },
+    {
+      "id": "create-private-websession",
+      "title": "Let the AirGradient client own its HTTP lifecycle",
+      "expected": {
+        "expectedViolation": true,
+        "ruleId": "HA_IQS_INJECT_WEBSESSION",
+        "path": "homeassistant/components/airgradient/__init__.py"
+      },
+      "order": [
+        "direct",
+        "gold"
+      ],
+      "goldPacket": {
+        "diagnosis": "The change stops injecting Home Assistant's shared HTTP session into the AirGradient client, causing the integration dependency to own a separate HTTP lifecycle.",
+        "supportingFacts": [
+          "The session=async_get_clientsession(hass) argument was removed.",
+          "The AirGradient integration performs HTTP requests and its client supports session injection."
+        ]
+      },
+      "direct": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "summary": "Runtime setup no longer injects Home Assistant's shared HTTP session into AirGradientClient.",
+              "impact": "Each loaded entry can create and manage its own HTTP session rather than reusing Home Assistant's managed session, losing shared connection pooling and lifecycle management.",
+              "remediation": "Construct AirGradientClient with session=async_get_clientsession(hass), as the config flow already does.",
+              "validation": [
+                "Add or update a setup test that asserts AirGradientClient is called with the config-entry host and session=async_get_clientsession(hass).",
+                "Run the AirGradient integration test suite."
+              ]
+            }
+          ],
+          "summary": "One policy violation found."
+        },
+        "latencyMs": 99493,
+        "usage": {
+          "inputTokens": 3202,
+          "outputTokens": 269,
+          "requests": 1,
+          "costUsd": 0.0171072
+        },
+        "filesRead": [
+          ".neuralint/rules/action-exceptions.yaml",
+          ".neuralint/rules/action-setup.yaml",
+          ".neuralint/rules/appropriate-polling.yaml",
+          ".neuralint/rules/async-dependency.yaml",
+          ".neuralint/rules/brands.yaml",
+          ".neuralint/rules/common-modules.yaml",
+          ".neuralint/rules/config-entry-unloading.yaml",
+          ".neuralint/rules/config-flow-test-coverage.yaml",
+          ".neuralint/rules/config-flow.yaml",
+          ".neuralint/rules/dependency-transparency.yaml",
+          ".neuralint/rules/devices.yaml",
+          ".neuralint/rules/diagnostics.yaml",
+          ".neuralint/rules/discovery-update-info.yaml",
+          ".neuralint/rules/discovery.yaml",
+          ".neuralint/rules/docs-actions.yaml",
+          ".neuralint/rules/docs-conditions.yaml",
+          ".neuralint/rules/docs-configuration-parameters.yaml",
+          ".neuralint/rules/docs-data-update.yaml",
+          ".neuralint/rules/docs-examples.yaml",
+          ".neuralint/rules/docs-high-level-description.yaml",
+          ".neuralint/rules/docs-installation-instructions.yaml",
+          ".neuralint/rules/docs-installation-parameters.yaml",
+          ".neuralint/rules/docs-known-limitations.yaml",
+          ".neuralint/rules/docs-removal-instructions.yaml",
+          ".neuralint/rules/docs-supported-devices.yaml",
+          ".neuralint/rules/docs-supported-functions.yaml",
+          ".neuralint/rules/docs-triggers.yaml",
+          ".neuralint/rules/docs-troubleshooting.yaml",
+          ".neuralint/rules/docs-use-cases.yaml",
+          ".neuralint/rules/dynamic-devices.yaml",
+          ".neuralint/rules/entity-category.yaml",
+          ".neuralint/rules/entity-device-class.yaml",
+          ".neuralint/rules/entity-disabled-by-default.yaml",
+          ".neuralint/rules/entity-event-setup.yaml",
+          ".neuralint/rules/entity-translations.yaml",
+          ".neuralint/rules/entity-unavailable.yaml",
+          ".neuralint/rules/entity-unique-id.yaml",
+          ".neuralint/rules/exception-translations.yaml",
+          ".neuralint/rules/has-entity-name.yaml",
+          ".neuralint/rules/icon-translations.yaml",
+          ".neuralint/rules/inject-websession.yaml",
+          ".neuralint/rules/integration-owner.yaml",
+          ".neuralint/rules/log-when-unavailable.yaml",
+          ".neuralint/rules/parallel-updates.yaml",
+          ".neuralint/rules/reauthentication-flow.yaml",
+          ".neuralint/rules/reconfiguration-flow.yaml",
+          ".neuralint/rules/repair-issues.yaml",
+          ".neuralint/rules/runtime-data.yaml",
+          ".neuralint/rules/stale-devices.yaml",
+          ".neuralint/rules/strict-typing.yaml",
+          ".neuralint/rules/test-before-configure.yaml",
+          ".neuralint/rules/test-before-setup.yaml",
+          ".neuralint/rules/test-coverage.yaml",
+          ".neuralint/rules/unique-config-entry.yaml",
+          "homeassistant/components/airgradient/__init__.py",
+          "homeassistant/components/airgradient/config_flow.py",
+          "homeassistant/components/airgradient/coordinator.py",
+          "homeassistant/components/airgradient/manifest.json",
+          "tests/components/airgradient/__init__.py",
+          "tests/components/airgradient/conftest.py",
+          "tests/components/airgradient/test_init.py"
+        ]
+      },
+      "goldHandoff": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_INJECT_WEBSESSION",
+              "path": "homeassistant/components/airgradient/__init__.py",
+              "summary": "Restore injection of Home Assistant's shared HTTP session when creating AirGradientClient.",
+              "impact": "Each configured AirGradient entry can create and own a separate HTTP session, bypassing Home Assistant's connection pooling and lifecycle management and increasing resource use for HTTP polling.",
+              "remediation": "Create the client with `session=async_get_clientsession(hass)`, as the config flow already does. Remove the comment directing the client to own its HTTP lifecycle; the dependency supports injected sessions and the integration performs HTTP requests.",
+              "validation": [
+                "Add or update a setup-entry test in `tests/components/airgradient/test_init.py` that patches `AirGradientClient` and asserts it is constructed with the configured host and `async_get_clientsession(hass)` as `session`.",
+                "Run the AirGradient integration test suite, including `tests/components/airgradient/test_init.py` and `tests/components/airgradient/test_config_flow.py`."
+              ]
+            }
+          ],
+          "summary": "The setup path regresses shared web-session injection for the HTTP-based AirGradient dependency; restore Home Assistant session injection and cover it with a constructor assertion."
+        },
+        "latencyMs": 32193,
+        "usage": {
+          "inputTokens": 2849,
+          "outputTokens": 301,
+          "requests": 1,
+          "costUsd": 0.0100268
+        },
+        "filesRead": [
+          "homeassistant/components/airgradient/__init__.py",
+          "homeassistant/components/airgradient/config_flow.py",
+          "homeassistant/components/airgradient/manifest.json",
+          "tests/components/airgradient/conftest.py",
+          "tests/components/airgradient/test_init.py"
+        ]
+      }
+    },
+    {
+      "id": "remove-sensor-unique-id",
+      "title": "Use device identifiers to distinguish sensors",
+      "expected": {
+        "expectedViolation": true,
+        "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+        "path": "homeassistant/components/airgradient/sensor.py"
+      },
+      "order": [
+        "gold",
+        "direct"
+      ],
+      "goldPacket": {
+        "diagnosis": "The change removes the entity unique ID; device-registry identifiers do not replace the entity-registry identity required for persistence and customization.",
+        "supportingFacts": [
+          "The _attr_unique_id assignment was removed.",
+          "Device identifiers and entity unique IDs serve different registries."
+        ]
+      },
+      "direct": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "summary": "AirGradient sensors no longer set a unique ID.",
+              "impact": "All sensor entities lose entity-registry identity; users cannot persist per-entity customizations such as names, enablement, or units across restarts. Device identifiers only identify the shared device and cannot identify individual sensor entities.",
+              "remediation": "Restore `self._attr_unique_id = f\"{coordinator.serial_number}-{description.key}\"` in `AirGradientSensor.__init__`; retain the device identifier solely for device grouping.",
+              "validation": [
+                "Run `pytest -q tests/components/airgradient/test_sensor.py`.",
+                "Verify entity-registry entries retain unique IDs such as `<serial>-temperature` and `<serial>-co2` after setup."
+              ]
+            }
+          ],
+          "summary": "The diff removes required unique IDs from all AirGradient sensor entities."
+        },
+        "latencyMs": 102885,
+        "usage": {
+          "inputTokens": 16739,
+          "outputTokens": 312,
+          "requests": 1,
+          "costUsd": 0.0434684
+        },
+        "filesRead": [
+          ".neuralint/rules/action-exceptions.yaml",
+          ".neuralint/rules/action-setup.yaml",
+          ".neuralint/rules/appropriate-polling.yaml",
+          ".neuralint/rules/async-dependency.yaml",
+          ".neuralint/rules/brands.yaml",
+          ".neuralint/rules/common-modules.yaml",
+          ".neuralint/rules/config-entry-unloading.yaml",
+          ".neuralint/rules/config-flow-test-coverage.yaml",
+          ".neuralint/rules/config-flow.yaml",
+          ".neuralint/rules/dependency-transparency.yaml",
+          ".neuralint/rules/devices.yaml",
+          ".neuralint/rules/diagnostics.yaml",
+          ".neuralint/rules/discovery-update-info.yaml",
+          ".neuralint/rules/discovery.yaml",
+          ".neuralint/rules/docs-actions.yaml",
+          ".neuralint/rules/docs-conditions.yaml",
+          ".neuralint/rules/docs-configuration-parameters.yaml",
+          ".neuralint/rules/docs-data-update.yaml",
+          ".neuralint/rules/docs-examples.yaml",
+          ".neuralint/rules/docs-high-level-description.yaml",
+          ".neuralint/rules/docs-installation-instructions.yaml",
+          ".neuralint/rules/docs-installation-parameters.yaml",
+          ".neuralint/rules/docs-known-limitations.yaml",
+          ".neuralint/rules/docs-removal-instructions.yaml",
+          ".neuralint/rules/docs-supported-devices.yaml",
+          ".neuralint/rules/docs-supported-functions.yaml",
+          ".neuralint/rules/docs-triggers.yaml",
+          ".neuralint/rules/docs-troubleshooting.yaml",
+          ".neuralint/rules/docs-use-cases.yaml",
+          ".neuralint/rules/dynamic-devices.yaml",
+          ".neuralint/rules/entity-category.yaml",
+          ".neuralint/rules/entity-device-class.yaml",
+          ".neuralint/rules/entity-disabled-by-default.yaml",
+          ".neuralint/rules/entity-event-setup.yaml",
+          ".neuralint/rules/entity-translations.yaml",
+          ".neuralint/rules/entity-unavailable.yaml",
+          ".neuralint/rules/entity-unique-id.yaml",
+          ".neuralint/rules/exception-translations.yaml",
+          ".neuralint/rules/has-entity-name.yaml",
+          ".neuralint/rules/icon-translations.yaml",
+          ".neuralint/rules/inject-websession.yaml",
+          ".neuralint/rules/integration-owner.yaml",
+          ".neuralint/rules/log-when-unavailable.yaml",
+          ".neuralint/rules/parallel-updates.yaml",
+          ".neuralint/rules/reauthentication-flow.yaml",
+          ".neuralint/rules/reconfiguration-flow.yaml",
+          ".neuralint/rules/repair-issues.yaml",
+          ".neuralint/rules/runtime-data.yaml",
+          ".neuralint/rules/stale-devices.yaml",
+          ".neuralint/rules/strict-typing.yaml",
+          ".neuralint/rules/test-before-configure.yaml",
+          ".neuralint/rules/test-before-setup.yaml",
+          ".neuralint/rules/test-coverage.yaml",
+          ".neuralint/rules/unique-config-entry.yaml",
+          "homeassistant/components/airgradient/__init__.py",
+          "homeassistant/components/airgradient/config_flow.py",
+          "homeassistant/components/airgradient/coordinator.py",
+          "homeassistant/components/airgradient/entity.py",
+          "homeassistant/components/airgradient/manifest.json",
+          "homeassistant/components/airgradient/sensor.py",
+          "homeassistant/components/airgradient/strings.json",
+          "tests/components/airgradient/snapshots/test_sensor.ambr",
+          "tests/components/airgradient/test_sensor.py"
+        ]
+      },
+      "goldHandoff": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_ENTITY_UNIQUE_ID",
+              "path": "homeassistant/components/airgradient/sensor.py",
+              "summary": "AirGradient sensor entities no longer receive an entity unique ID.",
+              "impact": "Without an entity-registry identity, these sensors cannot reliably retain user customizations such as renamed entities or unit overrides across restarts. Device-registry identifiers identify the device, not each sensor entity.",
+              "remediation": "Assign every AirGradientSensor a stable, per-entity unique ID derived from the device serial number and sensor description key (as previously implemented), or provide an equivalent stable identifier that remains unique within the sensor platform. Do not rely on the device identifier as a replacement.",
+              "validation": [
+                "Run the AirGradient sensor tests and verify entity-registry snapshots retain unique IDs such as <serial_number>-<description.key>.",
+                "Add or retain coverage that sets up the sensor platform and asserts each created sensor has a non-null, stable unique_id distinct for each description key."
+              ]
+            }
+          ],
+          "summary": "Restore stable unique IDs for AirGradient sensor entities so they remain registered and customizable across restarts."
+        },
+        "latencyMs": 18315,
+        "usage": {
+          "inputTokens": 6656,
+          "outputTokens": 258,
+          "requests": 1,
+          "costUsd": 0.016408
+        },
+        "filesRead": []
+      }
+    },
+    {
+      "id": "untranslated-action-error",
+      "title": "Preserve upstream action failure details",
+      "expected": {
+        "expectedViolation": true,
+        "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+        "path": "homeassistant/components/airgradient/entity.py"
+      },
+      "order": [
+        "direct",
+        "gold"
+      ],
+      "goldPacket": {
+        "diagnosis": "The change replaces a structured, translated Home Assistant action error with raw upstream exception text, losing stable translation keys and user-facing localization.",
+        "supportingFacts": [
+          "The translated HomeAssistantError construction was removed.",
+          "The replacement exposes str(error) directly."
+        ]
+      },
+      "direct": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "summary": "Generic AirGradient action failures now raise a hard-coded, untranslated HomeAssistantError message.",
+              "impact": "Users with non-English Home Assistant installations see “AirGradient request failed” in English when operating AirGradient buttons, switches, selects, or numbers.",
+              "remediation": "Restore the translation-backed HomeAssistantError using translation_domain=DOMAIN, translation_key=\"unknown_error\", and the error placeholder; retain the upstream error as the exception cause.",
+              "validation": [
+                "Run tests/components/airgradient/test_button.py, test_number.py, test_select.py, and test_switch.py.",
+                "Verify an AirGradientError action failure resolves through the airgradient unknown_error exception translation."
+              ]
+            }
+          ],
+          "summary": "One policy violation found."
+        },
+        "latencyMs": 54983,
+        "usage": {
+          "inputTokens": 10500,
+          "outputTokens": 342,
+          "requests": 1,
+          "costUsd": 0.0342176
+        },
+        "filesRead": [
+          "/tmp/pi-bash-891ae87eb3b3e4bc.log",
+          "homeassistant/components/airgradient/strings.json",
+          "homeassistant/components/airgradient/test_number.py",
+          "tests/components/airgradient/test_button.py"
+        ]
+      },
+      "goldHandoff": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_EXCEPTION_TRANSLATIONS",
+              "path": "homeassistant/components/airgradient/entity.py",
+              "summary": "Generic AirGradient action failures no longer use a translated HomeAssistantError.",
+              "impact": "Users receive an English, upstream-derived error message instead of a localized, stable action error; upstream wording may also vary.",
+              "remediation": "Restore a structured HomeAssistantError for AirGradientError using the existing airgradient `unknown_error` translation key and its `{error}` placeholder. If a different generic message is needed, add a corresponding entry under `exceptions` in `homeassistant/components/airgradient/strings.json` and raise it via translation_domain, translation_key, and translation_placeholders rather than formatting raw text into the exception message.",
+              "validation": [
+                "Update `tests/components/airgradient/test_select.py` (or equivalent decorated-action coverage) to raise AirGradientError and assert the translated generic error is produced.",
+                "Run the targeted AirGradient tests, including `tests/components/airgradient/test_select.py`, and translation validation for the integration strings."
+              ]
+            }
+          ],
+          "summary": "Restore translated handling for generic AirGradient action errors."
+        },
+        "latencyMs": 30839,
+        "usage": {
+          "inputTokens": 6747,
+          "outputTokens": 230,
+          "requests": 1,
+          "costUsd": 0.016253999999999998
+        },
+        "filesRead": [
+          "homeassistant/components/airgradient/entity.py",
+          "homeassistant/components/airgradient/strings.json",
+          "tests/components/airgradient/test_select.py"
+        ]
+      }
+    },
+    {
+      "id": "remove-parallel-update-limit",
+      "title": "Delegate update concurrency to the entity scheduler",
+      "expected": {
+        "expectedViolation": true,
+        "ruleId": "HA_IQS_PARALLEL_UPDATES",
+        "path": "homeassistant/components/airgradient/update.py"
+      },
+      "order": [
+        "gold",
+        "direct"
+      ],
+      "goldPacket": {
+        "diagnosis": "The change removes the platform's explicit PARALLEL_UPDATES declaration even though this polling update platform must state its update concurrency under the applicable quality rule.",
+        "supportingFacts": [
+          "The PARALLEL_UPDATES declaration was removed.",
+          "The platform remains an independently polling update platform."
+        ]
+      },
+      "direct": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "path": "homeassistant/components/airgradient/update.py",
+              "summary": "The update platform no longer explicitly specifies PARALLEL_UPDATES.",
+              "impact": "Async update entities now use Home Assistant's unlimited default rather than an explicit concurrency contract. Additional update entities could concurrently call the AirGradient firmware API, risking request contention or service throttling.",
+              "remediation": "Restore an explicit `PARALLEL_UPDATES` value in `homeassistant/components/airgradient/update.py` (retain `1` if firmware checks must be serialized).",
+              "validation": [
+                "Add or retain a test asserting the update platform's intended parallel-update limit.",
+                "Run `pytest -q tests/components/airgradient/test_update.py`."
+              ]
+            }
+          ],
+          "summary": "One policy violation found."
+        },
+        "latencyMs": 100513,
+        "usage": {
+          "inputTokens": 15436,
+          "outputTokens": 566,
+          "requests": 1,
+          "costUsd": 0.0424768
+        },
+        "filesRead": [
+          ".neuralint/rules/action-exceptions.yaml",
+          ".neuralint/rules/action-setup.yaml",
+          ".neuralint/rules/appropriate-polling.yaml",
+          ".neuralint/rules/async-dependency.yaml",
+          ".neuralint/rules/brands.yaml",
+          ".neuralint/rules/common-modules.yaml",
+          ".neuralint/rules/config-entry-unloading.yaml",
+          ".neuralint/rules/config-flow-test-coverage.yaml",
+          ".neuralint/rules/config-flow.yaml",
+          ".neuralint/rules/dependency-transparency.yaml",
+          ".neuralint/rules/devices.yaml",
+          ".neuralint/rules/diagnostics.yaml",
+          ".neuralint/rules/discovery-update-info.yaml",
+          ".neuralint/rules/discovery.yaml",
+          ".neuralint/rules/docs-actions.yaml",
+          ".neuralint/rules/docs-conditions.yaml",
+          ".neuralint/rules/docs-configuration-parameters.yaml",
+          ".neuralint/rules/docs-data-update.yaml",
+          ".neuralint/rules/docs-examples.yaml",
+          ".neuralint/rules/docs-high-level-description.yaml",
+          ".neuralint/rules/docs-installation-instructions.yaml",
+          ".neuralint/rules/docs-installation-parameters.yaml",
+          ".neuralint/rules/docs-known-limitations.yaml",
+          ".neuralint/rules/docs-removal-instructions.yaml",
+          ".neuralint/rules/docs-supported-devices.yaml",
+          ".neuralint/rules/docs-supported-functions.yaml",
+          ".neuralint/rules/docs-triggers.yaml",
+          ".neuralint/rules/docs-troubleshooting.yaml",
+          ".neuralint/rules/docs-use-cases.yaml",
+          ".neuralint/rules/dynamic-devices.yaml",
+          ".neuralint/rules/entity-category.yaml",
+          ".neuralint/rules/entity-device-class.yaml",
+          ".neuralint/rules/entity-disabled-by-default.yaml",
+          ".neuralint/rules/entity-event-setup.yaml",
+          ".neuralint/rules/entity-translations.yaml",
+          ".neuralint/rules/entity-unavailable.yaml",
+          ".neuralint/rules/entity-unique-id.yaml",
+          ".neuralint/rules/exception-translations.yaml",
+          ".neuralint/rules/has-entity-name.yaml",
+          ".neuralint/rules/icon-translations.yaml",
+          ".neuralint/rules/inject-websession.yaml",
+          ".neuralint/rules/integration-owner.yaml",
+          ".neuralint/rules/log-when-unavailable.yaml",
+          ".neuralint/rules/parallel-updates.yaml",
+          ".neuralint/rules/reauthentication-flow.yaml",
+          ".neuralint/rules/reconfiguration-flow.yaml",
+          ".neuralint/rules/repair-issues.yaml",
+          ".neuralint/rules/runtime-data.yaml",
+          ".neuralint/rules/stale-devices.yaml",
+          ".neuralint/rules/strict-typing.yaml",
+          ".neuralint/rules/test-before-configure.yaml",
+          ".neuralint/rules/test-before-setup.yaml",
+          ".neuralint/rules/test-coverage.yaml",
+          ".neuralint/rules/unique-config-entry.yaml",
+          "homeassistant/components/airgradient/__init__.py",
+          "homeassistant/components/airgradient/entity.py",
+          "homeassistant/components/airgradient/manifest.json",
+          "homeassistant/components/airgradient/sensor.py",
+          "homeassistant/helpers/entity_platform.py",
+          "tests/components/airgradient/test_update.py"
+        ]
+      },
+      "goldHandoff": {
+        "output": {
+          "reviews": [
+            {
+              "ruleId": "HA_IQS_PARALLEL_UPDATES",
+              "path": "homeassistant/components/airgradient/update.py",
+              "summary": "Restore an explicit PARALLEL_UPDATES declaration for the polling update platform.",
+              "impact": "Without an explicit limit, concurrent entity refreshes and update actions can issue overlapping firmware-version requests to the AirGradient service, risking service/device overload or unreliable updates.",
+              "remediation": "Define PARALLEL_UPDATES = 1 at module scope (replacing the scheduler comment). Keep a different explicit value only if it is supported by the AirGradient API's documented concurrency capacity; SCAN_INTERVAL does not declare platform request concurrency.",
+              "validation": [
+                "Run the AirGradient update-platform tests: pytest -q tests/components/airgradient/test_update.py.",
+                "Run the integration quality/lint checks that verify platform-level parallel-update declarations."
+              ]
+            }
+          ],
+          "summary": "The update platform must explicitly declare its request concurrency limit."
+        },
+        "latencyMs": 25293,
+        "usage": {
+          "inputTokens": 1769,
+          "outputTokens": 272,
+          "requests": 1,
+          "costUsd": 0.007314
+        },
+        "filesRead": [
+          "homeassistant/components/airgradient/__init__.py",
+          "homeassistant/components/airgradient/entity.py",
+          "homeassistant/components/airgradient/update.py"
+        ]
+      }
+    }
+  ]
+}

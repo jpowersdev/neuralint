@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
+  "title": "Keep child fibers owned by a parent Scope",
+  "description": "Concurrent work should remain attached to an explicit parent operation or Scope unless a reviewed design establishes a daemon lifetime and supervision policy.",
+  "severity": "critical",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply to changed forks and asynchronous launches. Do not report a runtime's intentional top-level launch or a documented supervised daemon.",
+  "criteria": {
+    "violation": "Changed code uses detached/daemon fibers or fire-and-forget execution merely to reduce latency, with no owner, supervision, or cancellation path.",
+    "compliant": "Child work is joined, scoped, supervised, or otherwise owned so parent interruption and shutdown produce defined behavior."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

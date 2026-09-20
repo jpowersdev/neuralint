@@ -34,3 +34,13 @@ The patches and source excerpts in `benchmark/realistic/` derive from:
 - License: MIT; see [`realistic/LICENSE.p-map`](realistic/LICENSE.p-map).
 
 The synthetic regressions are neuralint benchmark fixtures and are not upstream p-map changes or claims about upstream contributors.
+
+## Effect idiom guidance
+
+`benchmark/effect-idioms-30/rules/` contains newly authored machine-readable adaptations of public Effect v4 guidance from:
+
+- Effect-TS/effect `LLMS.md`, pinned at `3b155e3e24e42b603d48dff5d3280715944998f0`, MIT licensed.
+- jpowersdev/effect-pi `EFFECT.md`, pinned at `2dc0f83136bb17bf2e77746b1e98186c57e49471`, MIT licensed.
+- kitlangton/skills `skills/effect`, pinned at `22c35cb7fd29f931789253fc3c8eb142f2863a8a`, MIT licensed.
+
+Exact URLs and per-rule mappings are recorded in [`effect-idioms-30/provenance.json`](effect-idioms-30/provenance.json). The rules and synthetic fixture code are neuralint experiment artifacts; they are not official Effect guidance and no upstream endorsement is implied. Private guidance and unlicensed third-party text are not included.

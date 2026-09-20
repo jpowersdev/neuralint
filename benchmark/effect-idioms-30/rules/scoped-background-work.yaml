@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_SCOPED_BACKGROUND_WORK",
+  "title": "Fork long-lived work into its owning Layer scope",
+  "description": "Streams, listeners, subscriptions, workers, and forever loops owned by a Layer should be forked into that Layer's Scope so acquisition completes and release interrupts them.",
+  "severity": "critical",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Manual start/stop methods are acceptable only when lifecycle control is an explicit domain responsibility. Inspect whether acquisition blocks or work escapes its owner.",
+  "criteria": {
+    "violation": "Changed Layer construction runs forever work inline, detaches it, or starts background work without connecting its Fiber lifetime to the owning scope.",
+    "compliant": "The owner uses forkScoped, FiberSet/FiberMap, or forkIn(capturedScope), and Layer acquisition completes while cleanup interrupts the work."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

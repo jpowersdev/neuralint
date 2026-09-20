@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_BOUNDED_CONCURRENCY",
+  "title": "Bound concurrency by the protected resource",
+  "description": "Collection and stream concurrency should have a finite bound chosen for the downstream resource; queues and buffers should apply backpressure rather than unbounded growth.",
+  "severity": "critical",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Do not require concurrency where work should be sequential. An unbounded source may still be safe when bounded by a downstream semaphore or other visible capacity control.",
+  "criteria": {
+    "violation": "Changed code makes input-sized work fully unbounded, introduces an unbounded queue/buffer without an external bound, or removes the capacity protecting a downstream service.",
+    "compliant": "Concurrency/capacity is finite and justified by the protected database, provider, CPU, memory, or ordering requirement, with backpressure where applicable."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

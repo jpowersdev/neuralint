@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_CAPABILITY_SERVICES",
+  "title": "Represent operational capabilities as Effect services",
+  "description": "Reusable operational capabilities should be exposed through cohesive Context services and Layers rather than mutable singletons, direct construction in consumers, or unrelated function namespaces.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Do not wrap pure transformations in services solely for mocking. Apply when the capability owns effects, configuration, resources, replaceable infrastructure, concurrency, or state.",
+  "criteria": {
+    "violation": "Changed code introduces a reusable operational capability as a global/singleton or constructs its implementation directly inside consumers, bypassing Effect service composition.",
+    "compliant": "A cohesive service contract describes the capability, its implementation is supplied by a Layer, and pure domain logic remains ordinary pure functions."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

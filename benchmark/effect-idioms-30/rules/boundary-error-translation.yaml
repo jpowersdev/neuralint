@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+  "title": "Translate infrastructure failures at adapter boundaries",
+  "description": "Adapters should map low-level SDK, persistence, transport, and parsing failures into specific boundary/domain errors while preserving useful operation and cause information.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply where changed code crosses an external integration boundary. Do not erase evidence into a generic message or repeatedly remap the same error at unrelated layers.",
+  "criteria": {
+    "violation": "Changed adapter code leaks a foreign error through the application contract or collapses it into vague prose without operation, cause, or relevant identity context.",
+    "compliant": "The adapter maps the foreign failure once into a typed error with enough structured context for diagnosis and preserves the underlying cause safely."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

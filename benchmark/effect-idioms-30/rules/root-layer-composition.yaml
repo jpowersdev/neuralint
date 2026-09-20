@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_ROOT_LAYER_COMPOSITION",
+  "title": "Compose dependencies at explicit Layer boundaries",
+  "description": "Application dependencies should be assembled as named Layer graphs at runtime/module boundaries rather than repeatedly provided inline inside business operations.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Small local provisioning may be appropriate for a deliberately local capability. Distinguish Layer.provide from provideMerge based on whether the dependency must remain exposed.",
+  "criteria": {
+    "violation": "Changed business code adds inline Effect.provide/provideService calls or manually constructs dependencies that belong in the application or capability Layer graph.",
+    "compliant": "Named Layer values compose the dependency graph, hide private dependencies with Layer.provide, and expose dependencies with provideMerge only deliberately."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

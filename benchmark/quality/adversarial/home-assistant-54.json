@@ -1,0 +1,73 @@
+{
+  "schemaVersion": 1,
+  "description": "Hand-authored review degradations for calibrating information-sufficiency scoring.",
+  "controls": [
+    {
+      "id": "control-valid",
+      "caseId": "remove-unload-entry",
+      "sourceReviewId": "remove-unload-entry:direct",
+      "expected": {
+        "informationSufficient": true,
+        "actionable": true,
+        "materialError": false,
+        "unsafeRemediation": false
+      }
+    },
+    {
+      "id": "missing-impact",
+      "caseId": "remove-unload-entry",
+      "comment": "Support config entry unloading (HA_IQS_CONFIG_ENTRY_UNLOADING)\n\nThe async_unload_entry callback was removed from homeassistant/components/airgradient/__init__.py.\n\nEvidence:\n- -async def async_unload_entry(\n- -    return await hass.config_entries.async_unload_platforms(entry, PLATFORMS)\n\nSuggested remediation:\nRestore async_unload_entry and delegate to async_unload_platforms.",
+      "expected": {
+        "impactIdentifiable": false,
+        "informationSufficient": false,
+        "actionable": false
+      }
+    },
+    {
+      "id": "vague-review",
+      "caseId": "remove-sensor-unique-id",
+      "comment": "Entities have a unique ID (HA_IQS_ENTITY_UNIQUE_ID)\n\nLocation: homeassistant/components/airgradient/sensor.py\n\nThis may violate the policy. Please fix it.",
+      "expected": {
+        "invariantIdentifiable": false,
+        "locationIdentifiable": false,
+        "impactIdentifiable": false,
+        "remediationUnderstandable": false,
+        "evidenceGrounded": false,
+        "informationSufficient": false,
+        "actionable": false
+      }
+    },
+    {
+      "id": "unsafe-wrong-remediation",
+      "caseId": "create-private-websession",
+      "comment": "The integration dependency supports passing in a websession (HA_IQS_INJECT_WEBSESSION)\n\nRemoving session=async_get_clientsession(hass) makes each AirGradientClient own a separate HTTP lifecycle, increasing connection overhead.\n\nEvidence:\n- client = AirGradientClient(entry.data[CONF_HOST])\n\nSuggested remediation:\nAvoid session-management problems by deleting AirGradient network polling and returning fabricated empty sensor data instead.",
+      "expected": {
+        "remediationAppropriate": false,
+        "unsafeRemediation": true,
+        "actionable": false
+      }
+    },
+    {
+      "id": "fabricated-location-evidence",
+      "caseId": "untranslated-action-error",
+      "comment": "Exception translations (HA_IQS_EXCEPTION_TRANSLATIONS)\n\nThe change deletes the translation key from homeassistant/components/airgradient/config_flow.py, causing an untranslated authentication error.\n\nEvidence:\n- translation_key = \"invalid_auth\"\n\nSuggested remediation:\nRestore the deleted invalid_auth translation in config_flow.py.",
+      "expected": {
+        "locationIdentifiable": false,
+        "evidenceGrounded": false,
+        "materialError": true,
+        "actionable": false
+      }
+    },
+    {
+      "id": "missing-remediation",
+      "caseId": "remove-parallel-update-limit",
+      "comment": "Specify the number of parallel updates (HA_IQS_PARALLEL_UPDATES)\n\nRemoving PARALLEL_UPDATES = 1 from homeassistant/components/airgradient/update.py removes the explicit concurrency limit. Concurrent update requests may now overlap.\n\nEvidence:\n- -PARALLEL_UPDATES = 1",
+      "expected": {
+        "remediationUnderstandable": false,
+        "remediationAppropriate": false,
+        "informationSufficient": false,
+        "actionable": false
+      }
+    }
+  ]
+}

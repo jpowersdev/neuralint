@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_DECODE_EXTERNAL_VALUES",
+  "title": "Decode unknown values at external boundaries",
+  "description": "Files, environment input, HTTP payloads, database rows, SDK responses, and other untrusted values should be decoded through Schema rather than asserted into domain types.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply where changed code accepts external or persistence data. A cast may describe evidence already established by types, but must not replace runtime validation.",
+  "criteria": {
+    "violation": "Changed boundary code casts, manually narrows, or directly consumes untrusted data as a domain value without Schema decoding or an equivalent validated boundary.",
+    "compliant": "The boundary preserves unknown and uses Schema decoding, an HttpApi/SQL decoder, or another established validated constructor before domain use."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

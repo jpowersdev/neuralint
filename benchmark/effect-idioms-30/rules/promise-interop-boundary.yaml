@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+  "title": "Convert Promise and callback APIs once at the edge",
+  "description": "Foreign Promise/callback APIs should be wrapped once with Effect interop in an adapter; raw Promises must not escape through application service contracts.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Inspect whether this is the actual integration boundary. A ManagedRuntime may bridge into a non-Effect host, but Effect-native business code should not become Promise-first.",
+  "criteria": {
+    "violation": "Changed application code exposes a Promise-returning service method, uses async/await for business control flow, or repeatedly wraps the same foreign SDK away from its adapter.",
+    "compliant": "The adapter uses Effect.tryPromise/async with typed error mapping and cancellation where supported; consumers receive Effects."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

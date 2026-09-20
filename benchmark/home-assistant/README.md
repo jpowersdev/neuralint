@@ -27,7 +27,8 @@ The five PRs and 54 rules produce 270 rule × PR opportunities with five labeled
 ## Evaluators
 
 - **neuralint / Jev:** all 54 rules are batched into each screening request; only screened candidates receive focused localization.
-- **GPT-5.6 Terra, low:** a repository-aware Pi agent reads the same catalog, inspects the full checkout with tools, and returns candidate findings.
+- **GPT-5.6 Terra and Luna, low:** repository-aware Pi agents read the same catalog and inspect the full checkout with tools.
+- **Claude Sonnet 5 and Haiku 4.5, low:** repository-aware Claude CLI agents run in safe mode with Read/Bash tools.
 
 Competitors are configured in [`competitors.yaml`](competitors.yaml); adding another Pi-supported model requires only another entry.
 
@@ -55,7 +56,9 @@ The complete direct and routed reviews are preserved in [`results/airgradient-54
 
 The run supports the speed, cost, and routing hypothesis, but **does not yet show attention-related reliability degradation in direct Terra**: direct Terra still found all five violations at 54 rules. The advantage demonstrated here is that Jev can remove broad policy discovery from the expensive agent's job while preserving complete review output.
 
-Review-comment quality has only been inspected qualitatively, not blindly scored. The next experiment should repeat both paths, use a separate judge or human rubric for explanation and suggestion quality, and test nested catalogs at 10, 25, 54, 100, 200, and 500 rules with randomized order. Harder multi-file regressions and clean PRs are also necessary.
+The follow-up [nested-catalog report](results/scaling/REPORT.md) compares full-catalog and Jev-screened review with Terra, Luna, Sonnet, and Haiku at 10, 25, and 54 rules. Sol/high blindly scored review information sufficiency and then repository-aware adjudication rechecked every disputed grounding or correctness label.
+
+The [strong-reviewer report](results/strong-reviewers-n54/REPORT.md) holds N=54 fixed and repeats full-catalog versus Jev-screened Sol and Opus review five times. Repository-aware Fable judging scored all 100 generated reviews as actionable and free of material errors; focused review reduced median cost by approximately 46% for both reviewers. Harder multi-file regressions, clean PRs, and larger independently sourced catalogs are still necessary.
 
 ## Run
 

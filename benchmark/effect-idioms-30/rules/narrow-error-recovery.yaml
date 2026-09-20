@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_NARROW_ERROR_RECOVERY",
+  "title": "Recover only at a boundary with a truthful response",
+  "description": "Recovery should target typed failures at the narrowest boundary that can retry, fallback, translate, or otherwise respond truthfully; defects and interruption should remain distinct.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Inspect what the handler does after catching. Cause-level recovery is appropriate only at explicit supervision boundaries with an interruption-aware policy.",
+  "criteria": {
+    "violation": "Changed code catches all errors/causes, swallows a failure, converts defects to success, or retries broadly without a boundary-specific truthful policy.",
+    "compliant": "Recovery uses catchTag/catchTags/typed predicates or an explicit supervision policy, preserves interruption, and leaves exhausted or unhandled failures visible."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

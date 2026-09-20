@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_CACHE_LIFETIME",
+  "title": "Construct bounded caches once in their owning Layer",
+  "description": "Use Effect Cache/ScopedCache for bounded keyed memoization and concurrent lookup deduplication, constructing the cache once at the lifetime that should share entries.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "A simple local memo of a pure value may not need Cache. RequestResolver is appropriate only when the backend has a real batch endpoint.",
+  "criteria": {
+    "violation": "Changed code hand-rolls Map+TTL/prune/in-flight dedupe when Cache fits, builds a cache per call, leaves capacity unbounded, or acquires an expensive client inside each lookup.",
+    "compliant": "A bounded Cache/ScopedCache is created in the owning Layer, uses semantically correct success/failure TTLs, and shares its handle across calls."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

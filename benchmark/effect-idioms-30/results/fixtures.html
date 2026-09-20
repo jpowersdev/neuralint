@@ -1,0 +1,646 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>Effect idiom check · neuralint</title><style>
+:root{--bg:#f5f7fb;--paper:#fff;--ink:#172033;--muted:#657189;--line:#dce2ec;--green:#087f5b;--greenbg:#e8f7f1;--amber:#9a6700;--amberbg:#fff6d9;--red:#c92a2a;--redbg:#fff0f0;--blue:#2457a6}*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font:14px/1.5 Inter,ui-sans-serif,system-ui,sans-serif}.wrap{width:min(1120px,calc(100% - 32px));margin:auto}header{padding:48px 0 30px;background:var(--paper);border-bottom:1px solid var(--line)}.kicker{color:var(--blue);font-size:12px;font-weight:800;text-transform:uppercase;letter-spacing:.1em}h1{font-size:38px;line-height:1.1;margin:7px 0}.lede{color:var(--muted);font-size:17px;max-width:760px}.stats{display:flex;gap:10px;flex-wrap:wrap;margin-top:22px}.stat{border:1px solid var(--line);border-radius:10px;padding:10px 15px;min-width:145px}.stat strong{display:block;font-size:22px}.stat span{color:var(--muted);font-size:11px;text-transform:uppercase}main{padding:28px 0 65px}h2{font-size:24px;margin:34px 0 6px}.copy{color:var(--muted);margin-top:0;max-width:790px}.callout{border-left:4px solid var(--amber);background:var(--amberbg);padding:13px 16px;border-radius:6px;margin:18px 0}details.result{background:var(--paper);border:1px solid var(--line);border-radius:9px;margin:8px 0;overflow:hidden}details.result>summary{list-style:none;display:grid;grid-template-columns:14px minmax(250px,2fr) minmax(200px,1.4fr) 55px 100px;align-items:center;gap:12px;padding:12px 15px;cursor:pointer}summary::-webkit-details-marker{display:none}.dot{width:9px;height:9px;border-radius:50%;background:var(--green);display:inline-block}.review .dot{background:var(--amber)}.miss .dot{background:var(--red)}.rule-name small,.control small{display:block;color:var(--muted);font-family:ui-monospace,monospace;font-size:10px}.case-name{color:var(--muted)}.status{text-align:center;border-radius:999px;padding:3px 7px;background:var(--greenbg);color:var(--green);font-size:10px;font-weight:800;text-transform:uppercase}.review .status{background:var(--amberbg);color:var(--amber)}.miss .status{background:var(--redbg);color:var(--red)}.result-body{display:grid;grid-template-columns:1fr 1fr;gap:20px;border-top:1px solid var(--line);padding:16px}h4{margin:0 0 6px}p{margin:6px 0}.guidance{color:var(--muted)}pre{background:#101827;color:#d9e4f3;border-radius:7px;padding:11px;overflow:auto;font:11px/1.45 ui-monospace,monospace;margin:5px 0}.line{display:block;white-space:pre}.line.add{color:#8ce4b7}.line.del{color:#ff9dab}.line.hunk{color:#a9c8ff}.line.meta{color:#71839c}.nested{margin:0 16px 14px}.nested>summary,.control summary{color:var(--blue);cursor:pointer}ul{padding-left:20px}li span{color:var(--muted)}.controls{display:grid;grid-template-columns:repeat(2,1fr);gap:8px}.control{display:flex;gap:10px;background:var(--paper);border:1px solid var(--line);border-radius:9px;padding:13px}.control p{color:var(--muted);margin:2px 0}.control .dot{margin-top:5px}.links{display:flex;gap:12px;margin-top:18px}.button{display:inline-block;padding:8px 12px;border-radius:7px;background:var(--ink);color:white;text-decoration:none}footer{border-top:1px solid var(--line);padding:24px 0;color:var(--muted)}@media(max-width:760px){details.result>summary{grid-template-columns:12px 1fr 55px}.case-name,.status{display:none}.result-body,.controls{grid-template-columns:1fr}}
+</style></head><body><header><div class="wrap"><div class="kicker">neuralint · Effect v4 experiment</div><h1>Did Jev recognize the intended idioms?</h1><p class="lede">One primary expectation per violating changeset. Open a row only when you want the changed lines and related matches.</p><div class="stats"><div class="stat"><strong>30/30</strong><span>primary rules found</span></div><div class="stat"><strong>28/30</strong><span>definitive</span></div><div class="stat"><strong>5/5</strong><span>clean controls had no violation</span></div><div class="stat"><strong>0.91s</strong><span>median per check · $0.00038 avg</span></div></div></div></header><main class="wrap"><section><h2>Needs attention</h2><p class="copy">Two intended findings were retained but remained below the 80% definitive threshold.</p>
+<details class="result review" open>
+ <summary><span class="dot"></span><span class="rule-name">Compose dependencies at explicit Layer boundaries<small>EFFECT_ROOT_LAYER_COMPOSITION</small></span><span class="case-name">Provide an API client inside each operation</span><strong>79%</strong><span class="status">needs review</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-  const client = yield* ApiClient</span>
+<span class="line del">-  return yield* client.load()</span>
+<span class="line add">+  return yield* ApiClient.pipe(Effect.flatMap(client =&gt; client.load()), Effect.provide(ApiClientLive))</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Application dependencies should be assembled as named Layer graphs at runtime/module boundaries rather than repeatedly provided inline inside business operations.</p><p class="guidance"><b>Compliant:</b> Named Layer values compose the dependency graph, hide private dependencies with Layer.provide, and expose dependencies with provideMerge only deliberately.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_REUSE_STATEFUL_LAYERS</code> <span>inconclusive, 46%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index b591906..bd50c40 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,5 +1,4 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line ctx"> export const load = Effect.fn(&quot;Users.load&quot;)(function* () {</span>
+<span class="line del">-  const client = yield* ApiClient</span>
+<span class="line del">-  return yield* client.load()</span>
+<span class="line add">+  return yield* ApiClient.pipe(Effect.flatMap(client =&gt; client.load()), Effect.provide(ApiClientLive))</span>
+<span class="line ctx"> })</span></pre></details>
+</details>
+<details class="result review" open>
+ <summary><span class="dot"></span><span class="rule-name">Build stateful Layers once per intended lifetime<small>EFFECT_REUSE_STATEFUL_LAYERS</small></span><span class="case-name">Rebuild a stateful client Layer per request</span><strong>70%</strong><span class="status">needs review</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const UsersLive = Layer.effect(Users, makeUsers).pipe(Layer.provide(ApiClientLive))</span>
+<span class="line add">+export const loadUser = (id: string) =&gt;</span>
+<span class="line add">+  Users.pipe(Effect.flatMap(users =&gt; users.load(id)), Effect.provide(ApiClientLive))</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Memoized Layers, clients, caches, pools, and stateful services should be constructed at their owning lifetime, not recreated inside each request or method.</p><p class="guidance"><b>Compliant:</b> The stateful Layer value is hoisted to and shared by its owning application, service, or test scope.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 68%</span></li><li><code>EFFECT_CAPTURE_PRIVATE_DEPENDENCIES</code> <span>inconclusive, 54%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>inconclusive, 72%</span></li><li><code>EFFECT_REUSABLE_FUNCTIONS</code> <span>inconclusive, 72%</span></li><li><code>EFFECT_ROOT_LAYER_COMPOSITION</code> <span>inconclusive, 79%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 1bdef5b..5acb7d9 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,3 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const UsersLive = Layer.effect(Users, makeUsers).pipe(Layer.provide(ApiClientLive))</span>
+<span class="line add">+export const loadUser = (id: string) =&gt;</span>
+<span class="line add">+  Users.pipe(Effect.flatMap(users =&gt; users.load(id)), Effect.provide(ApiClientLive))</span></pre></details>
+</details></section><section><h2>Definitive primary detections</h2><p class="copy">These 28 rows show only the predeclared primary rule. Related rule matches are tucked inside each row.</p>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Define reusable workflows with Effect.fn<small>EFFECT_REUSABLE_FUNCTIONS</small></span><span class="case-name">Wrap a reusable workflow in a plain function</span><strong>92%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const load = Effect.fn(&quot;Users.load&quot;)(function* (id: string) {</span>
+<span class="line add">+export const load = (id: string) =&gt; Effect.gen(function* () {</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Reusable functions returning Effect should use Effect.fn when they represent a useful traced operation or Effect.fnUntraced for intentionally untraced helpers.</p><p class="guidance"><b>Compliant:</b> Inline workflow code may use Effect.gen; reusable workflows use Effect.fn with a stable name when traced or Effect.fnUntraced when tracing is intentionally unnecessary.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>violation, 88%</span></li><li><code>EFFECT_PURE_LOGIC_STAYS_PURE</code> <span>inconclusive, 46%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index d7dac27..6c29bda 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,4 +1,4 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const load = Effect.fn(&quot;Users.load&quot;)(function* (id: string) {</span>
+<span class="line add">+export const load = (id: string) =&gt; Effect.gen(function* () {</span>
+<span class="line ctx">   return yield* Effect.succeed(id)</span>
+<span class="line ctx"> })</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Decode unknown values at external boundaries<small>EFFECT_DECODE_EXTERNAL_VALUES</small></span><span class="case-name">Trust an SDK response through a cast</span><strong>98%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const decodeUser = (input: unknown) =&gt; Schema.decodeUnknownEffect(User)(input)</span>
+<span class="line add">+export const decodeUser = (input: unknown) =&gt; Effect.succeed(input as typeof User.Type)</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Files, environment input, HTTP payloads, database rows, SDK responses, and other untrusted values should be decoded through Schema rather than asserted into domain types.</p><p class="guidance"><b>Compliant:</b> The boundary preserves unknown and uses Schema decoding, an HttpApi/SQL decoder, or another established validated constructor before domain use.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>violation, 80%</span></li><li><code>EFFECT_NARROW_ERROR_RECOVERY</code> <span>inconclusive, 78%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>inconclusive, 67%</span></li><li><code>EFFECT_PURE_LOGIC_STAYS_PURE</code> <span>inconclusive, 45%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 5a652c5..549bbe8 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,4 +1,4 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line ctx"> import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line ctx"> const User = Schema.Struct({ id: Schema.String })</span>
+<span class="line del">-export const decodeUser = (input: unknown) =&gt; Schema.decodeUnknownEffect(User)(input)</span>
+<span class="line add">+export const decodeUser = (input: unknown) =&gt; Effect.succeed(input as typeof User.Type)</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Preserve domain identity brands end to end<small>EFFECT_BRANDED_IDENTITIES</small></span><span class="case-name">Replace a domain identity with string</span><strong>94%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export interface Request { readonly userId: UserId }</span>
+<span class="line add">+export interface Request { readonly userId: string }</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Identifiers that are unsafe to interchange should use constrained branded schemas and retain their brand through APIs, services, persistence, and client state.</p><p class="guidance"><b>Compliant:</b> The corresponding branded schema is decoded at the boundary and its type is preserved through domain and service contracts.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_DECODE_EXTERNAL_VALUES</code> <span>inconclusive, 50%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 6551975..876e3ee 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,4 +1,4 @@</span>
+<span class="line ctx"> import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line ctx"> export const UserId = Schema.NonEmptyString.pipe(Schema.brand(&quot;UserId&quot;))</span>
+<span class="line ctx"> export type UserId = typeof UserId.Type</span>
+<span class="line del">-export interface Request { readonly userId: UserId }</span>
+<span class="line add">+export interface Request { readonly userId: string }</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Model closed vocabularies as literal schemas<small>EFFECT_CLOSED_VOCABULARIES</small></span><span class="case-name">Allow any workflow status string</span><strong>95%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const Status = Schema.Literals([&quot;pending&quot;, &quot;running&quot;, &quot;complete&quot;])</span>
+<span class="line add">+export const Status = Schema.String</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Finite domain vocabularies should be represented by literal unions rather than unconstrained strings.</p><p class="guidance"><b>Compliant:</b> The value uses Schema.Literals, a tagged union, or another exhaustive representation of the closed vocabulary.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BRANDED_IDENTITIES</code> <span>inconclusive, 63%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index d1fcca5..d50361e 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,2 @@</span>
+<span class="line ctx"> import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line del">-export const Status = Schema.Literals([&quot;pending&quot;, &quot;running&quot;, &quot;complete&quot;])</span>
+<span class="line add">+export const Status = Schema.String</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Represent mutually exclusive states as tagged variants<small>EFFECT_TAGGED_STATE_VARIANTS</small></span><span class="case-name">Flatten lifecycle variants into optional fields</span><strong>96%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const State = Schema.Union([</span>
+<span class="line del">-  Schema.Struct({ _tag: Schema.Literal(&quot;Running&quot;), startedAt: Schema.String }),</span>
+<span class="line del">-  Schema.Struct({ _tag: Schema.Literal(&quot;Complete&quot;), result: Schema.String }),</span>
+<span class="line del">-])</span>
+<span class="line add">+export const State = Schema.Struct({</span>
+<span class="line add">+  status: Schema.Literals([&quot;running&quot;, &quot;complete&quot;]),</span>
+<span class="line add">+  startedAt: Schema.optional(Schema.String),</span>
+<span class="line add">+  result: Schema.optional(Schema.String),</span>
+<span class="line add">+})</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Lifecycle and workflow states should use tagged variants carrying exactly the data valid for each state instead of status fields plus conditionally valid optional properties.</p><p class="guidance"><b>Compliant:</b> State is an exhaustive tagged union/enum whose variants contain only their valid data and are matched exhaustively.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_EXPLICIT_ABSENCE</code> <span>inconclusive, 70%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index b932102..f38d510 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,5 +1,6 @@</span>
+<span class="line ctx"> import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line del">-export const State = Schema.Union([</span>
+<span class="line del">-  Schema.Struct({ _tag: Schema.Literal(&quot;Running&quot;), startedAt: Schema.String }),</span>
+<span class="line del">-  Schema.Struct({ _tag: Schema.Literal(&quot;Complete&quot;), result: Schema.String }),</span>
+<span class="line del">-])</span>
+<span class="line add">+export const State = Schema.Struct({</span>
+<span class="line add">+  status: Schema.Literals([&quot;running&quot;, &quot;complete&quot;]),</span>
+<span class="line add">+  startedAt: Schema.optional(Schema.String),</span>
+<span class="line add">+  result: Schema.optional(Schema.String),</span>
+<span class="line add">+})</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Represent domain absence explicitly<small>EFFECT_EXPLICIT_ABSENCE</small></span><span class="case-name">Expose undefined from a service contract</span><strong>90%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-interface Users { readonly find: (id: string) =&gt; Effect.Effect&lt;Option.Option&lt;string&gt;&gt; }</span>
+<span class="line add">+interface Users { readonly find: (id: string) =&gt; Effect.Effect&lt;string | undefined&gt; }</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Domain and service APIs should use Option for semantic absence and reserve nullish values for encoded contracts or foreign platform boundaries that require them.</p><p class="guidance"><b>Compliant:</b> Absence is represented by Option in domain code and converted to/from nullish values only at an explicit boundary.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BRANDED_IDENTITIES</code> <span>inconclusive, 66%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 14f8bc6..da23797 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,3 +1,3 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line ctx"> import * as Option from &quot;effect/Option&quot;</span>
+<span class="line del">-interface Users { readonly find: (id: string) =&gt; Effect.Effect&lt;Option.Option&lt;string&gt;&gt; }</span>
+<span class="line add">+interface Users { readonly find: (id: string) =&gt; Effect.Effect&lt;string | undefined&gt; }</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Model expected failures as tagged values<small>EFFECT_TYPED_EXPECTED_ERRORS</small></span><span class="case-name">Throw a generic error for missing input</span><strong>94%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-class MissingName extends Schema.TaggedError&lt;MissingName&gt;()(&quot;MissingName&quot;, {}) {}</span>
+<span class="line del">-export const requireName = (name: string | undefined) =&gt; name ? Effect.succeed(name) : Effect.fail(new MissingName())</span>
+<span class="line add">+export const requireName = (name: string | undefined) =&gt; Effect.sync(() =&gt; {</span>
+<span class="line add">+  if (!name) throw new Error(&quot;missing name&quot;)</span>
+<span class="line add">+  return name</span>
+<span class="line add">+})</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Expected domain and operational failures should be typed tagged values, normally Schema.TaggedError when serialization or schema support matters.</p><p class="guidance"><b>Compliant:</b> The operation fails with a specific tagged error carrying structured fields and callers recover by tag or typed reason.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_EXPLICIT_ABSENCE</code> <span>inconclusive, 67%</span></li><li><code>EFFECT_PURE_LOGIC_STAYS_PURE</code> <span>inconclusive, 59%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index af45ed3..89c7693 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,4 +1,6 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line ctx"> import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line del">-class MissingName extends Schema.TaggedError&lt;MissingName&gt;()(&quot;MissingName&quot;, {}) {}</span>
+<span class="line del">-export const requireName = (name: string | undefined) =&gt; name ? Effect.succeed(name) : Effect.fail(new MissingName())</span>
+<span class="line add">+export const requireName = (name: string | undefined) =&gt; Effect.sync(() =&gt; {</span>
+<span class="line add">+  if (!name) throw new Error(&quot;missing name&quot;)</span>
+<span class="line add">+  return name</span>
+<span class="line add">+})</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Translate infrastructure failures at adapter boundaries<small>EFFECT_BOUNDARY_ERROR_TRANSLATION</small></span><span class="case-name">Leak a provider rejection from the adapter</span><strong>89%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-class ProviderError extends Schema.TaggedError&lt;ProviderError&gt;()(&quot;ProviderError&quot;, { operation: Schema.String, cause: Schema.Defect }) {}</span>
+<span class="line del">-export const invoke = Effect.tryPromise({ try: () =&gt; sdk.invoke(), catch: cause =&gt; new ProviderError({ operation: &quot;invoke&quot;, cause }) })</span>
+<span class="line add">+export const invoke = Effect.tryPromise(() =&gt; sdk.invoke())</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Adapters should map low-level SDK, persistence, transport, and parsing failures into specific boundary/domain errors while preserving useful operation and cause information.</p><p class="guidance"><b>Compliant:</b> The adapter maps the foreign failure once into a typed error with enough structured context for diagnosis and preserves the underlying cause safely.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 40%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>violation, 80%</span></li><li><code>EFFECT_TYPED_EXPECTED_ERRORS</code> <span>inconclusive, 79%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index e6c3721..f07493f 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,4 +1,3 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line ctx"> import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line del">-class ProviderError extends Schema.TaggedError&lt;ProviderError&gt;()(&quot;ProviderError&quot;, { operation: Schema.String, cause: Schema.Defect }) {}</span>
+<span class="line del">-export const invoke = Effect.tryPromise({ try: () =&gt; sdk.invoke(), catch: cause =&gt; new ProviderError({ operation: &quot;invoke&quot;, cause }) })</span>
+<span class="line add">+export const invoke = Effect.tryPromise(() =&gt; sdk.invoke())</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Recover only at a boundary with a truthful response<small>EFFECT_NARROW_ERROR_RECOVERY</small></span><span class="case-name">Turn every cause into success</span><strong>96%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const run = operation.pipe(Effect.catchTag(&quot;NotFound&quot;, () =&gt; Effect.succeed(&quot;missing&quot;)))</span>
+<span class="line add">+export const run = operation.pipe(Effect.catchAllCause(() =&gt; Effect.succeed(&quot;ok&quot;)))</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Recovery should target typed failures at the narrowest boundary that can retry, fallback, translate, or otherwise respond truthfully; defects and interruption should remain distinct.</p><p class="guidance"><b>Compliant:</b> Recovery uses catchTag/catchTags/typed predicates or an explicit supervision policy, preserves interruption, and leaves exhausted or unhandled failures visible.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>violation, 90%</span></li><li><code>EFFECT_TYPED_EXPECTED_ERRORS</code> <span>inconclusive, 58%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index e6341d5..963342b 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,2 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const run = operation.pipe(Effect.catchTag(&quot;NotFound&quot;, () =&gt; Effect.succeed(&quot;missing&quot;)))</span>
+<span class="line add">+export const run = operation.pipe(Effect.catchAllCause(() =&gt; Effect.succeed(&quot;ok&quot;)))</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Represent operational capabilities as Effect services<small>EFFECT_CAPABILITY_SERVICES</small></span><span class="case-name">Construct an operational capability as a singleton</span><strong>87%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Context from &quot;effect/Context&quot;</span>
+<span class="line del">-interface Mailer { readonly send: (to: string) =&gt; Effect.Effect&lt;void&gt; }</span>
+<span class="line del">-export class Mailers extends Context.Service&lt;Mailers, Mailer&gt;()(&quot;app/Mailers&quot;) {}</span>
+<span class="line add">+export const mailer = {</span>
+<span class="line add">+  send: (to: string) =&gt; Effect.tryPromise(() =&gt; sdk.send(to)),</span>
+<span class="line add">+}</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Reusable operational capabilities should be exposed through cohesive Context services and Layers rather than mutable singletons, direct construction in consumers, or unrelated function namespaces.</p><p class="guidance"><b>Compliant:</b> A cohesive service contract describes the capability, its implementation is supplied by a Layer, and pure domain logic remains ordinary pure functions.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>inconclusive, 70%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>inconclusive, 72%</span></li><li><code>EFFECT_REUSABLE_FUNCTIONS</code> <span>inconclusive, 50%</span></li><li><code>EFFECT_ROOT_LAYER_COMPOSITION</code> <span>inconclusive, 57%</span></li><li><code>EFFECT_TYPED_EXPECTED_ERRORS</code> <span>inconclusive, 56%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 2099ece..6888c6f 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,4 +1,4 @@</span>
+<span class="line del">-import * as Context from &quot;effect/Context&quot;</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-interface Mailer { readonly send: (to: string) =&gt; Effect.Effect&lt;void&gt; }</span>
+<span class="line del">-export class Mailers extends Context.Service&lt;Mailers, Mailer&gt;()(&quot;app/Mailers&quot;) {}</span>
+<span class="line add">+export const mailer = {</span>
+<span class="line add">+  send: (to: string) =&gt; Effect.tryPromise(() =&gt; sdk.send(to)),</span>
+<span class="line add">+}</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Capture implementation dependencies inside the service Layer<small>EFFECT_CAPTURE_PRIVATE_DEPENDENCIES</small></span><span class="case-name">Make consumers provide a private filesystem dependency</span><strong>92%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-interface Documents { readonly load: (id: string) =&gt; Effect.Effect&lt;string, Error&gt; }</span>
+<span class="line del">-const make = Effect.gen(function* () {</span>
+<span class="line del">-  const fs = yield* FileSystem.FileSystem</span>
+<span class="line del">-  return { load: (id: string) =&gt; fs.readFileString(id) } satisfies Documents</span>
+<span class="line del">-})</span>
+<span class="line add">+interface Documents { readonly load: (id: string) =&gt; Effect.Effect&lt;string, Error, FileSystem.FileSystem&gt; }</span>
+<span class="line add">+const make = Effect.succeed({</span>
+<span class="line add">+  load: (id: string) =&gt; Effect.flatMap(FileSystem.FileSystem, fs =&gt; fs.readFileString(id)),</span>
+<span class="line add">+} satisfies Documents)</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>A service Layer should acquire private dependencies once, close over them in methods, and expose a contract whose environment contains only requirements consumers genuinely own.</p><p class="guidance"><b>Compliant:</b> The owning Layer acquires and provides private dependencies; consumers require only the service and explicit domain capabilities they are responsible for.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 41%</span></li><li><code>EFFECT_ROOT_LAYER_COMPOSITION</code> <span>inconclusive, 61%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index bcd6ffb..de98409 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,6 +1,5 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-interface Documents { readonly load: (id: string) =&gt; Effect.Effect&lt;string, Error&gt; }</span>
+<span class="line del">-const make = Effect.gen(function* () {</span>
+<span class="line del">-  const fs = yield* FileSystem.FileSystem</span>
+<span class="line del">-  return { load: (id: string) =&gt; fs.readFileString(id) } satisfies Documents</span>
+<span class="line del">-})</span>
+<span class="line add">+interface Documents { readonly load: (id: string) =&gt; Effect.Effect&lt;string, Error, FileSystem.FileSystem&gt; }</span>
+<span class="line add">+const make = Effect.succeed({</span>
+<span class="line add">+  load: (id: string) =&gt; Effect.flatMap(FileSystem.FileSystem, fs =&gt; fs.readFileString(id)),</span>
+<span class="line add">+} satisfies Documents)</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Keep deterministic transformations out of Effect services<small>EFFECT_PURE_LOGIC_STAYS_PURE</small></span><span class="case-name">Put a deterministic transformation in Effect</span><strong>93%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const normalizeName = (name: string): string =&gt; name.trim().toUpperCase()</span>
+<span class="line add">+import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line add">+export const normalizeName = (name: string) =&gt; Effect.sync(() =&gt; name.trim().toUpperCase())</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Deterministic transformations should remain pure functions; Effect and service boundaries should represent actual effects or meaningful operational capabilities.</p><p class="guidance"><b>Compliant:</b> The transformation is an ordinary pure function with explicit inputs and outputs and is composed into Effect workflows where needed.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 67%</span></li><li><code>EFFECT_REUSABLE_FUNCTIONS</code> <span>inconclusive, 65%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index acb663a..edfabfd 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1 +1,2 @@</span>
+<span class="line del">-export const normalizeName = (name: string): string =&gt; name.trim().toUpperCase()</span>
+<span class="line add">+import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line add">+export const normalizeName = (name: string) =&gt; Effect.sync(() =&gt; name.trim().toUpperCase())</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Use Effect platform services in application code<small>EFFECT_PLATFORM_CAPABILITIES</small></span><span class="case-name">Read files directly in a domain operation</span><strong>91%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-import * as FileSystem from &quot;effect/FileSystem&quot;</span>
+<span class="line del">-export const load = Effect.fn(&quot;Documents.load&quot;)(function* (path: string) {</span>
+<span class="line del">-  const fs = yield* FileSystem.FileSystem</span>
+<span class="line del">-  return yield* fs.readFileString(path)</span>
+<span class="line del">-})</span>
+<span class="line add">+import { readFile } from &quot;node:fs/promises&quot;</span>
+<span class="line add">+export const load = async (path: string) =&gt; readFile(path, &quot;utf8&quot;)</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Application and domain code should use Effect services for filesystem, path, time, randomness, processes, HTTP, configuration, and other supported platform capabilities.</p><p class="guidance"><b>Compliant:</b> Host-specific operations are isolated in an adapter/entrypoint or use the Effect platform service so dependencies, errors, and tests remain explicit.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>violation, 82%</span></li><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 78%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>violation, 85%</span></li><li><code>EFFECT_PROMISE_INTEROP_BOUNDARY</code> <span>violation, 94%</span></li><li><code>EFFECT_REUSABLE_FUNCTIONS</code> <span>inconclusive, 52%</span></li><li><code>EFFECT_TYPED_EXPECTED_ERRORS</code> <span>inconclusive, 71%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 411d096..a4c1726 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,6 +1,2 @@</span>
+<span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-import * as FileSystem from &quot;effect/FileSystem&quot;</span>
+<span class="line del">-export const load = Effect.fn(&quot;Documents.load&quot;)(function* (path: string) {</span>
+<span class="line del">-  const fs = yield* FileSystem.FileSystem</span>
+<span class="line del">-  return yield* fs.readFileString(path)</span>
+<span class="line del">-})</span>
+<span class="line add">+import { readFile } from &quot;node:fs/promises&quot;</span>
+<span class="line add">+export const load = async (path: string) =&gt; readFile(path, &quot;utf8&quot;)</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Convert Promise and callback APIs once at the edge<small>EFFECT_PROMISE_INTEROP_BOUNDARY</small></span><span class="case-name">Expose a raw Promise from a service</span><strong>88%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-interface Vendor { readonly invoke: (id: string) =&gt; Effect.Effect&lt;string, VendorError&gt; }</span>
+<span class="line add">+interface Vendor { readonly invoke: (id: string) =&gt; Promise&lt;string&gt; }</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Foreign Promise/callback APIs should be wrapped once with Effect interop in an adapter; raw Promises must not escape through application service contracts.</p><p class="guidance"><b>Compliant:</b> The adapter uses Effect.tryPromise/async with typed error mapping and cancellation where supported; consumers receive Effects.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>inconclusive, 67%</span></li><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 48%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>inconclusive, 70%</span></li><li><code>EFFECT_TYPED_EXPECTED_ERRORS</code> <span>inconclusive, 59%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index caa8675..7c7f2b1 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1 @@</span>
+<span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-interface Vendor { readonly invoke: (id: string) =&gt; Effect.Effect&lt;string, VendorError&gt; }</span>
+<span class="line add">+interface Vendor { readonly invoke: (id: string) =&gt; Promise&lt;string&gt; }</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Tie acquired resources to Scope<small>EFFECT_SCOPED_RESOURCE_OWNERSHIP</small></span><span class="case-name">Acquire a temporary directory without Scope</span><strong>94%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const work = Effect.scoped(Effect.gen(function* () {</span>
+<span class="line del">-  const directory = yield* fs.makeTempDirectoryScoped()</span>
+<span class="line add">+export const work = Effect.gen(function* () {</span>
+<span class="line add">+  const directory = yield* fs.makeTempDirectory()</span>
+<span class="line del">-}))</span>
+<span class="line add">+})</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Files, clients, processes, servers, subscriptions, temporary directories, and other resources requiring cleanup should be acquired in Scope with an explicit owner.</p><p class="guidance"><b>Compliant:</b> The resource uses a scoped API, Effect.acquireRelease/addFinalizer, or an owning scoped Layer that releases it on success, failure, and interruption.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_REUSE_STATEFUL_LAYERS</code> <span>inconclusive, 38%</span></li><li><code>EFFECT_STRUCTURED_FIBER_OWNERSHIP</code> <span>inconclusive, 41%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index f536f82..84a735e 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,5 +1,5 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const work = Effect.scoped(Effect.gen(function* () {</span>
+<span class="line del">-  const directory = yield* fs.makeTempDirectoryScoped()</span>
+<span class="line add">+export const work = Effect.gen(function* () {</span>
+<span class="line add">+  const directory = yield* fs.makeTempDirectory()</span>
+<span class="line ctx">   return yield* process(directory)</span>
+<span class="line del">-}))</span>
+<span class="line add">+})</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Fork long-lived work into its owning Layer scope<small>EFFECT_SCOPED_BACKGROUND_WORK</small></span><span class="case-name">Detach a forever worker from its Layer</span><strong>92%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkScoped))</span>
+<span class="line add">+export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkDaemon, Effect.asVoid))</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Streams, listeners, subscriptions, workers, and forever loops owned by a Layer should be forked into that Layer&#x27;s Scope so acquisition completes and release interrupts them.</p><p class="guidance"><b>Compliant:</b> The owner uses forkScoped, FiberSet/FiberMap, or forkIn(capturedScope), and Layer acquisition completes while cleanup interrupts the work.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_SCOPED_RESOURCE_OWNERSHIP</code> <span>inconclusive, 56%</span></li><li><code>EFFECT_STRUCTURED_FIBER_OWNERSHIP</code> <span>inconclusive, 68%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 379b28d..bf6ad55 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,2 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkScoped))</span>
+<span class="line add">+export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkDaemon, Effect.asVoid))</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Keep child fibers owned by a parent Scope<small>EFFECT_STRUCTURED_FIBER_OWNERSHIP</small></span><span class="case-name">Detach request work to return early</span><strong>83%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const handle = work.pipe(Effect.forkScoped, Effect.flatMap(Fiber.join))</span>
+<span class="line add">+export const handle = work.pipe(Effect.forkDaemon, Effect.asVoid)</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Concurrent work should remain attached to an explicit parent operation or Scope unless a reviewed design establishes a daemon lifetime and supervision policy.</p><p class="guidance"><b>Compliant:</b> Child work is joined, scoped, supervised, or otherwise owned so parent interruption and shutdown produce defined behavior.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDED_CONCURRENCY</code> <span>inconclusive, 58%</span></li><li><code>EFFECT_NARROW_ERROR_RECOVERY</code> <span>inconclusive, 72%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>inconclusive, 60%</span></li><li><code>EFFECT_SCOPED_BACKGROUND_WORK</code> <span>violation, 87%</span></li><li><code>EFFECT_SCOPED_RESOURCE_OWNERSHIP</code> <span>inconclusive, 72%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index b51b97a..9ea85bd 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,2 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const handle = work.pipe(Effect.forkScoped, Effect.flatMap(Fiber.join))</span>
+<span class="line add">+export const handle = work.pipe(Effect.forkDaemon, Effect.asVoid)</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Bound concurrency by the protected resource<small>EFFECT_BOUNDED_CONCURRENCY</small></span><span class="case-name">Remove the provider concurrency limit</span><strong>92%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const loadAll = (ids: ReadonlyArray&lt;string&gt;) =&gt; Effect.forEach(ids, load, { concurrency: 8 })</span>
+<span class="line add">+export const loadAll = (ids: ReadonlyArray&lt;string&gt;) =&gt; Effect.forEach(ids, load, { concurrency: &quot;unbounded&quot; })</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Collection and stream concurrency should have a finite bound chosen for the downstream resource; queues and buffers should apply backpressure rather than unbounded growth.</p><p class="guidance"><b>Compliant:</b> Concurrency/capacity is finite and justified by the protected database, provider, CPU, memory, or ordering requirement, with backpressure where applicable.</p><h4>Other rule matches</h4><ul><li>None</li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 619c351..1f55574 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,2 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const loadAll = (ids: ReadonlyArray&lt;string&gt;) =&gt; Effect.forEach(ids, load, { concurrency: 8 })</span>
+<span class="line add">+export const loadAll = (ids: ReadonlyArray&lt;string&gt;) =&gt; Effect.forEach(ids, load, { concurrency: &quot;unbounded&quot; })</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Retry only idempotent operations with finite policy<small>EFFECT_BOUNDED_IDEMPOTENT_RETRY</small></span><span class="case-name">Retry payment submission forever</span><strong>96%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const submit = payment.pipe(Effect.retry(Schedule.exponential(&quot;100 millis&quot;).pipe(Schedule.upTo({ times: 3 }))))</span>
+<span class="line add">+export const submit = payment.pipe(Effect.retry(Schedule.forever))</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Retries should occur at the narrowest boundary, only for failures and operations proven safe to repeat, with finite attempt/time bounds and visible exhaustion.</p><p class="guidance"><b>Compliant:</b> A typed transient-failure policy uses a bounded Schedule, optional jitter/backoff, preserves interruption, and exposes exhaustion or a real fallback.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_DETERMINISTIC_TEST_TIME</code> <span>inconclusive, 36%</span></li><li><code>EFFECT_NARROW_ERROR_RECOVERY</code> <span>violation, 85%</span></li><li><code>EFFECT_SCOPED_BACKGROUND_WORK</code> <span>inconclusive, 67%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index c70960b..4d3c16f 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,3 +1,3 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line ctx"> import * as Schedule from &quot;effect/Schedule&quot;</span>
+<span class="line del">-export const submit = payment.pipe(Effect.retry(Schedule.exponential(&quot;100 millis&quot;).pipe(Schedule.upTo({ times: 3 }))))</span>
+<span class="line add">+export const submit = payment.pipe(Effect.retry(Schedule.forever))</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Use Schedule for retry, polling, and repeated work<small>EFFECT_SCHEDULE_REPEATED_WORK</small></span><span class="case-name">Poll through a while loop and sleep</span><strong>97%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Schedule from &quot;effect/Schedule&quot;</span>
+<span class="line del">-export const poll = runPass.pipe(Effect.repeat(Schedule.spaced(&quot;1 second&quot;)))</span>
+<span class="line add">+export const poll = Effect.gen(function* () {</span>
+<span class="line add">+  while (true) {</span>
+<span class="line add">+    yield* runPass</span>
+<span class="line add">+    yield* Effect.sleep(&quot;1 second&quot;)</span>
+<span class="line add">+  }</span>
+<span class="line add">+})</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Retries, polling, pacing, and recurring passes should use Schedule with Effect.retry/repeat rather than manual loops and sleeps.</p><p class="guidance"><b>Compliant:</b> Effect.retry/repeat/retryOrElse composes an explicit bounded or paced Schedule whose semantics are visible and testable.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDED_IDEMPOTENT_RETRY</code> <span>violation, 85%</span></li><li><code>EFFECT_DETERMINISTIC_TEST_TIME</code> <span>inconclusive, 67%</span></li><li><code>EFFECT_REUSABLE_FUNCTIONS</code> <span>inconclusive, 66%</span></li><li><code>EFFECT_SCOPED_BACKGROUND_WORK</code> <span>inconclusive, 43%</span></li><li><code>EFFECT_STREAM_FOR_MANY_VALUES</code> <span>inconclusive, 42%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 2e44e9a..1abfcf3 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,3 +1,7 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-import * as Schedule from &quot;effect/Schedule&quot;</span>
+<span class="line del">-export const poll = runPass.pipe(Effect.repeat(Schedule.spaced(&quot;1 second&quot;)))</span>
+<span class="line add">+export const poll = Effect.gen(function* () {</span>
+<span class="line add">+  while (true) {</span>
+<span class="line add">+    yield* runPass</span>
+<span class="line add">+    yield* Effect.sleep(&quot;1 second&quot;)</span>
+<span class="line add">+  }</span>
+<span class="line add">+})</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Use Stream for effectful many-valued sources<small>EFFECT_STREAM_FOR_MANY_VALUES</small></span><span class="case-name">Expose callback registration for a many-valued source</span><strong>90%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Stream from &quot;effect/Stream&quot;</span>
+<span class="line del">-interface Events { readonly events: Stream.Stream&lt;Event, EventError&gt; }</span>
+<span class="line add">+interface Events {</span>
+<span class="line add">+  readonly onEvent: (listener: (event: Event) =&gt; void) =&gt; () =&gt; void</span>
+<span class="line add">+}</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Time-ordered effectful sources with multiple values, transformation, interruption, or backpressure should expose Stream rather than callbacks, raw async iterables, or public producer queues.</p><p class="guidance"><b>Compliant:</b> The implementation keeps producers private and exposes a typed Stream with lifecycle, errors, and backpressure owned by the service.</p><h4>Other rule matches</h4><ul><li>None</li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 4699d40..d6f9285 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,3 @@</span>
+<span class="line del">-import * as Stream from &quot;effect/Stream&quot;</span>
+<span class="line del">-interface Events { readonly events: Stream.Stream&lt;Event, EventError&gt; }</span>
+<span class="line add">+interface Events {</span>
+<span class="line add">+  readonly onEvent: (listener: (event: Event) =&gt; void) =&gt; () =&gt; void</span>
+<span class="line add">+}</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Prove stream finiteness before collecting<small>EFFECT_FINITE_STREAM_COLLECTION</small></span><span class="case-name">Collect an open subscription into memory</span><strong>93%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const firstHundred = events.pipe(Stream.take(100), Stream.runCollect)</span>
+<span class="line add">+export const allEvents = events.pipe(Stream.runCollect)</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Stream.runCollect is appropriate only when the stream is known finite or explicitly bounded before collection.</p><p class="guidance"><b>Compliant:</b> The consumer drains/processes incrementally or establishes a clear finite bound before runCollect.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDED_CONCURRENCY</code> <span>inconclusive, 73%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 8bd09a8..eaa0110 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1,2 @@</span>
+<span class="line ctx"> import * as Stream from &quot;effect/Stream&quot;</span>
+<span class="line del">-export const firstHundred = events.pipe(Stream.take(100), Stream.runCollect)</span>
+<span class="line add">+export const allEvents = events.pipe(Stream.runCollect)</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Own the complete HTTP boundary in a named adapter<small>EFFECT_HTTP_ADAPTER_CONTRACT</small></span><span class="case-name">Return unchecked JSON from a provider</span><strong>95%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line del">-export const request = Effect.fn(&quot;Provider.request&quot;)(function* () {</span>
+<span class="line del">-  const response = yield* client.get(&quot;/users&quot;).pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))</span>
+<span class="line del">-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)</span>
+<span class="line del">-})</span>
+<span class="line add">+export const request = async () =&gt; {</span>
+<span class="line add">+  const response = await fetch(&quot;/users&quot;)</span>
+<span class="line add">+  return response.json()</span>
+<span class="line add">+}</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Outgoing HTTP adapters should construct requests, attach auth, classify statuses, decode unknown bodies, map typed failures, and apply cancellation/retry policy in one named boundary.</p><p class="guidance"><b>Compliant:</b> A named HttpClient/raw-fetch adapter owns request and response semantics, decodes through Schema, maps typed errors, redacts evidence, and retries only idempotent operations.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>violation, 90%</span></li><li><code>EFFECT_BRANDED_IDENTITIES</code> <span>inconclusive, 59%</span></li><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>violation, 82%</span></li><li><code>EFFECT_DECODE_EXTERNAL_VALUES</code> <span>violation, 92%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>violation, 90%</span></li><li><code>EFFECT_PLATFORM_CAPABILITIES</code> <span>violation, 89%</span></li><li><code>EFFECT_PROMISE_INTEROP_BOUNDARY</code> <span>violation, 93%</span></li><li><code>EFFECT_REUSABLE_FUNCTIONS</code> <span>inconclusive, 37%</span></li><li><code>EFFECT_TEST_PUBLIC_BOUNDARIES</code> <span>inconclusive, 54%</span></li><li><code>EFFECT_TYPED_EXPECTED_ERRORS</code> <span>inconclusive, 67%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 9af63c0..8a7e928 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,6 +1,4 @@</span>
+<span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-import * as Schema from &quot;effect/Schema&quot;</span>
+<span class="line del">-export const request = Effect.fn(&quot;Provider.request&quot;)(function* () {</span>
+<span class="line del">-  const response = yield* client.get(&quot;/users&quot;).pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))</span>
+<span class="line del">-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)</span>
+<span class="line del">-})</span>
+<span class="line add">+export const request = async () =&gt; {</span>
+<span class="line add">+  const response = await fetch(&quot;/users&quot;)</span>
+<span class="line add">+  return response.json()</span>
+<span class="line add">+}</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Construct bounded caches once in their owning Layer<small>EFFECT_CACHE_LIFETIME</small></span><span class="case-name">Build an unbounded TTL map inside a service</span><strong>93%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Cache from &quot;effect/Cache&quot;</span>
+<span class="line del">-const cache = yield* Cache.make({ capacity: 500, timeToLive: &quot;5 minutes&quot;, lookup })</span>
+<span class="line del">-export const get = (id: string) =&gt; Cache.get(cache, id)</span>
+<span class="line add">+const cache = new Map&lt;string, { value: User; expiresAt: number }&gt;()</span>
+<span class="line add">+export const get = async (id: string) =&gt; {</span>
+<span class="line add">+  const hit = cache.get(id)</span>
+<span class="line add">+  if (hit &amp;&amp; hit.expiresAt &gt; Date.now()) return hit.value</span>
+<span class="line add">+  const value = await lookup(id)</span>
+<span class="line add">+  cache.set(id, { value, expiresAt: Date.now() + 300000 })</span>
+<span class="line add">+  return value</span>
+<span class="line more">… 1 more changed lines</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Use Effect Cache/ScopedCache for bounded keyed memoization and concurrent lookup deduplication, constructing the cache once at the lifetime that should share entries.</p><p class="guidance"><b>Compliant:</b> A bounded Cache/ScopedCache is created in the owning Layer, uses semantically correct success/failure TTLs, and shares its handle across calls.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>inconclusive, 68%</span></li><li><code>EFFECT_BOUNDED_CONCURRENCY</code> <span>violation, 81%</span></li><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>violation, 92%</span></li><li><code>EFFECT_OPERATION_OBSERVABILITY</code> <span>violation, 82%</span></li><li><code>EFFECT_PLATFORM_CAPABILITIES</code> <span>inconclusive, 66%</span></li><li><code>EFFECT_PROMISE_INTEROP_BOUNDARY</code> <span>violation, 91%</span></li><li><code>EFFECT_ROOT_LAYER_COMPOSITION</code> <span>inconclusive, 52%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index fc38748..11cb934 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,3 +1,8 @@</span>
+<span class="line del">-import * as Cache from &quot;effect/Cache&quot;</span>
+<span class="line del">-const cache = yield* Cache.make({ capacity: 500, timeToLive: &quot;5 minutes&quot;, lookup })</span>
+<span class="line del">-export const get = (id: string) =&gt; Cache.get(cache, id)</span>
+<span class="line add">+const cache = new Map&lt;string, { value: User; expiresAt: number }&gt;()</span>
+<span class="line add">+export const get = async (id: string) =&gt; {</span>
+<span class="line add">+  const hit = cache.get(id)</span>
+<span class="line add">+  if (hit &amp;&amp; hit.expiresAt &gt; Date.now()) return hit.value</span>
+<span class="line add">+  const value = await lookup(id)</span>
+<span class="line add">+  cache.set(id, { value, expiresAt: Date.now() + 300000 })</span>
+<span class="line add">+  return value</span>
+<span class="line add">+}</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Read and validate runtime configuration through Config<small>EFFECT_CONFIG_BOUNDARY</small></span><span class="case-name">Read an API key directly from process.env</span><strong>97%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Config from &quot;effect/Config&quot;</span>
+<span class="line del">-export const apiKey = Config.redacted(&quot;VENDOR_API_KEY&quot;)</span>
+<span class="line add">+export const apiKey = process.env.VENDOR_API_KEY ?? &quot;&quot;</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Runtime settings and credentials should be decoded through Config in a Layer or configuration service rather than read from process.env throughout workflows.</p><p class="guidance"><b>Compliant:</b> A Config recipe validates/refines values, uses option/default semantics deliberately, redacts credentials, and the owning Layer exposes decoded configuration.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BRANDED_IDENTITIES</code> <span>inconclusive, 73%</span></li><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 77%</span></li><li><code>EFFECT_DECODE_EXTERNAL_VALUES</code> <span>violation, 85%</span></li><li><code>EFFECT_EXPLICIT_ABSENCE</code> <span>inconclusive, 42%</span></li><li><code>EFFECT_PLATFORM_CAPABILITIES</code> <span>violation, 90%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index d90d43e..048b889 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,2 +1 @@</span>
+<span class="line del">-import * as Config from &quot;effect/Config&quot;</span>
+<span class="line del">-export const apiKey = Config.redacted(&quot;VENDOR_API_KEY&quot;)</span>
+<span class="line add">+export const apiKey = process.env.VENDOR_API_KEY ?? &quot;&quot;</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Use TestClock and synchronization instead of real sleeps<small>EFFECT_DETERMINISTIC_TEST_TIME</small></span><span class="case-name">Wait for a worker with wall-clock sleep</span><strong>95%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as TestClock from &quot;effect/TestClock&quot;</span>
+<span class="line del">-  yield* TestClock.adjust(&quot;1 second&quot;)</span>
+<span class="line add">+  yield* Effect.sleep(&quot;1100 millis&quot;)</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Effect tests should control time and concurrent readiness deterministically with TestClock, Deferred, Queue, Latch, Ref, or explicit hooks rather than waiting in wall-clock time.</p><p class="guidance"><b>Compliant:</b> The test advances TestClock or waits on a deterministic synchronization signal tied to the behavior being asserted.</p><h4>Other rule matches</h4><ul><li>None</li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/test/Worker.test.ts b/test/Worker.test.ts</span>
+<span class="line meta">index d277d86..a4eac95 100644</span>
+<span class="line meta">--- a/test/Worker.test.ts</span>
+<span class="line meta">+++ b/test/Worker.test.ts</span>
+<span class="line hunk">@@ -1,7 +1,6 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-import * as TestClock from &quot;effect/TestClock&quot;</span>
+<span class="line ctx"> it.effect(&quot;finishes&quot;, () =&gt; Effect.gen(function* () {</span>
+<span class="line ctx">   const fiber = yield* worker.pipe(Effect.fork)</span>
+<span class="line del">-  yield* TestClock.adjust(&quot;1 second&quot;)</span>
+<span class="line add">+  yield* Effect.sleep(&quot;1100 millis&quot;)</span>
+<span class="line ctx">   yield* Fiber.join(fiber)</span>
+<span class="line ctx"> }))</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Test behavior through services and production boundaries<small>EFFECT_TEST_PUBLIC_BOUNDARIES</small></span><span class="case-name">Mock a private implementation instead of the service</span><strong>91%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-it.effect(&quot;loads&quot;, () =&gt; Users.pipe(Effect.flatMap(users =&gt; users.load(id)), Effect.provide(UsersTestLayer)))</span>
+<span class="line add">+import { vi } from &quot;vitest&quot;</span>
+<span class="line add">+vi.mock(&quot;../src/internal/database.js&quot;, () =&gt; ({ query: vi.fn(() =&gt; row) }))</span>
+<span class="line add">+it(&quot;loads&quot;, async () =&gt; expect(await load(id)).toEqual(user))</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Tests should exercise public service contracts, real schemas, controlled Layers, scoped resources, and generated transport clients rather than mocking implementation modules or reimplementing production logic.</p><p class="guidance"><b>Compliant:</b> Tests provide controlled service Layers, use disposable scoped fixtures, and assert externally meaningful success, typed failure, interruption, and finalization behavior.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_CAPABILITY_SERVICES</code> <span>inconclusive, 40%</span></li><li><code>EFFECT_PROMISE_INTEROP_BOUNDARY</code> <span>inconclusive, 62%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/test/Users.test.ts b/test/Users.test.ts</span>
+<span class="line meta">index b897020..e90c71d 100644</span>
+<span class="line meta">--- a/test/Users.test.ts</span>
+<span class="line meta">+++ b/test/Users.test.ts</span>
+<span class="line hunk">@@ -1,2 +1,3 @@</span>
+<span class="line del">-import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-it.effect(&quot;loads&quot;, () =&gt; Users.pipe(Effect.flatMap(users =&gt; users.load(id)), Effect.provide(UsersTestLayer)))</span>
+<span class="line add">+import { vi } from &quot;vitest&quot;</span>
+<span class="line add">+vi.mock(&quot;../src/internal/database.js&quot;, () =&gt; ({ query: vi.fn(() =&gt; row) }))</span>
+<span class="line add">+it(&quot;loads&quot;, async () =&gt; expect(await load(id)).toEqual(user))</span></pre></details>
+</details>
+<details class="result found">
+ <summary><span class="dot"></span><span class="rule-name">Instrument capability and integration boundaries<small>EFFECT_OPERATION_OBSERVABILITY</small></span><span class="case-name">Remove the capability tracing boundary</span><strong>89%</strong><span class="status">found</span></summary>
+ <div class="result-body">
+  <div><h4>Changed lines</h4><pre><span class="line del">-export const load = Effect.fn(&quot;Users.load&quot;)(function* (id: string) {</span>
+<span class="line del">-  yield* Effect.annotateCurrentSpan({ userId: id })</span>
+<span class="line del">-  return yield* repository.load(id)</span>
+<span class="line del">-})</span>
+<span class="line add">+export const load = (id: string) =&gt; repository.load(id)</span></pre></div>
+  <div><h4>Why this rule applies</h4><p>Meaningful public operations and integration boundaries should have stable Effect.fn/withSpan names plus structured context that supports diagnosis without exposing secrets.</p><p class="guidance"><b>Compliant:</b> The operation has a stable span where useful, attaches bounded structured identity/operation fields, preserves correlation, and excludes secrets.</p><h4>Other rule matches</h4><ul><li><code>EFFECT_BOUNDARY_ERROR_TRANSLATION</code> <span>inconclusive, 76%</span></li><li><code>EFFECT_PROMISE_INTEROP_BOUNDARY</code> <span>violation, 87%</span></li><li><code>EFFECT_REUSABLE_FUNCTIONS</code> <span>inconclusive, 74%</span></li></ul></div>
+ </div>
+ <details class="nested"><summary>Full diff</summary><pre><span class="line meta">diff --git a/src/Example.ts b/src/Example.ts</span>
+<span class="line meta">index 605ca9c..0bdaa45 100644</span>
+<span class="line meta">--- a/src/Example.ts</span>
+<span class="line meta">+++ b/src/Example.ts</span>
+<span class="line hunk">@@ -1,5 +1,2 @@</span>
+<span class="line ctx"> import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line del">-export const load = Effect.fn(&quot;Users.load&quot;)(function* (id: string) {</span>
+<span class="line del">-  yield* Effect.annotateCurrentSpan({ userId: id })</span>
+<span class="line del">-  return yield* repository.load(id)</span>
+<span class="line del">-})</span>
+<span class="line add">+export const load = (id: string) =&gt; repository.load(id)</span></pre></details>
+</details></section><section><h2>Clean controls</h2><p class="copy">No clean control received a definitive violation. Two produced advisories.</p><div class="controls"><article class="control clean"><span class="dot"></span><div><strong>Use an intentionally untraced internal helper</strong><small>clean-untraced-helper</small><p>No candidates</p><details><summary>Details</summary><ul><li>None</li></ul><pre><span class="line del">-const normalize = Effect.fnUntraced(function* (value: string) { return value.trim() })</span>
+<span class="line add">+const normalize = Effect.fnUntraced(function* (value: string) { return value.trim().toLowerCase() })</span></pre></details></div></article><article class="control clean"><span class="dot"></span><div><strong>Wire cancellation into a constrained browser fetch adapter</strong><small>clean-browser-fetch-adapter</small><p>3 advisories, no definitive finding</p><details><summary>Details</summary><ul><li><code>EFFECT_CAPABILITY_SERVICES</code> 63%</li><li><code>EFFECT_HTTP_ADAPTER_CONTRACT</code> 59%</li><li><code>EFFECT_NARROW_ERROR_RECOVERY</code> 35%</li></ul><pre><span class="line del">-const request = Effect.fn(&quot;Browser.request&quot;)(() =&gt; Effect.succeed(&quot;idle&quot;))</span>
+<span class="line add">+const request = Effect.fn(&quot;Browser.request&quot;)(() =&gt; Effect.tryPromise({</span>
+<span class="line add">+  try: signal =&gt; fetch(&quot;/health&quot;, { signal }),</span>
+<span class="line add">+  catch: cause =&gt; new BrowserTransportError({ cause }),</span>
+<span class="line add">+}))</span></pre></details></div></article><article class="control clean"><span class="dot"></span><div><strong>Extend a pure deterministic transformation</strong><small>clean-pure-function</small><p>No candidates</p><details><summary>Details</summary><ul><li>None</li></ul><pre><span class="line del">-export const normalize = (value: string) =&gt; value.trim()</span>
+<span class="line add">+export const normalize = (value: string) =&gt; value.trim().toLowerCase()</span></pre></details></div></article><article class="control clean"><span class="dot"></span><div><strong>Add a bounded retry for an idempotent lookup</strong><small>clean-bounded-retry</small><p>2 advisories, no definitive finding</p><details><summary>Details</summary><ul><li><code>EFFECT_DETERMINISTIC_TEST_TIME</code> 58%</li><li><code>EFFECT_NARROW_ERROR_RECOVERY</code> 74%</li></ul><pre><span class="line del">-export const lookup = provider.lookup</span>
+<span class="line add">+import * as Effect from &quot;effect/Effect&quot;</span>
+<span class="line add">+import * as Schedule from &quot;effect/Schedule&quot;</span>
+<span class="line add">+export const lookup = provider.lookup.pipe(</span>
+<span class="line add">+  Effect.retry(Schedule.exponential(&quot;100 millis&quot;).pipe(Schedule.jittered, Schedule.upTo({ times: 4 }))),</span>
+<span class="line add">+)</span></pre></details></div></article><article class="control clean"><span class="dot"></span><div><strong>Freshen a Layer intentionally inside a test</strong><small>clean-isolated-test-layer</small><p>No candidates</p><details><summary>Details</summary><ul><li>None</li></ul><pre><span class="line del">-it.effect(&quot;uses service&quot;, () =&gt; program.pipe(Effect.provide(ServiceLive)))</span>
+<span class="line add">+it.effect(&quot;uses isolated service&quot;, () =&gt; program.pipe(Effect.provide(Layer.fresh(ServiceLive))))</span></pre></details></div></article></div></section><section><h2>Additional matches</h2><div class="callout"><strong>92 unique secondary candidates</strong>: 23 definitive and 69 advisory. Some are useful overlapping rules; others are noise. They have not been adjudicated, so this is not a precision score.</div><div class="links"><a class="button" href="debug.html">Open full diagnostic report</a><a class="button" href="../provenance.json">View provenance JSON</a></div></section></main><footer><div class="wrap">Source-backed synthetic experiment. Not official Effect guidance.</div></footer></body></html>

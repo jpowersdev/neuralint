@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_TAGGED_STATE_VARIANTS",
+  "title": "Represent mutually exclusive states as tagged variants",
+  "description": "Lifecycle and workflow states should use tagged variants carrying exactly the data valid for each state instead of status fields plus conditionally valid optional properties.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Inspect the complete model and its consumers. Do not report simple independent optional fields or serialization contracts that genuinely permit partial data.",
+  "criteria": {
+    "violation": "Changed code models mutually exclusive states with a status and optional-field bag that permits contradictory, incomplete, or impossible combinations.",
+    "compliant": "State is an exhaustive tagged union/enum whose variants contain only their valid data and are matched exhaustively."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

@@ -1,0 +1,54 @@
+{
+  "version": 1,
+  "id": "EFFECT_REUSE_STATEFUL_LAYERS",
+  "title": "Build stateful Layers once per intended lifetime",
+  "description": "Memoized Layers, clients, caches, pools, and stateful services should be constructed at their owning lifetime, not recreated inside each request or method.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply to stateful or resource-owning layers. Layer.fresh or local provisioning is compliant when isolation is deliberate, usually in tests or a bounded operation.",
+  "criteria": {
+    "violation": "Changed code constructs/provides a stateful Layer, client, cache, or pool per call so state and resource reuse are lost.",
+    "compliant": "The stateful Layer value is hoisted to and shared by its owning application, service, or test scope."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  },
+  "semantic": {
+    "context": "A resource-owning Layer defines a lifecycle. Supplying it inside a repeatedly executed operation can reacquire and release resources on every execution and prevents state, pools, caches, and clients from being shared for their intended lifetime.",
+    "reportWhen": "The change constructs or supplies a stateful or resource-owning Layer inside a callable operation, especially when provisioning moved inward from an application or service Layer graph.",
+    "doNotReport": "Do not report stateless value Layers, intentionally operation-scoped resources, deliberate test isolation, or Layer.fresh used because each invocation requires independent state.",
+    "guidance": "Hoist the Layer to the application, service, or test-scope owner and compose it into that owner's Layer graph; keep local provisioning only when the local lifetime is intentional.",
+    "evidence": "related-definitions",
+    "examples": [
+      {
+        "outcome": "violation",
+        "explanation": "A scoped client Layer is supplied inside a function that can run for every request.",
+        "code": "const ApiClientLive = Layer.scoped(ApiClient, acquireClient)\n\nconst loadUser = (id: UserId) =>\n  fetchUser(id).pipe(Effect.provide(ApiClientLive))"
+      },
+      {
+        "outcome": "nonviolation",
+        "explanation": "The resource-owning client is composed once at the application lifetime.",
+        "code": "const ApplicationLive = UsersLive.pipe(\n  Layer.provide(ApiClientLive)\n)"
+      },
+      {
+        "outcome": "nonviolation",
+        "explanation": "A stateless value Layer can be local when no resource or reusable state is rebuilt.",
+        "code": "const operation = Effect.provide(\n  Layer.succeed(FeatureFlags, staticFlags)\n)"
+      }
+    ]
+  }
+}

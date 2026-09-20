@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_CLOSED_VOCABULARIES",
+  "title": "Model closed vocabularies as literal schemas",
+  "description": "Finite domain vocabularies should be represented by literal unions rather than unconstrained strings.",
+  "severity": "warning",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Apply only when the surrounding domain establishes a closed set. Do not report genuinely open labels, user text, provider-defined values, or forward-compatible extension points.",
+  "criteria": {
+    "violation": "Changed code uses Schema.String or string for a value whose allowed domain alternatives are known and finite.",
+    "compliant": "The value uses Schema.Literals, a tagged union, or another exhaustive representation of the closed vocabulary."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

@@ -1,0 +1,30 @@
+{
+  "version": 1,
+  "id": "EFFECT_CAPTURE_PRIVATE_DEPENDENCIES",
+  "title": "Capture implementation dependencies inside the service Layer",
+  "description": "A service Layer should acquire private dependencies once, close over them in methods, and expose a contract whose environment contains only requirements consumers genuinely own.",
+  "severity": "error",
+  "scope": {
+    "include": [
+      "src/**/*.ts",
+      "src/**/*.tsx",
+      "test/**/*.ts",
+      "test/**/*.tsx"
+    ],
+    "exclude": [
+      "**/*.d.ts",
+      "**/generated/**",
+      "**/dist/**",
+      "**/node_modules/**"
+    ]
+  },
+  "instructions": "Required evidence includes the service contract, constructor, exported Layer, and method signatures. Do not report intentional higher-order effects whose caller truly supplies authority.",
+  "criteria": {
+    "violation": "Changed service methods leak FileSystem, Path, client, configuration, or implementation-only requirements into consumer environments instead of the owning Layer providing them.",
+    "compliant": "The owning Layer acquires and provides private dependencies; consumers require only the service and explicit domain capabilities they are responsible for."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  }
+}

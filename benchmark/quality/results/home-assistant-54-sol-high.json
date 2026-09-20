@@ -1,0 +1,441 @@
+{
+  "schemaVersion": 1,
+  "fixture": "benchmark/quality/fixtures/home-assistant-54.json",
+  "fixtureSha256": "1014a49df908fb685de4abad3e0e5ebe2ef0bcb80e4e8143d20c8c13e652e501",
+  "judge": {
+    "model": "openai-codex/gpt-5.6-sol",
+    "thinking": "high",
+    "seed": 20260919
+  },
+  "calls": [
+    {
+      "kind": "absolute",
+      "batch": 1,
+      "latencyMs": 25571,
+      "inputTokens": 4158,
+      "outputTokens": 1273,
+      "costUsd": 0.058980000000000005
+    },
+    {
+      "kind": "absolute",
+      "batch": 2,
+      "latencyMs": 35326,
+      "inputTokens": 4190,
+      "outputTokens": 1583,
+      "costUsd": 0.06844
+    },
+    {
+      "kind": "pairwise",
+      "pass": 1,
+      "order": "initial",
+      "latencyMs": 20665,
+      "inputTokens": 4856,
+      "outputTokens": 914,
+      "costUsd": 0.0517
+    },
+    {
+      "kind": "pairwise",
+      "pass": 2,
+      "order": "reversed",
+      "latencyMs": 36923,
+      "inputTokens": 4856,
+      "outputTokens": 1656,
+      "costUsd": 0.07396
+    }
+  ],
+  "summary": {
+    "direct": {
+      "invariantIdentifiable": 1.0,
+      "locationIdentifiable": 1.0,
+      "impactIdentifiable": 1.0,
+      "remediationUnderstandable": 1.0,
+      "remediationAppropriate": 1.0,
+      "evidenceGrounded": 1.0,
+      "informationSufficient": 1.0,
+      "actionable": 1.0,
+      "materialErrorRate": 0.0,
+      "unsafeRemediationRate": 0.0
+    },
+    "routed": {
+      "invariantIdentifiable": 1.0,
+      "locationIdentifiable": 1.0,
+      "impactIdentifiable": 1.0,
+      "remediationUnderstandable": 1.0,
+      "remediationAppropriate": 1.0,
+      "evidenceGrounded": 1.0,
+      "informationSufficient": 1.0,
+      "actionable": 1.0,
+      "materialErrorRate": 0.0,
+      "unsafeRemediationRate": 0.0
+    },
+    "pairwise": {
+      "direct": 0,
+      "routed": 0,
+      "tie": 10,
+      "neither": 0
+    },
+    "pairwiseByCase": {
+      "remove-unload-entry": {
+        "preferences": [
+          "tie",
+          "tie"
+        ],
+        "orderStable": true
+      },
+      "create-private-websession": {
+        "preferences": [
+          "tie",
+          "tie"
+        ],
+        "orderStable": true
+      },
+      "remove-sensor-unique-id": {
+        "preferences": [
+          "tie",
+          "tie"
+        ],
+        "orderStable": true
+      },
+      "untranslated-action-error": {
+        "preferences": [
+          "tie",
+          "tie"
+        ],
+        "orderStable": true
+      },
+      "remove-parallel-update-limit": {
+        "preferences": [
+          "tie",
+          "tie"
+        ],
+        "orderStable": true
+      }
+    }
+  },
+  "absolute": [
+    {
+      "reviewId": "untranslated-action-error:direct",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "User-facing HomeAssistantError messages must use Home Assistant's translation mechanism rather than untranslated dynamic strings.",
+      "extractedLocation": "homeassistant/components/airgradient/entity.py, the AirGradientError exception handler constructing HomeAssistantError.",
+      "extractedImpact": "Non-English users receive an English or dependency-supplied message instead of a localized error.",
+      "extractedRemediation": "Restore the translated unknown_error exception with the upstream error supplied as a translation placeholder.",
+      "rationale": "The review precisely identifies the untranslated exception path, cites the changed constructor, explains the localization impact, and proposes restoring the translation key and placeholder used by the removed code.",
+      "workflow": "direct",
+      "caseId": "untranslated-action-error",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "create-private-websession:routed",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "An HTTP dependency that supports session injection should receive Home Assistant's shared websession.",
+      "extractedLocation": "homeassistant/components/airgradient/__init__.py, runtime construction of AirGradientClient in async_setup_entry.",
+      "extractedImpact": "Each config entry may manage a separate HTTP lifecycle, increasing connection and session overhead.",
+      "extractedRemediation": "Construct AirGradientClient with session=async_get_clientsession(hass).",
+      "rationale": "The removed constructor argument directly establishes that the dependency accepts session injection, while the replacement omits it. The review gives the relevant efficiency consequence and an exact corrective change.",
+      "workflow": "routed",
+      "caseId": "create-private-websession",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "remove-parallel-update-limit:direct",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "The update platform must explicitly specify a safe number of parallel updates.",
+      "extractedLocation": "homeassistant/components/airgradient/update.py, removal of the module-level PARALLEL_UPDATES setting.",
+      "extractedImpact": "Without an explicit semaphore limit, concurrent updates can produce overlapping requests to the service.",
+      "extractedRemediation": "Restore PARALLEL_UPDATES = 1 or choose and document another service-safe explicit limit.",
+      "rationale": "The review identifies the deleted concurrency setting, explains why relying on the scheduler does not satisfy the explicit-limit requirement, and recommends restoring a suitable limit.",
+      "workflow": "direct",
+      "caseId": "remove-parallel-update-limit",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "remove-sensor-unique-id:routed",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "Every sensor entity must have a stable unique ID distinct from the device registry identifier.",
+      "extractedLocation": "homeassistant/components/airgradient/sensor.py, AirGradientSensor.__init__ and its removed _attr_unique_id assignment.",
+      "extractedImpact": "The sensors lose entity-registry identity, so user customizations may not be reliably retained across restarts.",
+      "extractedRemediation": "Restore the serial-number-and-description-key unique ID in the base class or assign an equivalent stable ID in every subclass.",
+      "rationale": "The review correctly distinguishes device identifiers from entity unique IDs, cites the exact deletion, and provides a stable per-sensor remediation matching the prior implementation.",
+      "workflow": "routed",
+      "caseId": "remove-sensor-unique-id",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "remove-unload-entry:direct",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "The integration must implement config-entry unloading and unload its forwarded platforms.",
+      "extractedLocation": "homeassistant/components/airgradient/__init__.py, removal of async_unload_entry.",
+      "extractedImpact": "Config entries may not reload or be removed cleanly at runtime, and platform lifecycle cleanup may be skipped.",
+      "extractedRemediation": "Restore async_unload_entry delegating to async_unload_platforms(entry, PLATFORMS), with an unload test.",
+      "rationale": "The review directly identifies the deleted unload callback, explains the runtime and cleanup consequences, and recommends restoring the exact appropriate delegation.",
+      "workflow": "direct",
+      "caseId": "remove-unload-entry",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "untranslated-action-error:routed",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "HomeAssistantError messages shown to users must use Home Assistant's translation mechanism rather than hard-coded English text.",
+      "extractedLocation": "homeassistant/components/airgradient/entity.py, in the fallback AirGradientError exception handler.",
+      "extractedImpact": "Unclassified AirGradient errors will display an untranslated English message to users.",
+      "extractedRemediation": "Restore the translation-aware HomeAssistantError with DOMAIN, the unknown_error translation key, and the upstream error as a translation placeholder.",
+      "rationale": "The review precisely identifies the hard-coded exception introduced by the diff, explains the localization impact, cites the relevant changed line, and proposes the prior compliant implementation.",
+      "workflow": "routed",
+      "caseId": "untranslated-action-error",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "create-private-websession:direct",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "HTTP dependency clients should accept and use Home Assistant's shared websession.",
+      "extractedLocation": "homeassistant/components/airgradient/__init__.py, in AirGradientClient construction within async_setup_entry.",
+      "extractedImpact": "The client may create separate HTTP resources per configured device instead of benefiting from centralized connection pooling and lifecycle management.",
+      "extractedRemediation": "Construct AirGradientClient with session=async_get_clientsession(hass), or add injected-session support to the dependency if necessary.",
+      "rationale": "The review directly identifies removal of the shared session, gives a concrete resource-management consequence, and recommends restoring session injection. Its evidence exactly matches the diff.",
+      "workflow": "direct",
+      "caseId": "create-private-websession",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "remove-unload-entry:routed",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "The integration must implement config-entry unloading so it can be removed or reloaded at runtime.",
+      "extractedLocation": "homeassistant/components/airgradient/__init__.py, where async_unload_entry was removed.",
+      "extractedImpact": "Home Assistant can no longer unload the forwarded platforms on entry removal or reload, potentially leaving entities and subscriptions active until restart.",
+      "extractedRemediation": "Restore async_unload_entry and have it call hass.config_entries.async_unload_platforms(entry, PLATFORMS), with any additional cleanup performed after successful unloading.",
+      "rationale": "The deleted callback and delegation are specifically identified, the runtime consequence is understandable, and the proposed restoration directly satisfies the unloading requirement.",
+      "workflow": "routed",
+      "caseId": "remove-unload-entry",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "remove-sensor-unique-id:direct",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "Every entity must have a stable unique ID for entity-registry persistence and customization.",
+      "extractedLocation": "homeassistant/components/airgradient/sensor.py, in AirGradientSensor.__init__, where _attr_unique_id was removed.",
+      "extractedImpact": "AirGradient sensors can no longer be persisted and customized through the entity registry, and existing registry identities may become orphaned.",
+      "extractedRemediation": "Keep the serial-number-and-description-key unique ID, or perform an explicit entity-registry migration if changing the ID scheme.",
+      "rationale": "The review correctly distinguishes device identifiers from entity unique IDs, cites the exact removed assignment, and supplies both the direct fix and the appropriate migration direction.",
+      "workflow": "direct",
+      "caseId": "remove-sensor-unique-id",
+      "informationSufficient": true,
+      "actionable": true
+    },
+    {
+      "reviewId": "remove-parallel-update-limit:routed",
+      "invariantIdentifiable": true,
+      "locationIdentifiable": true,
+      "impactIdentifiable": true,
+      "remediationUnderstandable": true,
+      "remediationAppropriate": true,
+      "evidenceGrounded": true,
+      "materialError": false,
+      "unsafeRemediation": false,
+      "extractedInvariant": "The platform must explicitly specify its allowed number of parallel updates.",
+      "extractedLocation": "homeassistant/components/airgradient/update.py, at the removed PARALLEL_UPDATES = 1 platform constant.",
+      "extractedImpact": "Update polling and actions may fall back to platform concurrency behavior rather than the prior explicit single-request limit, potentially increasing simultaneous requests.",
+      "extractedRemediation": "Restore PARALLEL_UPDATES = 1 or set another explicitly justified concurrency limit.",
+      "rationale": "The review accurately identifies that the replacement comment does not configure concurrency, explains the resulting risk without overstating certainty, and recommends restoring an explicit limit.",
+      "workflow": "routed",
+      "caseId": "remove-parallel-update-limit",
+      "informationSufficient": true,
+      "actionable": true
+    }
+  ],
+  "pairwise": [
+    {
+      "pass": 1,
+      "order": "initial",
+      "results": [
+        {
+          "caseId": "remove-unload-entry",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "None.",
+          "rationale": "Both correctly locate the removed unload callback, explain that forwarded platforms can no longer be unloaded during reload or removal, cite the relevant deletion, and recommend restoring async_unload_entry with async_unload_platforms.",
+          "aWorkflow": "direct",
+          "bWorkflow": "routed",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "create-private-websession",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "None.",
+          "rationale": "Both identify removal of Home Assistant's shared session injection, describe the resulting loss of shared connection and lifecycle management, cite the changed client construction, and provide the correct remediation.",
+          "aWorkflow": "routed",
+          "bWorkflow": "direct",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "remove-parallel-update-limit",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "None material to remediation or invariant identification.",
+          "rationale": "Both correctly identify that deleting PARALLEL_UPDATES removes the explicit concurrency setting required by the rule and recommend restoring an explicitly justified limit. Review B is more cautious about concrete service impact, but remains sufficient and correct about the policy violation.",
+          "aWorkflow": "direct",
+          "bWorkflow": "routed",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "remove-sensor-unique-id",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "None.",
+          "rationale": "Both correctly explain that device identifiers do not replace entity unique IDs, connect removal to loss of entity-registry persistence and customization, cite the deleted assignment, and recommend restoring a stable per-entity ID.",
+          "aWorkflow": "routed",
+          "bWorkflow": "direct",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "untranslated-action-error",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "None.",
+          "rationale": "Both correctly identify the untranslated HomeAssistantError f-string, explain its user-facing localization impact, and recommend restoring the existing translation domain, key, and placeholder-based exception.",
+          "aWorkflow": "direct",
+          "bWorkflow": "routed",
+          "preferredWorkflow": "tie"
+        }
+      ]
+    },
+    {
+      "pass": 2,
+      "order": "reversed",
+      "results": [
+        {
+          "caseId": "create-private-websession",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "No material difference; both identify removal of the injected shared session, its resource impact, and the exact restoration.",
+          "rationale": "Both reviews are grounded in the diff and provide an appropriate remediation. B adds minor context about the config flow, but it is unnecessary to establish the violation.",
+          "aWorkflow": "direct",
+          "bWorkflow": "routed",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "remove-unload-entry",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "No material difference; both identify the deleted unload callback, runtime consequences, and correct remediation.",
+          "rationale": "Both accurately explain that platform unloading is no longer forwarded and recommend restoring async_unload_entry with async_unload_platforms.",
+          "aWorkflow": "routed",
+          "bWorkflow": "direct",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "remove-sensor-unique-id",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "No material difference; both distinguish device identifiers from entity unique IDs and propose restoring the stable per-sensor ID.",
+          "rationale": "Both reviews correctly locate the violation, explain the entity-registry impact, cite the removed assignment, and offer an adequate fix.",
+          "aWorkflow": "direct",
+          "bWorkflow": "routed",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "remove-parallel-update-limit",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "B states the async scheduler's no-semaphore behavior more directly, while A is more cautious about concrete service harm; both still establish the explicit-IQS violation and correct fix.",
+          "rationale": "Both identify that deleting PARALLEL_UPDATES removes the explicit concurrency specification and recommend restoring an intentionally chosen limit. The difference in certainty about resulting concurrency is not necessary to identify or remediate the violation.",
+          "aWorkflow": "routed",
+          "bWorkflow": "direct",
+          "preferredWorkflow": "tie"
+        },
+        {
+          "caseId": "untranslated-action-error",
+          "aUsable": true,
+          "bUsable": true,
+          "preference": "tie",
+          "materialDifference": "No material difference; both identify the untranslated HomeAssistantError path and the existing translation-aware replacement.",
+          "rationale": "Both are grounded in the changed exception construction and correctly recommend restoring translation_domain, translation_key, and the upstream-error placeholder.",
+          "aWorkflow": "routed",
+          "bWorkflow": "direct",
+          "preferredWorkflow": "tie"
+        }
+      ]
+    }
+  ]
+}
