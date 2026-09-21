@@ -71,7 +71,7 @@ npm install --global neuralint@alpha
 neuralint --version
 ```
 
-Pin `neuralint@0.1.0-alpha.2` in automation while the package is in alpha.
+Pin `neuralint@0.1.0-alpha.3` in automation while the package is in alpha.
 
 To run from a checkout instead:
 
