@@ -1,0 +1,76 @@
+{
+  "schemaVersion": 1,
+  "experiment": "rule-doctor-astra-validation",
+  "jevModel": "jev-latest",
+  "explanationModel": "openai-codex/gpt-6-astra",
+  "results": [
+    {
+      "id": "good",
+      "corpusId": "good-bind-services",
+      "expectation": "No Jev concern crosses 45%, so Astra is not called.",
+      "latencyMs": 296,
+      "failures": 0,
+      "advisories": 0,
+      "explained": false,
+      "model": null,
+      "diagnosticsUsage": {
+        "requests": 1,
+        "inputTokens": 1659,
+        "outputTokens": 166
+      },
+      "explanationUsage": null,
+      "report": "results/explanation-validation/good.md"
+    },
+    {
+      "id": "defective",
+      "corpusId": "defective-underspecified",
+      "expectation": "Astra concisely explains the missing operational boundary and asks for human policy decisions without drafting replacement policy.",
+      "latencyMs": 6027,
+      "failures": 6,
+      "advisories": 2,
+      "explained": true,
+      "model": "openai-codex/gpt-6-astra",
+      "diagnosticsUsage": {
+        "requests": 1,
+        "inputTokens": 1580,
+        "outputTokens": 166
+      },
+      "explanationUsage": {
+        "inputTokens": 442,
+        "outputTokens": 103,
+        "totalTokens": 545,
+        "costUsd": 0.00957
+      },
+      "report": "results/explanation-validation/defective.md"
+    },
+    {
+      "id": "evidence-infeasible",
+      "corpusId": null,
+      "expectation": "Astra distinguishes an evidence-planner limitation from missing organizational policy and does not recommend changing the policy boundary.",
+      "latencyMs": 5191,
+      "failures": 0,
+      "advisories": 3,
+      "explained": true,
+      "model": "openai-codex/gpt-6-astra",
+      "diagnosticsUsage": {
+        "requests": 1,
+        "inputTokens": 1822,
+        "outputTokens": 166
+      },
+      "explanationUsage": {
+        "inputTokens": 609,
+        "outputTokens": 118,
+        "totalTokens": 727,
+        "costUsd": 0.01199
+      },
+      "report": "results/explanation-validation/evidence-infeasible.md"
+    }
+  ],
+  "totals": {
+    "latencyMs": 11514,
+    "diagnosticsInputTokens": 5061,
+    "explanationInputTokens": 1051,
+    "explanationOutputTokens": 221,
+    "explanationCostUsd": 0.02156
+  }
+}

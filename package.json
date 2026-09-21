@@ -49,6 +49,8 @@
     "benchmark:remediation:fixture": "python benchmark/remediation/build_fixture.py",
     "benchmark:remediation:judge": "python benchmark/quality/run.py --fixture benchmark/remediation/fixtures/pilot.json --output benchmark/remediation/results/quality-sol-high.json",
     "benchmark:remediation:report": "python benchmark/remediation/report.py",
+    "benchmark:doctor:calibrate": "tsx benchmark/rule-doctor/RunCalibration.ts",
+    "benchmark:doctor:explain": "tsx benchmark/rule-doctor/ValidateExplanations.ts",
     "benchmark:effect-idioms-30:build": "python benchmark/effect-idioms-30/BuildCatalog.py && python benchmark/effect-idioms-30/BuildFixtures.py",
     "benchmark:effect-idioms-30": "python benchmark/effect-idioms-30/run.py && python benchmark/effect-idioms-30/run_pr.py && python benchmark/effect-idioms-30/render.py && python benchmark/effect-idioms-30/render_summary.py && python benchmark/effect-idioms-30/render_pr.py",
     "quality:fixture": "tsx benchmark/quality/BuildFixture.ts",

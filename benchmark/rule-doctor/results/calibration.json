@@ -1,0 +1,2912 @@
+{
+  "schemaVersion": 1,
+  "experiment": "rule-doctor-balanced-calibration",
+  "model": "jev-latest",
+  "corpus": {
+    "cases": 16,
+    "checksPerCase": 8,
+    "observations": 128,
+    "categories": [
+      {
+        "category": "good",
+        "cases": 4,
+        "casesWithExpectedConcern": 0,
+        "casesFlaggedAtCurrentAdvisory": 1,
+        "casesFailedAtCurrentFailure": 0
+      },
+      {
+        "category": "defective",
+        "cases": 4,
+        "casesWithExpectedConcern": 4,
+        "casesFlaggedAtCurrentAdvisory": 4,
+        "casesFailedAtCurrentFailure": 3
+      },
+      {
+        "category": "ambiguous",
+        "cases": 4,
+        "casesWithExpectedConcern": 4,
+        "casesFlaggedAtCurrentAdvisory": 4,
+        "casesFailedAtCurrentFailure": 4
+      },
+      {
+        "category": "evidence-infeasible",
+        "cases": 4,
+        "casesWithExpectedConcern": 4,
+        "casesFlaggedAtCurrentAdvisory": 4,
+        "casesFailedAtCurrentFailure": 3
+      }
+    ]
+  },
+  "execution": {
+    "concurrency": 4,
+    "repetitions": 3,
+    "latencyMs": 1822,
+    "requests": 48,
+    "inputTokens": 78633,
+    "outputTokens": 7968,
+    "estimatedCostUsd": 0.0033
+  },
+  "stability": {
+    "maximumSpread": 0.08,
+    "advisoryThresholdCrossings": 4,
+    "failureThresholdCrossings": 5,
+    "widest": [
+      {
+        "caseId": "ambiguous-performance",
+        "checkId": "examples-boundary",
+        "minimum": 0.54,
+        "maximum": 0.62,
+        "spread": 0.07999999999999996
+      },
+      {
+        "caseId": "evidence-deployment-config",
+        "checkId": "examples-faithful",
+        "minimum": 0.6,
+        "maximum": 0.67,
+        "spread": 0.07000000000000006
+      },
+      {
+        "caseId": "defective-mislabeled-examples",
+        "checkId": "evidence-feasible",
+        "minimum": 0.41,
+        "maximum": 0.48,
+        "spread": 0.07
+      },
+      {
+        "caseId": "good-bind-services",
+        "checkId": "evidence-feasible",
+        "minimum": 0.29,
+        "maximum": 0.34,
+        "spread": 0.050000000000000044
+      },
+      {
+        "caseId": "defective-mislabeled-examples",
+        "checkId": "operational-boundary",
+        "minimum": 0.73,
+        "maximum": 0.78,
+        "spread": 0.050000000000000044
+      },
+      {
+        "caseId": "defective-mislabeled-examples",
+        "checkId": "remediation-actionable",
+        "minimum": 0.57,
+        "maximum": 0.62,
+        "spread": 0.050000000000000044
+      },
+      {
+        "caseId": "ambiguous-performance",
+        "checkId": "internal-consistency",
+        "minimum": 0.5,
+        "maximum": 0.55,
+        "spread": 0.050000000000000044
+      },
+      {
+        "caseId": "evidence-call-graph",
+        "checkId": "evidence-feasible",
+        "minimum": 0.63,
+        "maximum": 0.68,
+        "spread": 0.050000000000000044
+      },
+      {
+        "caseId": "good-json-decode",
+        "checkId": "operational-boundary",
+        "minimum": 0.39,
+        "maximum": 0.44,
+        "spread": 0.04999999999999999
+      },
+      {
+        "caseId": "defective-contradiction",
+        "checkId": "internal-consistency",
+        "minimum": 0.8,
+        "maximum": 0.85,
+        "spread": 0.04999999999999993
+      }
+    ]
+  },
+  "currentThresholds": {
+    "checkLevel": {
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 37,
+        "falsePositives": 37,
+        "trueNegatives": 53,
+        "falseNegatives": 1,
+        "precision": 0.5,
+        "recall": 0.9737,
+        "specificity": 0.5889,
+        "f1": 0.6607
+      },
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 14,
+        "falsePositives": 24,
+        "trueNegatives": 86,
+        "falseNegatives": 4,
+        "precision": 0.3684,
+        "recall": 0.7778,
+        "specificity": 0.7818,
+        "f1": 0.5
+      }
+    },
+    "ruleLevel": {
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 12,
+        "falsePositives": 1,
+        "trueNegatives": 3,
+        "falseNegatives": 0,
+        "precision": 0.9231,
+        "recall": 1,
+        "specificity": 0.75,
+        "f1": 0.96
+      },
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 6,
+        "falsePositives": 4,
+        "trueNegatives": 4,
+        "falseNegatives": 2,
+        "precision": 0.6,
+        "recall": 0.75,
+        "specificity": 0.5,
+        "f1": 0.6667
+      }
+    }
+  },
+  "bestObservedThresholds": {
+    "checkLevel": {
+      "advisory": {
+        "threshold": 0.65,
+        "truePositives": 34,
+        "falsePositives": 13,
+        "trueNegatives": 77,
+        "falseNegatives": 4,
+        "precision": 0.7234,
+        "recall": 0.8947,
+        "specificity": 0.8556,
+        "f1": 0.8
+      },
+      "failure": {
+        "threshold": 0.8500000000000001,
+        "truePositives": 9,
+        "falsePositives": 7,
+        "trueNegatives": 103,
+        "falseNegatives": 9,
+        "precision": 0.5625,
+        "recall": 0.5,
+        "specificity": 0.9364,
+        "f1": 0.5294
+      }
+    },
+    "ruleLevel": {
+      "advisory": {
+        "threshold": 0.7000000000000001,
+        "truePositives": 12,
+        "falsePositives": 0,
+        "trueNegatives": 4,
+        "falseNegatives": 0,
+        "precision": 1,
+        "recall": 1,
+        "specificity": 1,
+        "f1": 1
+      },
+      "failure": {
+        "threshold": 0.7000000000000001,
+        "truePositives": 8,
+        "falsePositives": 4,
+        "trueNegatives": 4,
+        "falseNegatives": 0,
+        "precision": 0.6667,
+        "recall": 1,
+        "specificity": 0.5,
+        "f1": 0.8
+      }
+    }
+  },
+  "perCheck": [
+    {
+      "checkId": "operational-boundary",
+      "expectedConcerns": 4,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 4,
+        "falsePositives": 7,
+        "trueNegatives": 5,
+        "falseNegatives": 0,
+        "precision": 0.3636,
+        "recall": 1,
+        "specificity": 0.4167,
+        "f1": 0.5333
+      },
+      "expectedFailures": 1,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 1,
+        "falsePositives": 4,
+        "trueNegatives": 11,
+        "falseNegatives": 0,
+        "precision": 0.2,
+        "recall": 1,
+        "specificity": 0.7333,
+        "f1": 0.3333
+      }
+    },
+    {
+      "checkId": "internal-consistency",
+      "expectedConcerns": 3,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 3,
+        "falsePositives": 5,
+        "trueNegatives": 8,
+        "falseNegatives": 0,
+        "precision": 0.375,
+        "recall": 1,
+        "specificity": 0.6154,
+        "f1": 0.5455
+      },
+      "expectedFailures": 3,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 3,
+        "falsePositives": 1,
+        "trueNegatives": 12,
+        "falseNegatives": 0,
+        "precision": 0.75,
+        "recall": 1,
+        "specificity": 0.9231,
+        "f1": 0.8571
+      }
+    },
+    {
+      "checkId": "applicability-clarity",
+      "expectedConcerns": 5,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 5,
+        "falsePositives": 6,
+        "trueNegatives": 5,
+        "falseNegatives": 0,
+        "precision": 0.4545,
+        "recall": 1,
+        "specificity": 0.4545,
+        "f1": 0.625
+      },
+      "expectedFailures": 1,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 1,
+        "falsePositives": 6,
+        "trueNegatives": 9,
+        "falseNegatives": 0,
+        "precision": 0.1429,
+        "recall": 1,
+        "specificity": 0.6,
+        "f1": 0.25
+      }
+    },
+    {
+      "checkId": "exceptions-operational",
+      "expectedConcerns": 5,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 5,
+        "falsePositives": 4,
+        "trueNegatives": 7,
+        "falseNegatives": 0,
+        "precision": 0.5556,
+        "recall": 1,
+        "specificity": 0.6364,
+        "f1": 0.7143
+      },
+      "expectedFailures": 1,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 0,
+        "falsePositives": 3,
+        "trueNegatives": 12,
+        "falseNegatives": 1,
+        "precision": 0,
+        "recall": 0,
+        "specificity": 0.8,
+        "f1": 0
+      }
+    },
+    {
+      "checkId": "evidence-feasible",
+      "expectedConcerns": 5,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 5,
+        "falsePositives": 7,
+        "trueNegatives": 4,
+        "falseNegatives": 0,
+        "precision": 0.4167,
+        "recall": 1,
+        "specificity": 0.3636,
+        "f1": 0.5882
+      },
+      "expectedFailures": 5,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 4,
+        "falsePositives": 3,
+        "trueNegatives": 8,
+        "falseNegatives": 1,
+        "precision": 0.5714,
+        "recall": 0.8,
+        "specificity": 0.7273,
+        "f1": 0.6667
+      }
+    },
+    {
+      "checkId": "remediation-actionable",
+      "expectedConcerns": 3,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 3,
+        "falsePositives": 4,
+        "trueNegatives": 9,
+        "falseNegatives": 0,
+        "precision": 0.4286,
+        "recall": 1,
+        "specificity": 0.6923,
+        "f1": 0.6
+      },
+      "expectedFailures": 2,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 1,
+        "falsePositives": 1,
+        "trueNegatives": 13,
+        "falseNegatives": 1,
+        "precision": 0.5,
+        "recall": 0.5,
+        "specificity": 0.9286,
+        "f1": 0.5
+      }
+    },
+    {
+      "checkId": "examples-faithful",
+      "expectedConcerns": 7,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 6,
+        "falsePositives": 2,
+        "trueNegatives": 7,
+        "falseNegatives": 1,
+        "precision": 0.75,
+        "recall": 0.8571,
+        "specificity": 0.7778,
+        "f1": 0.8
+      },
+      "expectedFailures": 3,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 2,
+        "falsePositives": 4,
+        "trueNegatives": 9,
+        "falseNegatives": 1,
+        "precision": 0.3333,
+        "recall": 0.6667,
+        "specificity": 0.6923,
+        "f1": 0.4444
+      }
+    },
+    {
+      "checkId": "examples-boundary",
+      "expectedConcerns": 6,
+      "advisory": {
+        "threshold": 0.45,
+        "truePositives": 6,
+        "falsePositives": 2,
+        "trueNegatives": 8,
+        "falseNegatives": 0,
+        "precision": 0.75,
+        "recall": 1,
+        "specificity": 0.8,
+        "f1": 0.8571
+      },
+      "expectedFailures": 2,
+      "failure": {
+        "threshold": 0.75,
+        "truePositives": 2,
+        "falsePositives": 2,
+        "trueNegatives": 12,
+        "falseNegatives": 0,
+        "precision": 0.5,
+        "recall": 1,
+        "specificity": 0.8571,
+        "f1": 0.6667
+      }
+    }
+  ],
+  "sweeps": {
+    "checkLevel": {
+      "advisory": [
+        {
+          "threshold": 0.05,
+          "truePositives": 38,
+          "falsePositives": 90,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.2969,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.4578
+        },
+        {
+          "threshold": 0.1,
+          "truePositives": 38,
+          "falsePositives": 90,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.2969,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.4578
+        },
+        {
+          "threshold": 0.15000000000000002,
+          "truePositives": 38,
+          "falsePositives": 79,
+          "trueNegatives": 11,
+          "falseNegatives": 0,
+          "precision": 0.3248,
+          "recall": 1,
+          "specificity": 0.1222,
+          "f1": 0.4903
+        },
+        {
+          "threshold": 0.2,
+          "truePositives": 38,
+          "falsePositives": 70,
+          "trueNegatives": 20,
+          "falseNegatives": 0,
+          "precision": 0.3519,
+          "recall": 1,
+          "specificity": 0.2222,
+          "f1": 0.5205
+        },
+        {
+          "threshold": 0.25,
+          "truePositives": 38,
+          "falsePositives": 61,
+          "trueNegatives": 29,
+          "falseNegatives": 0,
+          "precision": 0.3838,
+          "recall": 1,
+          "specificity": 0.3222,
+          "f1": 0.5547
+        },
+        {
+          "threshold": 0.30000000000000004,
+          "truePositives": 38,
+          "falsePositives": 54,
+          "trueNegatives": 36,
+          "falseNegatives": 0,
+          "precision": 0.413,
+          "recall": 1,
+          "specificity": 0.4,
+          "f1": 0.5846
+        },
+        {
+          "threshold": 0.35000000000000003,
+          "truePositives": 37,
+          "falsePositives": 49,
+          "trueNegatives": 41,
+          "falseNegatives": 1,
+          "precision": 0.4302,
+          "recall": 0.9737,
+          "specificity": 0.4556,
+          "f1": 0.5968
+        },
+        {
+          "threshold": 0.4,
+          "truePositives": 37,
+          "falsePositives": 44,
+          "trueNegatives": 46,
+          "falseNegatives": 1,
+          "precision": 0.4568,
+          "recall": 0.9737,
+          "specificity": 0.5111,
+          "f1": 0.6218
+        },
+        {
+          "threshold": 0.45,
+          "truePositives": 37,
+          "falsePositives": 37,
+          "trueNegatives": 53,
+          "falseNegatives": 1,
+          "precision": 0.5,
+          "recall": 0.9737,
+          "specificity": 0.5889,
+          "f1": 0.6607
+        },
+        {
+          "threshold": 0.5,
+          "truePositives": 37,
+          "falsePositives": 33,
+          "trueNegatives": 57,
+          "falseNegatives": 1,
+          "precision": 0.5286,
+          "recall": 0.9737,
+          "specificity": 0.6333,
+          "f1": 0.6852
+        },
+        {
+          "threshold": 0.55,
+          "truePositives": 37,
+          "falsePositives": 26,
+          "trueNegatives": 64,
+          "falseNegatives": 1,
+          "precision": 0.5873,
+          "recall": 0.9737,
+          "specificity": 0.7111,
+          "f1": 0.7327
+        },
+        {
+          "threshold": 0.6000000000000001,
+          "truePositives": 34,
+          "falsePositives": 19,
+          "trueNegatives": 71,
+          "falseNegatives": 4,
+          "precision": 0.6415,
+          "recall": 0.8947,
+          "specificity": 0.7889,
+          "f1": 0.7473
+        },
+        {
+          "threshold": 0.65,
+          "truePositives": 34,
+          "falsePositives": 13,
+          "trueNegatives": 77,
+          "falseNegatives": 4,
+          "precision": 0.7234,
+          "recall": 0.8947,
+          "specificity": 0.8556,
+          "f1": 0.8
+        },
+        {
+          "threshold": 0.7000000000000001,
+          "truePositives": 32,
+          "falsePositives": 12,
+          "trueNegatives": 78,
+          "falseNegatives": 6,
+          "precision": 0.7273,
+          "recall": 0.8421,
+          "specificity": 0.8667,
+          "f1": 0.7805
+        },
+        {
+          "threshold": 0.75,
+          "truePositives": 30,
+          "falsePositives": 8,
+          "trueNegatives": 82,
+          "falseNegatives": 8,
+          "precision": 0.7895,
+          "recall": 0.7895,
+          "specificity": 0.9111,
+          "f1": 0.7895
+        },
+        {
+          "threshold": 0.8,
+          "truePositives": 23,
+          "falsePositives": 4,
+          "trueNegatives": 86,
+          "falseNegatives": 15,
+          "precision": 0.8519,
+          "recall": 0.6053,
+          "specificity": 0.9556,
+          "f1": 0.7077
+        },
+        {
+          "threshold": 0.8500000000000001,
+          "truePositives": 15,
+          "falsePositives": 1,
+          "trueNegatives": 89,
+          "falseNegatives": 23,
+          "precision": 0.9375,
+          "recall": 0.3947,
+          "specificity": 0.9889,
+          "f1": 0.5556
+        },
+        {
+          "threshold": 0.9,
+          "truePositives": 7,
+          "falsePositives": 0,
+          "trueNegatives": 90,
+          "falseNegatives": 31,
+          "precision": 1,
+          "recall": 0.1842,
+          "specificity": 1,
+          "f1": 0.3111
+        },
+        {
+          "threshold": 0.9500000000000001,
+          "truePositives": 1,
+          "falsePositives": 0,
+          "trueNegatives": 90,
+          "falseNegatives": 37,
+          "precision": 1,
+          "recall": 0.0263,
+          "specificity": 1,
+          "f1": 0.0513
+        }
+      ],
+      "failure": [
+        {
+          "threshold": 0.05,
+          "truePositives": 18,
+          "falsePositives": 110,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.1406,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.2466
+        },
+        {
+          "threshold": 0.1,
+          "truePositives": 18,
+          "falsePositives": 110,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.1406,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.2466
+        },
+        {
+          "threshold": 0.15000000000000002,
+          "truePositives": 18,
+          "falsePositives": 99,
+          "trueNegatives": 11,
+          "falseNegatives": 0,
+          "precision": 0.1538,
+          "recall": 1,
+          "specificity": 0.1,
+          "f1": 0.2667
+        },
+        {
+          "threshold": 0.2,
+          "truePositives": 18,
+          "falsePositives": 90,
+          "trueNegatives": 20,
+          "falseNegatives": 0,
+          "precision": 0.1667,
+          "recall": 1,
+          "specificity": 0.1818,
+          "f1": 0.2857
+        },
+        {
+          "threshold": 0.25,
+          "truePositives": 18,
+          "falsePositives": 81,
+          "trueNegatives": 29,
+          "falseNegatives": 0,
+          "precision": 0.1818,
+          "recall": 1,
+          "specificity": 0.2636,
+          "f1": 0.3077
+        },
+        {
+          "threshold": 0.30000000000000004,
+          "truePositives": 18,
+          "falsePositives": 74,
+          "trueNegatives": 36,
+          "falseNegatives": 0,
+          "precision": 0.1957,
+          "recall": 1,
+          "specificity": 0.3273,
+          "f1": 0.3273
+        },
+        {
+          "threshold": 0.35000000000000003,
+          "truePositives": 17,
+          "falsePositives": 69,
+          "trueNegatives": 41,
+          "falseNegatives": 1,
+          "precision": 0.1977,
+          "recall": 0.9444,
+          "specificity": 0.3727,
+          "f1": 0.3269
+        },
+        {
+          "threshold": 0.4,
+          "truePositives": 17,
+          "falsePositives": 64,
+          "trueNegatives": 46,
+          "falseNegatives": 1,
+          "precision": 0.2099,
+          "recall": 0.9444,
+          "specificity": 0.4182,
+          "f1": 0.3434
+        },
+        {
+          "threshold": 0.45,
+          "truePositives": 17,
+          "falsePositives": 57,
+          "trueNegatives": 53,
+          "falseNegatives": 1,
+          "precision": 0.2297,
+          "recall": 0.9444,
+          "specificity": 0.4818,
+          "f1": 0.3696
+        },
+        {
+          "threshold": 0.5,
+          "truePositives": 17,
+          "falsePositives": 53,
+          "trueNegatives": 57,
+          "falseNegatives": 1,
+          "precision": 0.2429,
+          "recall": 0.9444,
+          "specificity": 0.5182,
+          "f1": 0.3864
+        },
+        {
+          "threshold": 0.55,
+          "truePositives": 17,
+          "falsePositives": 46,
+          "trueNegatives": 64,
+          "falseNegatives": 1,
+          "precision": 0.2698,
+          "recall": 0.9444,
+          "specificity": 0.5818,
+          "f1": 0.4198
+        },
+        {
+          "threshold": 0.6000000000000001,
+          "truePositives": 17,
+          "falsePositives": 36,
+          "trueNegatives": 74,
+          "falseNegatives": 1,
+          "precision": 0.3208,
+          "recall": 0.9444,
+          "specificity": 0.6727,
+          "f1": 0.4789
+        },
+        {
+          "threshold": 0.65,
+          "truePositives": 17,
+          "falsePositives": 30,
+          "trueNegatives": 80,
+          "falseNegatives": 1,
+          "precision": 0.3617,
+          "recall": 0.9444,
+          "specificity": 0.7273,
+          "f1": 0.5231
+        },
+        {
+          "threshold": 0.7000000000000001,
+          "truePositives": 15,
+          "falsePositives": 29,
+          "trueNegatives": 81,
+          "falseNegatives": 3,
+          "precision": 0.3409,
+          "recall": 0.8333,
+          "specificity": 0.7364,
+          "f1": 0.4839
+        },
+        {
+          "threshold": 0.75,
+          "truePositives": 14,
+          "falsePositives": 24,
+          "trueNegatives": 86,
+          "falseNegatives": 4,
+          "precision": 0.3684,
+          "recall": 0.7778,
+          "specificity": 0.7818,
+          "f1": 0.5
+        },
+        {
+          "threshold": 0.8,
+          "truePositives": 11,
+          "falsePositives": 16,
+          "trueNegatives": 94,
+          "falseNegatives": 7,
+          "precision": 0.4074,
+          "recall": 0.6111,
+          "specificity": 0.8545,
+          "f1": 0.4889
+        },
+        {
+          "threshold": 0.8500000000000001,
+          "truePositives": 9,
+          "falsePositives": 7,
+          "trueNegatives": 103,
+          "falseNegatives": 9,
+          "precision": 0.5625,
+          "recall": 0.5,
+          "specificity": 0.9364,
+          "f1": 0.5294
+        },
+        {
+          "threshold": 0.9,
+          "truePositives": 6,
+          "falsePositives": 1,
+          "trueNegatives": 109,
+          "falseNegatives": 12,
+          "precision": 0.8571,
+          "recall": 0.3333,
+          "specificity": 0.9909,
+          "f1": 0.48
+        },
+        {
+          "threshold": 0.9500000000000001,
+          "truePositives": 1,
+          "falsePositives": 0,
+          "trueNegatives": 110,
+          "falseNegatives": 17,
+          "precision": 1,
+          "recall": 0.0556,
+          "specificity": 1,
+          "f1": 0.1053
+        }
+      ]
+    },
+    "ruleLevel": {
+      "advisory": [
+        {
+          "threshold": 0.05,
+          "truePositives": 12,
+          "falsePositives": 4,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.75,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.8571
+        },
+        {
+          "threshold": 0.1,
+          "truePositives": 12,
+          "falsePositives": 4,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.75,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.8571
+        },
+        {
+          "threshold": 0.15000000000000002,
+          "truePositives": 12,
+          "falsePositives": 4,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.75,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.8571
+        },
+        {
+          "threshold": 0.2,
+          "truePositives": 12,
+          "falsePositives": 4,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.75,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.8571
+        },
+        {
+          "threshold": 0.25,
+          "truePositives": 12,
+          "falsePositives": 4,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.75,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.8571
+        },
+        {
+          "threshold": 0.30000000000000004,
+          "truePositives": 12,
+          "falsePositives": 4,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.75,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.8571
+        },
+        {
+          "threshold": 0.35000000000000003,
+          "truePositives": 12,
+          "falsePositives": 3,
+          "trueNegatives": 1,
+          "falseNegatives": 0,
+          "precision": 0.8,
+          "recall": 1,
+          "specificity": 0.25,
+          "f1": 0.8889
+        },
+        {
+          "threshold": 0.4,
+          "truePositives": 12,
+          "falsePositives": 2,
+          "trueNegatives": 2,
+          "falseNegatives": 0,
+          "precision": 0.8571,
+          "recall": 1,
+          "specificity": 0.5,
+          "f1": 0.9231
+        },
+        {
+          "threshold": 0.45,
+          "truePositives": 12,
+          "falsePositives": 1,
+          "trueNegatives": 3,
+          "falseNegatives": 0,
+          "precision": 0.9231,
+          "recall": 1,
+          "specificity": 0.75,
+          "f1": 0.96
+        },
+        {
+          "threshold": 0.5,
+          "truePositives": 12,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "specificity": 1,
+          "f1": 1
+        },
+        {
+          "threshold": 0.55,
+          "truePositives": 12,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "specificity": 1,
+          "f1": 1
+        },
+        {
+          "threshold": 0.6000000000000001,
+          "truePositives": 12,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "specificity": 1,
+          "f1": 1
+        },
+        {
+          "threshold": 0.65,
+          "truePositives": 12,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "specificity": 1,
+          "f1": 1
+        },
+        {
+          "threshold": 0.7000000000000001,
+          "truePositives": 12,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 1,
+          "recall": 1,
+          "specificity": 1,
+          "f1": 1
+        },
+        {
+          "threshold": 0.75,
+          "truePositives": 10,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 2,
+          "precision": 1,
+          "recall": 0.8333,
+          "specificity": 1,
+          "f1": 0.9091
+        },
+        {
+          "threshold": 0.8,
+          "truePositives": 8,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 4,
+          "precision": 1,
+          "recall": 0.6667,
+          "specificity": 1,
+          "f1": 0.8
+        },
+        {
+          "threshold": 0.8500000000000001,
+          "truePositives": 6,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 6,
+          "precision": 1,
+          "recall": 0.5,
+          "specificity": 1,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.9,
+          "truePositives": 3,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 9,
+          "precision": 1,
+          "recall": 0.25,
+          "specificity": 1,
+          "f1": 0.4
+        },
+        {
+          "threshold": 0.9500000000000001,
+          "truePositives": 1,
+          "falsePositives": 0,
+          "trueNegatives": 4,
+          "falseNegatives": 11,
+          "precision": 1,
+          "recall": 0.0833,
+          "specificity": 1,
+          "f1": 0.1538
+        }
+      ],
+      "failure": [
+        {
+          "threshold": 0.05,
+          "truePositives": 8,
+          "falsePositives": 8,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.1,
+          "truePositives": 8,
+          "falsePositives": 8,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.15000000000000002,
+          "truePositives": 8,
+          "falsePositives": 8,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.2,
+          "truePositives": 8,
+          "falsePositives": 8,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.25,
+          "truePositives": 8,
+          "falsePositives": 8,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.30000000000000004,
+          "truePositives": 8,
+          "falsePositives": 8,
+          "trueNegatives": 0,
+          "falseNegatives": 0,
+          "precision": 0.5,
+          "recall": 1,
+          "specificity": 0,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.35000000000000003,
+          "truePositives": 8,
+          "falsePositives": 7,
+          "trueNegatives": 1,
+          "falseNegatives": 0,
+          "precision": 0.5333,
+          "recall": 1,
+          "specificity": 0.125,
+          "f1": 0.6957
+        },
+        {
+          "threshold": 0.4,
+          "truePositives": 8,
+          "falsePositives": 6,
+          "trueNegatives": 2,
+          "falseNegatives": 0,
+          "precision": 0.5714,
+          "recall": 1,
+          "specificity": 0.25,
+          "f1": 0.7273
+        },
+        {
+          "threshold": 0.45,
+          "truePositives": 8,
+          "falsePositives": 5,
+          "trueNegatives": 3,
+          "falseNegatives": 0,
+          "precision": 0.6154,
+          "recall": 1,
+          "specificity": 0.375,
+          "f1": 0.7619
+        },
+        {
+          "threshold": 0.5,
+          "truePositives": 8,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 0.6667,
+          "recall": 1,
+          "specificity": 0.5,
+          "f1": 0.8
+        },
+        {
+          "threshold": 0.55,
+          "truePositives": 8,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 0.6667,
+          "recall": 1,
+          "specificity": 0.5,
+          "f1": 0.8
+        },
+        {
+          "threshold": 0.6000000000000001,
+          "truePositives": 8,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 0.6667,
+          "recall": 1,
+          "specificity": 0.5,
+          "f1": 0.8
+        },
+        {
+          "threshold": 0.65,
+          "truePositives": 8,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 0.6667,
+          "recall": 1,
+          "specificity": 0.5,
+          "f1": 0.8
+        },
+        {
+          "threshold": 0.7000000000000001,
+          "truePositives": 8,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 0,
+          "precision": 0.6667,
+          "recall": 1,
+          "specificity": 0.5,
+          "f1": 0.8
+        },
+        {
+          "threshold": 0.75,
+          "truePositives": 6,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 2,
+          "precision": 0.6,
+          "recall": 0.75,
+          "specificity": 0.5,
+          "f1": 0.6667
+        },
+        {
+          "threshold": 0.8,
+          "truePositives": 4,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 4,
+          "precision": 0.5,
+          "recall": 0.5,
+          "specificity": 0.5,
+          "f1": 0.5
+        },
+        {
+          "threshold": 0.8500000000000001,
+          "truePositives": 2,
+          "falsePositives": 4,
+          "trueNegatives": 4,
+          "falseNegatives": 6,
+          "precision": 0.3333,
+          "recall": 0.25,
+          "specificity": 0.5,
+          "f1": 0.2857
+        },
+        {
+          "threshold": 0.9,
+          "truePositives": 2,
+          "falsePositives": 1,
+          "trueNegatives": 7,
+          "falseNegatives": 6,
+          "precision": 0.6667,
+          "recall": 0.25,
+          "specificity": 0.875,
+          "f1": 0.3636
+        },
+        {
+          "threshold": 0.9500000000000001,
+          "truePositives": 1,
+          "falsePositives": 0,
+          "trueNegatives": 8,
+          "falseNegatives": 7,
+          "precision": 1,
+          "recall": 0.125,
+          "specificity": 1,
+          "f1": 0.2222
+        }
+      ]
+    }
+  },
+  "runs": [
+    {
+      "caseId": "good-bind-services",
+      "category": "good",
+      "rationale": "Concrete lexical boundary, exception, remediation, evidence, and contrastive examples.",
+      "latencyMs": 468,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4977,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.27,
+          "probabilities": [
+            0.27,
+            0.27,
+            0.27
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.22,
+          "probabilities": [
+            0.22,
+            0.22,
+            0.24
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.29,
+          "probabilities": [
+            0.28,
+            0.29,
+            0.3
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.38,
+          "probabilities": [
+            0.37,
+            0.38,
+            0.4
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.3,
+          "probabilities": [
+            0.29,
+            0.3,
+            0.34
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.11,
+          "probabilities": [
+            0.1,
+            0.11,
+            0.11
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.16,
+          "probabilities": [
+            0.16,
+            0.16,
+            0.17
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.19,
+          "probabilities": [
+            0.18,
+            0.19,
+            0.22
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "good-renamed-imports",
+      "category": "good",
+      "rationale": "Concrete import syntax boundary with a namespace-import near miss.",
+      "latencyMs": 478,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 5001,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.16,
+          "probabilities": [
+            0.16,
+            0.16,
+            0.17
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.15,
+          "probabilities": [
+            0.14,
+            0.15,
+            0.15
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.21,
+          "probabilities": [
+            0.21,
+            0.21,
+            0.23
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.23,
+          "probabilities": [
+            0.23,
+            0.23,
+            0.24
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.34,
+          "probabilities": [
+            0.33,
+            0.34,
+            0.35
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.16,
+          "probabilities": [
+            0.16,
+            0.16,
+            0.16
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.12,
+          "probabilities": [
+            0.12,
+            0.12,
+            0.13
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.15,
+          "probabilities": [
+            0.15,
+            0.15,
+            0.16
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "good-prefer-const",
+      "category": "good",
+      "rationale": "Observable reassignment boundary and explicit update exceptions.",
+      "latencyMs": 531,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 5022,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.28,
+          "probabilities": [
+            0.28,
+            0.28,
+            0.29
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.25,
+          "probabilities": [
+            0.25,
+            0.25,
+            0.27
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.3,
+          "probabilities": [
+            0.28,
+            0.3,
+            0.3
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.42,
+          "probabilities": [
+            0.4,
+            0.42,
+            0.43
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.4,
+          "probabilities": [
+            0.39,
+            0.4,
+            0.42
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.1,
+          "probabilities": [
+            0.1,
+            0.1,
+            0.11
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.18,
+          "probabilities": [
+            0.16,
+            0.18,
+            0.18
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.2,
+          "probabilities": [
+            0.19,
+            0.2,
+            0.23
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "good-json-decode",
+      "category": "good",
+      "rationale": "Observable data-flow boundary within the selected changed span.",
+      "latencyMs": 464,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4974,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.42,
+          "probabilities": [
+            0.39,
+            0.42,
+            0.44
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.13,
+          "probabilities": [
+            0.13,
+            0.13,
+            0.14
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.4,
+          "probabilities": [
+            0.38,
+            0.4,
+            0.4
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.33,
+          "probabilities": [
+            0.33,
+            0.33,
+            0.34
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.47,
+          "probabilities": [
+            0.44,
+            0.47,
+            0.47
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.14,
+          "probabilities": [
+            0.14,
+            0.14,
+            0.15
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.14,
+          "probabilities": [
+            0.14,
+            0.14,
+            0.14
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.11,
+          "probabilities": [
+            0.1,
+            0.11,
+            0.11
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "defective-underspecified",
+      "category": "defective",
+      "rationale": "Subjective circular policy, contradictory identical examples, infeasible evidence, and no remediation.",
+      "latencyMs": 482,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4740,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "failure",
+          "probability": 0.95,
+          "probabilities": [
+            0.94,
+            0.95,
+            0.95
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "failure",
+          "probability": 0.76,
+          "probabilities": [
+            0.75,
+            0.76,
+            0.77
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "failure",
+          "probability": 0.91,
+          "probabilities": [
+            0.9,
+            0.91,
+            0.91
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "failure",
+          "probability": 0.67,
+          "probabilities": [
+            0.66,
+            0.67,
+            0.69
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "failure",
+          "probability": 0.87,
+          "probabilities": [
+            0.86,
+            0.87,
+            0.87
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "failure",
+          "probability": 0.91,
+          "probabilities": [
+            0.91,
+            0.91,
+            0.92
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "failure",
+          "probability": 0.88,
+          "probabilities": [
+            0.88,
+            0.88,
+            0.9
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "failure",
+          "probability": 0.94,
+          "probabilities": [
+            0.94,
+            0.94,
+            0.95
+          ],
+          "productStatus": "failure"
+        }
+      ]
+    },
+    {
+      "caseId": "defective-contradiction",
+      "category": "defective",
+      "rationale": "Violation and compliant criteria explicitly disagree about reassigned let bindings.",
+      "latencyMs": 353,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 5091,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.62,
+          "probabilities": [
+            0.6,
+            0.62,
+            0.63
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "failure",
+          "probability": 0.81,
+          "probabilities": [
+            0.8,
+            0.81,
+            0.85
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.54,
+          "probabilities": [
+            0.53,
+            0.54,
+            0.55
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.63,
+          "probabilities": [
+            0.63,
+            0.63,
+            0.65
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.57,
+          "probabilities": [
+            0.55,
+            0.57,
+            0.57
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.19,
+          "probabilities": [
+            0.16,
+            0.19,
+            0.2
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "failure",
+          "probability": 0.32,
+          "probabilities": [
+            0.31,
+            0.32,
+            0.34
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.21,
+          "probabilities": [
+            0.21,
+            0.21,
+            0.21
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "defective-mislabeled-examples",
+      "category": "defective",
+      "rationale": "Both example labels are reversed under the otherwise operational rule.",
+      "latencyMs": 348,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 5052,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.74,
+          "probabilities": [
+            0.73,
+            0.74,
+            0.78
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "failure",
+          "probability": 0.93,
+          "probabilities": [
+            0.92,
+            0.93,
+            0.93
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.79,
+          "probabilities": [
+            0.79,
+            0.79,
+            0.8
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.88,
+          "probabilities": [
+            0.87,
+            0.88,
+            0.88
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.47,
+          "probabilities": [
+            0.41,
+            0.47,
+            0.48
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.62,
+          "probabilities": [
+            0.57,
+            0.62,
+            0.62
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "failure",
+          "probability": 0.96,
+          "probabilities": [
+            0.95,
+            0.96,
+            0.96
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "failure",
+          "probability": 0.88,
+          "probabilities": [
+            0.88,
+            0.88,
+            0.89
+          ],
+          "productStatus": "failure"
+        }
+      ]
+    },
+    {
+      "caseId": "defective-circular-remediation",
+      "category": "defective",
+      "rationale": "Guidance merely repeats that the violation should be removed.",
+      "latencyMs": 410,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 5106,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.41,
+          "probabilities": [
+            0.4,
+            0.41,
+            0.41
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.22,
+          "probabilities": [
+            0.21,
+            0.22,
+            0.24
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.38,
+          "probabilities": [
+            0.37,
+            0.38,
+            0.39
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.35,
+          "probabilities": [
+            0.32,
+            0.35,
+            0.35
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.44,
+          "probabilities": [
+            0.43,
+            0.44,
+            0.45
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "failure",
+          "probability": 0.71,
+          "probabilities": [
+            0.69,
+            0.71,
+            0.71
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.16,
+          "probabilities": [
+            0.16,
+            0.16,
+            0.17
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.13,
+          "probabilities": [
+            0.13,
+            0.13,
+            0.14
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "ambiguous-preferred-api",
+      "category": "ambiguous",
+      "rationale": "Preferred, suitable, practical, and reasonable are undefined policy judgments.",
+      "latencyMs": 451,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4833,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "advisory",
+          "probability": 0.89,
+          "probabilities": [
+            0.89,
+            0.89,
+            0.89
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.53,
+          "probabilities": [
+            0.53,
+            0.53,
+            0.54
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "advisory",
+          "probability": 0.85,
+          "probabilities": [
+            0.85,
+            0.85,
+            0.85
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "advisory",
+          "probability": 0.6,
+          "probabilities": [
+            0.58,
+            0.6,
+            0.6
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.8,
+          "probabilities": [
+            0.79,
+            0.8,
+            0.8
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "advisory",
+          "probability": 0.78,
+          "probabilities": [
+            0.76,
+            0.78,
+            0.78
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "advisory",
+          "probability": 0.79,
+          "probabilities": [
+            0.79,
+            0.79,
+            0.8
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "advisory",
+          "probability": 0.72,
+          "probabilities": [
+            0.72,
+            0.72,
+            0.74
+          ],
+          "productStatus": "advisory"
+        }
+      ]
+    },
+    {
+      "caseId": "ambiguous-exception",
+      "category": "ambiguous",
+      "rationale": "Infrastructure, legitimate, and necessary are not operationally defined.",
+      "latencyMs": 366,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4710,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.85,
+          "probabilities": [
+            0.84,
+            0.85,
+            0.85
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.71,
+          "probabilities": [
+            0.7,
+            0.71,
+            0.72
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "advisory",
+          "probability": 0.81,
+          "probabilities": [
+            0.81,
+            0.81,
+            0.81
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "advisory",
+          "probability": 0.76,
+          "probabilities": [
+            0.76,
+            0.76,
+            0.77
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.76,
+          "probabilities": [
+            0.76,
+            0.76,
+            0.77
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.45,
+          "probabilities": [
+            0.43,
+            0.45,
+            0.46
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "advisory",
+          "probability": 0.84,
+          "probabilities": [
+            0.84,
+            0.84,
+            0.84
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "advisory",
+          "probability": 0.86,
+          "probabilities": [
+            0.85,
+            0.86,
+            0.86
+          ],
+          "productStatus": "failure"
+        }
+      ]
+    },
+    {
+      "caseId": "ambiguous-performance",
+      "category": "ambiguous",
+      "rationale": "Hot, expensive, unnecessary, acceptable, and necessary lack measurable boundaries.",
+      "latencyMs": 425,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4809,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "advisory",
+          "probability": 0.86,
+          "probabilities": [
+            0.86,
+            0.86,
+            0.87
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.52,
+          "probabilities": [
+            0.5,
+            0.52,
+            0.55
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "advisory",
+          "probability": 0.8,
+          "probabilities": [
+            0.8,
+            0.8,
+            0.8
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "advisory",
+          "probability": 0.58,
+          "probabilities": [
+            0.58,
+            0.58,
+            0.6
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.82,
+          "probabilities": [
+            0.81,
+            0.82,
+            0.82
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.61,
+          "probabilities": [
+            0.61,
+            0.61,
+            0.64
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "advisory",
+          "probability": 0.78,
+          "probabilities": [
+            0.77,
+            0.78,
+            0.8
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "advisory",
+          "probability": 0.58,
+          "probabilities": [
+            0.54,
+            0.58,
+            0.62
+          ],
+          "productStatus": "advisory"
+        }
+      ]
+    },
+    {
+      "caseId": "ambiguous-security",
+      "category": "ambiguous",
+      "rationale": "Sensitive and safe are not tied to a classification or observable value flow.",
+      "latencyMs": 415,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4707,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "advisory",
+          "probability": 0.87,
+          "probabilities": [
+            0.87,
+            0.87,
+            0.88
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.75,
+          "probabilities": [
+            0.74,
+            0.75,
+            0.75
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "advisory",
+          "probability": 0.81,
+          "probabilities": [
+            0.81,
+            0.81,
+            0.82
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "advisory",
+          "probability": 0.8,
+          "probabilities": [
+            0.79,
+            0.8,
+            0.8
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "pass",
+          "probability": 0.74,
+          "probabilities": [
+            0.73,
+            0.74,
+            0.76
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.56,
+          "probabilities": [
+            0.54,
+            0.56,
+            0.57
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "advisory",
+          "probability": 0.91,
+          "probabilities": [
+            0.91,
+            0.91,
+            0.91
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "advisory",
+          "probability": 0.87,
+          "probabilities": [
+            0.86,
+            0.87,
+            0.88
+          ],
+          "productStatus": "failure"
+        }
+      ]
+    },
+    {
+      "caseId": "evidence-call-graph",
+      "category": "evidence-infeasible",
+      "rationale": "Changed-span evidence cannot establish transitive caller behavior or ownership.",
+      "latencyMs": 391,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4821,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.55,
+          "probabilities": [
+            0.54,
+            0.55,
+            0.56
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.37,
+          "probabilities": [
+            0.35,
+            0.37,
+            0.39
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.55,
+          "probabilities": [
+            0.54,
+            0.55,
+            0.56
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.52,
+          "probabilities": [
+            0.52,
+            0.52,
+            0.54
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "failure",
+          "probability": 0.65,
+          "probabilities": [
+            0.63,
+            0.65,
+            0.68
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.18,
+          "probabilities": [
+            0.18,
+            0.18,
+            0.19
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.72,
+          "probabilities": [
+            0.72,
+            0.72,
+            0.75
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.64,
+          "probabilities": [
+            0.63,
+            0.64,
+            0.65
+          ],
+          "productStatus": "advisory"
+        }
+      ]
+    },
+    {
+      "caseId": "evidence-bun-runtime",
+      "category": "evidence-infeasible",
+      "rationale": "An enclosing symbol cannot prove repository runtime targets, caller constraints, or compatibility requirements.",
+      "latencyMs": 379,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 5076,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.64,
+          "probabilities": [
+            0.63,
+            0.64,
+            0.65
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.23,
+          "probabilities": [
+            0.21,
+            0.23,
+            0.24
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.46,
+          "probabilities": [
+            0.45,
+            0.46,
+            0.46
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.4,
+          "probabilities": [
+            0.4,
+            0.4,
+            0.4
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "failure",
+          "probability": 0.76,
+          "probabilities": [
+            0.74,
+            0.76,
+            0.76
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.37,
+          "probabilities": [
+            0.36,
+            0.37,
+            0.39
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.31,
+          "probabilities": [
+            0.31,
+            0.31,
+            0.33
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.18,
+          "probabilities": [
+            0.17,
+            0.18,
+            0.18
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "evidence-cross-file",
+      "category": "evidence-infeasible",
+      "rationale": "Changed-span evidence cannot resolve imported declarations and repository-layer ownership.",
+      "latencyMs": 372,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4833,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.53,
+          "probabilities": [
+            0.53,
+            0.53,
+            0.55
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.23,
+          "probabilities": [
+            0.23,
+            0.23,
+            0.24
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.54,
+          "probabilities": [
+            0.54,
+            0.54,
+            0.56
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.36,
+          "probabilities": [
+            0.36,
+            0.36,
+            0.38
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "failure",
+          "probability": 0.76,
+          "probabilities": [
+            0.75,
+            0.76,
+            0.76
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.15,
+          "probabilities": [
+            0.15,
+            0.15,
+            0.16
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.31,
+          "probabilities": [
+            0.3,
+            0.31,
+            0.32
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.25,
+          "probabilities": [
+            0.23,
+            0.25,
+            0.25
+          ],
+          "productStatus": "pass"
+        }
+      ]
+    },
+    {
+      "caseId": "evidence-deployment-config",
+      "category": "evidence-infeasible",
+      "rationale": "Complete-file evidence cannot establish external production deployment configuration.",
+      "latencyMs": 446,
+      "usage": {
+        "requests": 3,
+        "inputTokens": 4881,
+        "outputTokens": 498
+      },
+      "checks": [
+        {
+          "id": "operational-boundary",
+          "expected": "pass",
+          "probability": 0.56,
+          "probabilities": [
+            0.55,
+            0.56,
+            0.57
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "internal-consistency",
+          "expected": "pass",
+          "probability": 0.59,
+          "probabilities": [
+            0.58,
+            0.59,
+            0.6
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "applicability-clarity",
+          "expected": "pass",
+          "probability": 0.76,
+          "probabilities": [
+            0.76,
+            0.76,
+            0.77
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "exceptions-operational",
+          "expected": "pass",
+          "probability": 0.6,
+          "probabilities": [
+            0.59,
+            0.6,
+            0.62
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "evidence-feasible",
+          "expected": "failure",
+          "probability": 0.83,
+          "probabilities": [
+            0.83,
+            0.83,
+            0.86
+          ],
+          "productStatus": "failure"
+        },
+        {
+          "id": "remediation-actionable",
+          "expected": "pass",
+          "probability": 0.24,
+          "probabilities": [
+            0.24,
+            0.24,
+            0.25
+          ],
+          "productStatus": "pass"
+        },
+        {
+          "id": "examples-faithful",
+          "expected": "pass",
+          "probability": 0.66,
+          "probabilities": [
+            0.6,
+            0.66,
+            0.67
+          ],
+          "productStatus": "advisory"
+        },
+        {
+          "id": "examples-boundary",
+          "expected": "pass",
+          "probability": 0.5,
+          "probabilities": [
+            0.49,
+            0.5,
+            0.5
+          ],
+          "productStatus": "advisory"
+        }
+      ]
+    }
+  ]
+}

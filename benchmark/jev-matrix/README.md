@@ -49,7 +49,7 @@ The provider accepted up to 450 decisions in one request and rejected 600, 750, 
 
 Compared with the preserved 31-request rule-focused run, this single observation used 29 fewer requests, reduced latency from 1.47 seconds, reduced estimated cost from $0.01503, and retained the same 30 primary classifications. Unexpected findings remain non-exhaustively labeled and require adjudication, so this is not a precision result.
 
-The production packer uses a more conservative request-character budget. Its first 30 × 30 run used **3 requests**, completed in **0.98 seconds**, cost **$0.00635**, and retained **30/30 definitive primary findings**. Raw output is preserved at `benchmark/effect-idioms-30/results/pr-30-files-production-matrix.json`. One preceding 275,000-character-budget attempt was rejected with `max_tokens_exceeded`; the production budget was reduced to 220,000 characters before the successful run.
+The first production character-budget packer used **3 requests**, completed in **0.98 seconds**, cost **$0.00635**, and retained **30/30 definitive primary findings**. A later dual-budget implementation models TypeSafe's documented constraints—64k tokens across state plus all questions and 32k across state plus the longest question—with conservative 55k/27k targets, shared-resource best-fit packing, and deterministic split-on-limit fallback. After changed-span state was added, the same 30 × 30 workload used **4 requests**, completed in **1.565 seconds**, cost **$0.00864**, and retained **30/30 definitive primary findings**. Raw output is at `benchmark/effect-idioms-30/results/pr-30-files-production-matrix.json`.
 
 ## Go/no-go questions
 

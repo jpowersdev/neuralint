@@ -1,0 +1,39 @@
+{
+  "version": 1,
+  "id": "OPENCODE_PREFER_BUN_APIS",
+  "title": "Prefer Bun APIs when runtime semantics permit",
+  "description": "OpenCode prefers Bun APIs such as Bun.file when they satisfy the required runtime and execution semantics.",
+  "severity": "warning",
+  "scope": {
+    "include": ["packages/**/*.ts", "packages/**/*.tsx"],
+    "exclude": ["**/generated/**", "**/generated-effect/**", "**/dist/**", "**/vendor/**"]
+  },
+  "instructions": "Judge the API choice in its enclosing operation. Do not infer that a Bun replacement is valid without evidence that it preserves required runtime and synchronous or asynchronous behavior.",
+  "criteria": {
+    "violation": "Changed code uses a Node filesystem API even though the enclosing operation can use a direct Bun API with equivalent runtime and execution semantics.",
+    "compliant": "Changed code uses a Bun API, or the enclosing operation documents or demonstrates a synchronous, Electron, Node-only, compatibility, or other semantic constraint that the apparent Bun replacement would not preserve."
+  },
+  "thresholds": {
+    "screenAt": 0.35,
+    "violationAt": 0.8
+  },
+  "semantic": {
+    "context": "OpenCode prefers Bun APIs, but API substitutions must preserve the behavior required by the enclosing operation and runtime.",
+    "reportWhen": "The complete enclosing operation uses a Node filesystem API and shows no semantic or runtime reason not to use the corresponding Bun API.",
+    "doNotReport": "Do not report from an import or call in isolation. Do not report when complete evidence is unavailable or when synchronous execution, Electron or Node runtime compatibility, API capability, or another documented constraint makes the Bun replacement non-equivalent.",
+    "guidance": "Use Bun.file or another direct Bun API only when it preserves the operation's required behavior; otherwise retain the necessary platform API and make the constraint clear.",
+    "evidence": "enclosing-symbol",
+    "examples": [
+      {
+        "outcome": "violation",
+        "code": "const text = await readFile(path, \"utf8\")\nreturn text.trim()",
+        "explanation": "The ordinary asynchronous file read has a direct Bun.file equivalent and no conflicting runtime constraint."
+      },
+      {
+        "outcome": "nonviolation",
+        "code": "// This startup path must complete synchronously before the first IPC response.\nreturn readFileSync(path, \"utf8\")",
+        "explanation": "The enclosing operation explicitly requires synchronous behavior that Bun.file().text() would not preserve."
+      }
+    ]
+  }
+}
