@@ -10,6 +10,7 @@ import * as ProjectConfig from "./ProjectConfig.js"
 import * as Report from "./Report.js"
 import * as Review from "./Review.js"
 import * as RuleCatalog from "./RuleCatalog.js"
+import * as RuleDoctor from "./RuleDoctor.js"
 
 const setExitCode = (code: number) => Effect.sync(() => {
   process.exitCode = code
@@ -174,9 +175,48 @@ const rulesList = Command.make("list", { root: ruleRoot }, (options) =>
   )
 ).pipe(Command.withDescription("List repository rules"))
 
+const rulesDoctor = Command.make("doctor", {
+  root: ruleRoot,
+  rule: Flag.String("rule").pipe(Flag.withDescription("Rule ID to diagnose")),
+  source: Flag.String("source").pipe(
+    Flag.withDescription("Repository-relative source guidance file"),
+    Flag.optional
+  ),
+  output: Flag.String("output").pipe(
+    Flag.withDescription("Repository-relative doctor report directory"),
+    Flag.withDefault(".neuralint/doctor")
+  ),
+  explain: Flag.Boolean("explain").pipe(
+    Flag.withDescription("Ask Astra to explain Jev concerns without rewriting the rule"),
+    Flag.withDefault(false)
+  )
+}, (options) => Effect.gen(function*() {
+  const source = Option.getOrUndefined(options.source)
+  const result = yield* RuleDoctor.run({
+    root: options.root,
+    ruleId: options.rule,
+    output: options.output,
+    explain: options.explain,
+    ...(source === undefined ? {} : { source })
+  })
+  yield* Console.log([
+    `Diagnosed ${options.rule} with Jev: ${result.issues} failure${result.issues === 1 ? "" : "s"}, ${result.advisories} advisor${result.advisories === 1 ? "y" : "ies"}`,
+    `  report: ${result.reportPath}`,
+    result.explained
+      ? `  explained by: ${result.model} ($${result.explanationUsage?.costUsd.toFixed(5) ?? "unknown"})`
+      : "  Astra was not called.",
+    "Active policy was not modified."
+  ].join("\n"))
+}).pipe(
+  Effect.catchTags({
+    RuleCatalogError: (error) => fail(`${error.path}: ${error.message}`),
+    RuleDoctorError: (error) => fail(`${error.stage}: ${error.message}`)
+  })
+)).pipe(Command.withDescription("Diagnose rule quality with Jev and optionally explain concerns with Astra"))
+
 const rules = Command.make("rules").pipe(
   Command.withDescription("Inspect and maintain the repository rule catalog"),
-  Command.withSubcommands([rulesList, rulesValidate])
+  Command.withSubcommands([rulesList, rulesValidate, rulesDoctor])
 )
 
 export const command = Command.make("neuralint").pipe(

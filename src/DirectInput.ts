@@ -24,7 +24,8 @@ export const fromText = (path: string, source: string, startLine: number): Domai
       newPath: path,
       path,
       patch,
-      hunks: [hunk]
+      hunks: [hunk],
+      newSource: source
     }]
   }
 }

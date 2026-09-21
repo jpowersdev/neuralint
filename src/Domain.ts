@@ -50,6 +50,13 @@ export const RuleSemanticGuidance = Schema.Struct({
 })
 export type RuleSemanticGuidance = typeof RuleSemanticGuidance.Type
 
+export const RuleDiagnostic = Schema.Struct({
+  id: Schema.NonEmptyString,
+  title: Schema.NonEmptyString,
+  description: Schema.NonEmptyString
+})
+export type RuleDiagnostic = typeof RuleDiagnostic.Type
+
 export const ReviewRule = Schema.Struct({
   version: Schema.Literal(1),
   id: RuleId,
@@ -60,7 +67,8 @@ export const ReviewRule = Schema.Struct({
   instructions: Schema.NonEmptyString,
   criteria: RuleCriteria,
   thresholds: RuleThresholds,
-  semantic: Schema.optionalKey(RuleSemanticGuidance)
+  semantic: Schema.optionalKey(RuleSemanticGuidance),
+  diagnostics: Schema.optionalKey(Schema.Array(RuleDiagnostic))
 })
 export type ReviewRule = typeof ReviewRule.Type
 
@@ -81,6 +89,8 @@ export interface FileDiff {
   readonly path: string
   readonly hunks: ReadonlyArray<DiffHunk>
   readonly patch: string
+  readonly oldSource?: string
+  readonly newSource?: string
 }
 
 export interface DiffSet {
@@ -112,6 +122,7 @@ export const Finding = Schema.Struct({
   status: FindingStatus,
   path: Schema.String,
   hunkId: Schema.String,
+  spanId: Schema.optionalKey(Schema.String),
   hunkHeader: Schema.String,
   relevantDiff: Schema.String,
   locations: Schema.optionalKey(Schema.Array(FindingLocation)),
@@ -164,6 +175,14 @@ export class GitError extends Schema.TaggedError<GitError>()(
 
 export class ReviewError extends Schema.TaggedError<ReviewError>()(
   "ReviewError",
+  {
+    stage: Schema.String,
+    message: Schema.String
+  }
+) {}
+
+export class RuleDoctorError extends Schema.TaggedError<RuleDoctorError>()(
+  "RuleDoctorError",
   {
     stage: Schema.String,
     message: Schema.String

@@ -58,5 +58,19 @@ export const diff = Effect.fn("Git.diff")(function* (
       message: result.stderr.trim() || `git diff exited ${result.exitCode}`
     })
   }
-  return UnifiedDiff.parse(result.stdout, baseCommit, "HEAD")
+  const parsed = UnifiedDiff.parse(result.stdout, baseCommit, "HEAD")
+  const readSource = (ref: string, path: string) => runGit(root, ["show", `${ref}:${path}`]).pipe(
+    Effect.map((source) => source.exitCode === 0 ? source.stdout : undefined),
+    Effect.catchCause(() => Effect.succeed(undefined))
+  )
+  const files = yield* Effect.forEach(parsed.files, (file) => Effect.gen(function*() {
+    const oldSource = file.oldPath === "/dev/null" ? undefined : yield* readSource(baseCommit, file.oldPath)
+    const newSource = file.newPath === "/dev/null" ? undefined : yield* readSource("HEAD", file.newPath)
+    return {
+      ...file,
+      ...(oldSource === undefined ? {} : { oldSource }),
+      ...(newSource === undefined ? {} : { newSource })
+    }
+  }), { concurrency: 8 })
+  return { ...parsed, files }
 })

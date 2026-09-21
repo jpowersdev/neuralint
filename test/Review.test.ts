@@ -48,12 +48,18 @@ const modelLayer = Layer.effect(
   DecisionModel.DecisionModel,
   DecisionModel.make({
     decide: ({ state, decisions }) => {
-      const stage = typeof state === "object" && state !== null && !Array.isArray(state) && "stage" in state
-        ? state["stage"]
+      const stateObject = typeof state === "object" && state !== null && !Array.isArray(state)
+        ? state as Record<string, unknown>
         : undefined
+      const stage = stateObject?.["stage"]
+      const rawEvidence = stateObject?.["changes"]
+      const evidence = stage === "matrix" && Array.isArray(rawEvidence)
+        ? rawEvidence as ReadonlyArray<{ readonly id?: string; readonly after?: string }>
+        : []
+      const riskySpan = evidence.find((item) => item.after?.includes("risky"))?.id?.split(":changed-span")[0]
       const answers: Record<string, DecisionModel.ProviderAnswer> = Object.create(null)
       for (const key of Object.keys(decisions)) {
-        const probability = stage === "matrix" && key.endsWith("F001:H001") ? 0.92 : 0.1
+        const probability = riskySpan !== undefined && key.endsWith(riskySpan) ? 0.92 : 0.1
         answers[key] = { _tag: "Probability", probability }
       }
       return Effect.succeed({ answers, usage: { inputTokens: 100, outputTokens: 2 } })
@@ -76,7 +82,7 @@ it.describe("Review", () => {
         startLine: 1,
         endLine: 1,
         role: "primary",
-        precision: "hunk"
+        precision: "span"
       }])
       it.expect(report.filesReviewed).toBe(2)
       it.expect(report.usage.requests).toBe(1)
