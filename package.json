@@ -1,6 +1,6 @@
 {
   "name": "neuralint",
-  "version": "0.1.0-alpha.3",
+  "version": "0.1.0-alpha.4",
   "description": "Fast semantic linting against repository-owned engineering rules, powered by TypeSafe AI's Jev.",
   "license": "MIT",
   "repository": {
