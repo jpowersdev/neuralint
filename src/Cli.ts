@@ -67,6 +67,10 @@ const check = Command.make("check", {
     Flag.withDescription("Preflight assessment cases and request budgets without calling Jev"),
     Flag.withDefault(false)
   ),
+  allowCustomPlanners: Flag.Boolean("allow-custom-planners").pipe(
+    Flag.withDescription("Execute trusted repository assessment planner modules"),
+    Flag.withDefault(false)
+  ),
   maxStateChars: Flag.Int("max-state-chars").pipe(
     Flag.withDescription("Maximum patch characters in one Jev evidence pack"),
     Flag.withDefault(60_000)
@@ -110,13 +114,20 @@ const check = Command.make("check", {
         return DirectInput.fromText(filename, source, options.startLine)
       })
       : yield* Git.diff(options.root, base, options.context)
+    const reviewOptions: Review.Options = {
+      maxStateChars: options.maxStateChars,
+      root: options.root,
+      customPlanners: config.assessmentPlanners,
+      allowCustomPlanners: options.allowCustomPlanners,
+      limits: config.limits
+    }
     if (options.plan) {
-      const plan = yield* Review.plan(diff, rules, { maxStateChars: options.maxStateChars })
+      const plan = yield* Review.plan(diff, rules, reviewOptions)
       const rendered = options.format === "json"
         ? `${JSON.stringify(plan, null, 2)}\n`
         : [
             `neuralint plan ${plan.base}..${plan.head}`,
-            `${plan.files} file(s), ${plan.rules} rule(s), ${plan.cases} assessment case(s)`,
+            `${plan.files} file(s), ${plan.collectionBytes} collection byte(s), ${plan.rules} rule(s), ${plan.cases} assessment case(s)`,
             `${plan.requests} estimated Jev request(s), ${plan.estimatedInputTokens} estimated input tokens`,
             `Longest estimated binding: ${plan.longestBindingTokens} tokens`,
             "",
@@ -129,7 +140,7 @@ const check = Command.make("check", {
       yield* setExitCode(0)
       return
     }
-    const report = yield* Review.run(diff, rules, { maxStateChars: options.maxStateChars })
+    const report = yield* Review.run(diff, rules, reviewOptions)
     const visibleReport = options.advisories
       ? report
       : { ...report, findings: report.findings.filter((finding) => finding.status === "violation") }

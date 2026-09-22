@@ -9,12 +9,44 @@ import * as Domain from "./Domain.js"
 export const directoryName = ".neuralint"
 export const configFileName = "config.yaml"
 
+export const AssessmentPlannerConfig = Schema.Struct({
+  module: Schema.NonEmptyString,
+  export: Schema.optionalKey(Schema.NonEmptyString),
+  partitioning: Schema.Literals(["independent-cases", "global-unsplittable"])
+})
+export type AssessmentPlannerConfig = typeof AssessmentPlannerConfig.Type
+
+export const ReviewLimits = Schema.Struct({
+  maxFiles: Schema.optionalKey(Schema.Number),
+  maxCollectionBytes: Schema.optionalKey(Schema.Number),
+  maxCases: Schema.optionalKey(Schema.Number),
+  maxRequests: Schema.optionalKey(Schema.Number),
+  maxInputTokens: Schema.optionalKey(Schema.Number)
+})
+export type ReviewLimits = typeof ReviewLimits.Type
+
 export const ProjectConfig = Schema.Struct({
   version: Schema.Literal(1),
   base: Schema.NonEmptyString,
-  failOn: Schema.optionalKey(Domain.FailOn)
+  failOn: Schema.optionalKey(Domain.FailOn),
+  assessmentPlanners: Schema.optionalKey(Schema.Record(Schema.String, AssessmentPlannerConfig)),
+  limits: Schema.optionalKey(ReviewLimits)
 })
 export type ProjectConfig = typeof ProjectConfig.Type
+
+export interface LoadedProjectConfig {
+  readonly version: 1
+  readonly base: string
+  readonly failOn: Domain.FailOn
+  readonly assessmentPlanners: Readonly<Record<string, AssessmentPlannerConfig>>
+  readonly limits: {
+    readonly maxFiles: number
+    readonly maxCollectionBytes: number
+    readonly maxCases: number
+    readonly maxRequests: number
+    readonly maxInputTokens: number
+  }
+}
 
 export interface InitializationResult {
   readonly created: ReadonlyArray<string>
@@ -22,8 +54,21 @@ export interface InitializationResult {
 }
 
 export const defaultFailOn: Domain.FailOn = "error"
+export const defaultLimits: LoadedProjectConfig["limits"] = {
+  maxFiles: 500,
+  maxCollectionBytes: 5_000_000,
+  maxCases: 1_000,
+  maxRequests: 20,
+  maxInputTokens: 500_000
+}
 
-const defaults = { version: 1, base: "main", failOn: defaultFailOn } as const
+const defaults: LoadedProjectConfig = {
+  version: 1,
+  base: "main",
+  failOn: defaultFailOn,
+  assessmentPlanners: {},
+  limits: defaultLimits
+}
 
 const exampleRule = {
   version: 1,
@@ -76,7 +121,19 @@ const decode = (path: string, source: string) =>
     const config = yield* Schema.decodeUnknownEffect(ProjectConfig)(parsed).pipe(
       Effect.mapError((cause) => new Domain.ProjectConfigError({ path, message: cause.message }))
     )
-    return { ...config, failOn: config.failOn ?? defaultFailOn }
+    const limits = { ...defaultLimits, ...config.limits }
+    for (const [name, value] of Object.entries(limits)) {
+      if (!Number.isInteger(value) || value < 1) {
+        return yield* new Domain.ProjectConfigError({ path, message: `limits.${name} must be a positive integer` })
+      }
+    }
+    return {
+      version: config.version,
+      base: config.base,
+      failOn: config.failOn ?? defaultFailOn,
+      assessmentPlanners: config.assessmentPlanners ?? {},
+      limits
+    } satisfies LoadedProjectConfig
   })
 
 export const load = Effect.fn("ProjectConfig.load")(function* (root: string) {

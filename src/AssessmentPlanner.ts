@@ -1,6 +1,9 @@
 import { createHash } from "node:crypto"
+import * as path from "node:path"
+import { pathToFileURL } from "node:url"
 
 import * as Effect from "effect/Effect"
+import * as Schema from "effect/Schema"
 
 import * as ChangedSpan from "./ChangedSpan.js"
 import * as Domain from "./Domain.js"
@@ -62,6 +65,80 @@ export interface Plan {
   readonly rules: ReadonlyArray<RulePlan>
   readonly diagnostics: ReadonlyArray<string>
 }
+
+export interface CustomPlannerDefinition {
+  readonly module: string
+  readonly export?: string
+  readonly partitioning: Partitioning
+}
+
+export interface PlanOptions {
+  readonly root?: string
+  readonly customPlanners?: Readonly<Record<string, CustomPlannerDefinition>>
+  readonly allowCustomPlanners?: boolean
+  readonly maxCases?: number
+}
+
+const ExternalSourceReference = Schema.Struct({
+  fileId: Schema.NonEmptyString,
+  side: Schema.Literals(["before", "after"]),
+  range: Schema.Struct({ startLine: Schema.Number, endLine: Schema.Number })
+})
+
+const ExternalProjection = Schema.Struct({
+  label: Schema.NonEmptyString,
+  sources: Schema.Array(ExternalSourceReference),
+  facts: Schema.optionalKey(Schema.Unknown)
+})
+
+const ExternalCoverage = Schema.Struct({
+  status: Schema.Literals(["complete", "partial", "unavailable"]),
+  basis: Schema.NonEmptyString,
+  filesConsidered: Schema.Number
+})
+
+const ExternalAssessmentCase = Schema.Struct({
+  id: Schema.NonEmptyString,
+  subjects: Schema.Array(ExternalProjection),
+  evidence: Schema.Array(ExternalProjection),
+  completeness: ExternalCoverage
+})
+
+const ExternalPlannerResultSchema = Schema.Struct({
+  schemaVersion: Schema.Literal(1),
+  planner: Schema.NonEmptyString,
+  cases: Schema.Array(ExternalAssessmentCase),
+  coverage: ExternalCoverage
+})
+
+export type PlannerResult = typeof ExternalPlannerResultSchema.Type
+
+export interface PlannerRequest {
+  readonly schemaVersion: 1
+  readonly ruleId: string
+  readonly collection: {
+    readonly schemaVersion: 1
+    readonly id: string
+    readonly source: "git-delta" | "explicit-files" | "editor" | "snapshot"
+    readonly base?: string
+    readonly head?: string
+    readonly files: ReadonlyArray<{
+      readonly id: string
+      readonly path: string
+      readonly oldPath?: string
+      readonly status: "added" | "modified" | "deleted" | "renamed" | "unchanged"
+      readonly before?: string
+      readonly after?: string
+      readonly changedRanges: ReadonlyArray<{
+        readonly old?: { readonly startLine: number; readonly endLine: number }
+        readonly new?: { readonly startLine: number; readonly endLine: number }
+      }>
+    }>
+  }
+  readonly limits: { readonly maxCases: number }
+}
+
+export type PlannerFunction = (request: PlannerRequest) => PlannerResult | Promise<PlannerResult>
 
 export const plannerOf = (rule: Domain.ReviewRule): string =>
   rule.assessment?.planner ?? semanticChunksPlanner
@@ -221,11 +298,142 @@ const anchorsFor = (file: Domain.FileDiff): ReadonlyArray<AssessmentCase["anchor
   })
 }
 
+const plannerRequest = (
+  diff: Domain.DiffSet,
+  rule: Domain.ReviewRule,
+  anchorsByFile: ReadonlyMap<string, ReadonlyArray<AssessmentCase["anchor"]>>,
+  maxCases: number
+): PlannerRequest => ({
+  schemaVersion: 1,
+  ruleId: rule.id,
+  collection: {
+    schemaVersion: 1,
+    id: `${diff.base}..${diff.head}`,
+    source: diff.base === "stdin" ? "editor" : "git-delta",
+    base: diff.base,
+    head: diff.head,
+    files: diff.files.map((file) => ({
+      id: file.id,
+      path: file.path,
+      ...(file.oldPath !== file.path ? { oldPath: file.oldPath } : {}),
+      status: statusOf(file),
+      ...(file.oldSource === undefined ? {} : { before: file.oldSource }),
+      ...(file.newSource === undefined ? {} : { after: file.newSource }),
+      changedRanges: (anchorsByFile.get(file.id) ?? []).map(({ span }) => ({
+        ...(span.oldRange === undefined ? {} : { old: span.oldRange }),
+        ...(span.newRange === undefined ? {} : { new: span.newRange })
+      }))
+    }))
+  },
+  limits: { maxCases }
+})
+
+const insideRoot = (root: string, filename: string): boolean => {
+  const relative = path.relative(root, filename)
+  return relative !== "" && !relative.startsWith(`..${path.sep}`) && relative !== ".." && !path.isAbsolute(relative)
+}
+
+const normalizeCustomResult = (
+  planner: string,
+  definition: CustomPlannerDefinition,
+  result: PlannerResult,
+  diff: Domain.DiffSet,
+  anchorsByFile: ReadonlyMap<string, ReadonlyArray<AssessmentCase["anchor"]>>,
+  maxCases: number
+): ReadonlyArray<AssessmentCase> => {
+  if (result.planner !== planner) throw new Error(`returned planner ${result.planner} instead of ${planner}`)
+  if (result.coverage.status !== "complete") {
+    throw new Error(`returned ${result.coverage.status} collection coverage: ${result.coverage.basis}`)
+  }
+  if (result.cases.length > maxCases) throw new Error(`returned ${result.cases.length} cases, above maxCases ${maxCases}`)
+  const fileById = new Map(diff.files.map((file) => [file.id, file]))
+  const seen = new Set<string>()
+  const normalizeProjection = (projection: typeof ExternalProjection.Type): Projection => {
+    if (projection.sources.length === 0) throw new Error(`projection ${projection.label} has no source references`)
+    const sources = projection.sources.map((source): SourceReference => {
+      const file = fileById.get(source.fileId)
+      if (file === undefined) throw new Error(`projection ${projection.label} references unknown file ${source.fileId}`)
+      const text = source.side === "after" ? file.newSource : file.oldSource
+      if (text === undefined) throw new Error(`projection ${projection.label} references unavailable ${source.side} content for ${file.path}`)
+      const lines = text.split("\n").length
+      const { startLine, endLine } = source.range
+      if (!Number.isInteger(startLine) || !Number.isInteger(endLine) || startLine < 1 || endLine < startLine || endLine > lines) {
+        throw new Error(`projection ${projection.label} has invalid ${startLine}-${endLine} range for ${file.path} (${lines} lines)`)
+      }
+      return { fileId: file.id, path: file.path, side: source.side, startLine, endLine }
+    })
+    if (projection.facts !== undefined) {
+      const encoded = JSON.stringify(projection.facts)
+      if (encoded === undefined) throw new Error(`projection ${projection.label} facts are not JSON serializable`)
+    }
+    return {
+      label: projection.label,
+      sources,
+      ...(projection.facts === undefined ? {} : { facts: projection.facts })
+    }
+  }
+  return result.cases.map((item): AssessmentCase => {
+    if (seen.has(item.id)) throw new Error(`returned duplicate case id ${item.id}`)
+    seen.add(item.id)
+    if (item.subjects.length === 0) throw new Error(`case ${item.id} has no subjects`)
+    if (item.completeness.status !== "complete") {
+      throw new Error(`case ${item.id} is ${item.completeness.status}: ${item.completeness.basis}`)
+    }
+    const subjects = item.subjects.map(normalizeProjection)
+    const evidence = item.evidence.map(normalizeProjection)
+    const subjectSources = subjects.flatMap((subject) => subject.sources)
+    const anchors = subjectSources.map((source) => {
+      const candidates = anchorsByFile.get(source.fileId) ?? []
+      const anchor = candidates.find(({ span }) => {
+        const range = source.side === "after" ? span.newRange : span.oldRange
+        return range !== undefined && source.startLine <= range.endLine && range.startLine <= source.endLine
+      })
+      if (anchor === undefined) throw new Error(`case ${item.id} subject ${source.path}:${source.startLine}-${source.endLine} does not overlap a changed span`)
+      return anchor
+    })
+    const anchor = anchors[0]!
+    const relevantDiff = [...new Map(anchors.map((candidate) => [candidate.span.id, candidate.span.primaryPatch])).values()].join("\n")
+    return {
+      id: item.id,
+      planner,
+      partitioning: definition.partitioning,
+      subjects,
+      evidence,
+      completeness: item.completeness,
+      locations: subjectSources.map((source) => locationOf(source, "primary", "line")),
+      relevantDiff,
+      anchor
+    }
+  })
+}
+
+const customCases = async (
+  planner: string,
+  definition: CustomPlannerDefinition,
+  request: PlannerRequest,
+  diff: Domain.DiffSet,
+  anchorsByFile: ReadonlyMap<string, ReadonlyArray<AssessmentCase["anchor"]>>,
+  root: string,
+  maxCases: number
+): Promise<ReadonlyArray<AssessmentCase>> => {
+  const filename = path.resolve(root, definition.module)
+  if (!insideRoot(root, filename)) throw new Error(`module ${definition.module} must resolve inside the repository root`)
+  const loaded = await import(pathToFileURL(filename).href) as Record<string, unknown>
+  const exportName = definition.export ?? "default"
+  const plannerFunction = loaded[exportName]
+  if (typeof plannerFunction !== "function") throw new Error(`module ${definition.module} does not export function ${exportName}`)
+  const raw = await (plannerFunction as PlannerFunction)(request)
+  const decoded = Schema.decodeUnknownSync(ExternalPlannerResultSchema)(raw)
+  return normalizeCustomResult(planner, definition, decoded, diff, anchorsByFile, maxCases)
+}
+
 export const plan = Effect.fn("AssessmentPlanner.plan")(function* (
   diff: Domain.DiffSet,
-  rules: ReadonlyArray<Domain.ReviewRule>
+  rules: ReadonlyArray<Domain.ReviewRule>,
+  options: PlanOptions = {}
 ) {
   const diagnostics: Array<string> = []
+  const maxCases = options.maxCases ?? 1_000
   const casesByRule = new Map<Domain.RuleId, Array<AssessmentCase>>()
   const plannerByRule = new Map<Domain.RuleId, string>()
   const anchorsByFile = new Map<string, ReadonlyArray<AssessmentCase["anchor"]>>()
@@ -235,7 +443,7 @@ export const plan = Effect.fn("AssessmentPlanner.plan")(function* (
     const planner = plannerOf(rule)
     plannerByRule.set(rule.id, planner)
     casesByRule.set(rule.id, [])
-    if (!builtInPlanners.some((candidate) => candidate === planner)) {
+    if (!builtInPlanners.some((candidate) => candidate === planner) && options.customPlanners?.[planner] === undefined) {
       diagnostics.push(`rule ${rule.id} names unavailable assessment planner ${planner}`)
     }
   }
@@ -271,12 +479,42 @@ export const plan = Effect.fn("AssessmentPlanner.plan")(function* (
     if (planned !== undefined) casesByRule.get(rule.id)?.push(planned)
   }
 
+  const customRules = rules.filter((rule) => !builtInPlanners.some((candidate) => candidate === plannerOf(rule)))
+  for (const rule of customRules) {
+    const planner = plannerOf(rule)
+    const definition = options.customPlanners?.[planner]
+    if (definition === undefined) continue
+    if (options.allowCustomPlanners !== true) {
+      diagnostics.push(`rule ${rule.id} requires custom planner ${planner}; pass --allow-custom-planners to execute trusted repository planner modules`)
+      continue
+    }
+    if (options.root === undefined) {
+      diagnostics.push(`rule ${rule.id} requires custom planner ${planner}, but no repository root was supplied`)
+      continue
+    }
+    const request = plannerRequest(diff, rule, anchorsByFile, maxCases)
+    const planned = yield* Effect.tryPromise({
+      try: () => customCases(planner, definition, request, diff, anchorsByFile, options.root!, maxCases),
+      catch: (cause) => new Error(String(cause))
+    }).pipe(
+      Effect.map((cases) => ({ success: true as const, cases })),
+      Effect.catch((error) => Effect.succeed({ success: false as const, error }))
+    )
+    if (!planned.success) {
+      diagnostics.push(`planner ${planner} failed for rule ${rule.id}: ${planned.error.message}`)
+      continue
+    }
+    casesByRule.get(rule.id)?.push(...planned.cases)
+  }
+
   const plans = rules.map((rule): RulePlan => {
     const planner = plannerByRule.get(rule.id) ?? semanticChunksPlanner
     return {
       rule,
       planner,
-      partitioning: planner === filenamesPlanner ? "global-unsplittable" : "independent-cases",
+      partitioning: planner === filenamesPlanner
+        ? "global-unsplittable"
+        : options.customPlanners?.[planner]?.partitioning ?? "independent-cases",
       cases: casesByRule.get(rule.id) ?? []
     }
   })

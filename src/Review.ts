@@ -30,6 +30,24 @@ const MatrixState = Schema.Struct({
 
 export interface Options {
   readonly maxStateChars: number
+  readonly root?: string
+  readonly customPlanners?: Readonly<Record<string, AssessmentPlanner.CustomPlannerDefinition>>
+  readonly allowCustomPlanners?: boolean
+  readonly limits?: {
+    readonly maxFiles: number
+    readonly maxCollectionBytes: number
+    readonly maxCases: number
+    readonly maxRequests: number
+    readonly maxInputTokens: number
+  }
+}
+
+const defaultRunLimits: NonNullable<Options["limits"]> = {
+  maxFiles: 500,
+  maxCollectionBytes: 5_000_000,
+  maxCases: 1_000,
+  maxRequests: 20,
+  maxInputTokens: 500_000
 }
 
 interface Usage {
@@ -121,9 +139,15 @@ const matrixEvidence = (assessment: AssessmentPlanner.AssessmentCase): MatrixEvi
 const buildPairs = Effect.fn("Review.buildPairs")(function* (
   diff: Domain.DiffSet,
   rules: ReadonlyArray<Domain.ReviewRule>,
-  maxStateChars: number
+  options: Options
 ) {
-  const plan = yield* AssessmentPlanner.plan(diff, rules)
+  const maxStateChars = options.maxStateChars
+  const plan = yield* AssessmentPlanner.plan(diff, rules, {
+    ...(options.root === undefined ? {} : { root: options.root }),
+    ...(options.customPlanners === undefined ? {} : { customPlanners: options.customPlanners }),
+    allowCustomPlanners: options.allowCustomPlanners ?? false,
+    maxCases: options.limits?.maxCases ?? defaultRunLimits.maxCases
+  })
   if (plan.diagnostics.length > 0) {
     return yield* new Domain.ReviewError({ stage: "planning", message: plan.diagnostics.join("; ") })
   }
@@ -320,9 +344,43 @@ const prepare = Effect.fn("Review.prepare")(function* (
 ) {
   const invalid = validateOptions(options)
   if (invalid !== undefined) return yield* invalid
-  const prepared = yield* buildPairs(diff, rules, options.maxStateChars)
+  const limits = options.limits ?? defaultRunLimits
+  const collectionBytes = diff.files.reduce((total, file) =>
+    total + Buffer.byteLength(file.oldSource ?? "") + Buffer.byteLength(file.newSource ?? ""), 0)
+  if (diff.files.length > limits.maxFiles) {
+    return yield* new Domain.ReviewError({
+      stage: "planning",
+      message: `collection contains ${diff.files.length} files, above limits.maxFiles ${limits.maxFiles}; narrow the input collection. No model requests were made`
+    })
+  }
+  if (collectionBytes > limits.maxCollectionBytes) {
+    return yield* new Domain.ReviewError({
+      stage: "planning",
+      message: `collection contains ${collectionBytes} bytes, above limits.maxCollectionBytes ${limits.maxCollectionBytes}; narrow the input collection. No model requests were made`
+    })
+  }
+  const prepared = yield* buildPairs(diff, rules, options)
+  if (prepared.pairs.length > limits.maxCases) {
+    return yield* new Domain.ReviewError({
+      stage: "planning",
+      message: `planners produced ${prepared.pairs.length} rule cases, above limits.maxCases ${limits.maxCases}; narrow the input collection or use a more selective planner. No model requests were made`
+    })
+  }
   const packs = packPairs(diff, prepared.pairs)
   if (packs instanceof Domain.ReviewError) return yield* packs
+  const estimatedInputTokens = packs.reduce((sum, pack) => sum + pack.estimate.totalTokens, 0)
+  if (packs.length > limits.maxRequests) {
+    return yield* new Domain.ReviewError({
+      stage: "planning",
+      message: `preflight requires ${packs.length} requests, above limits.maxRequests ${limits.maxRequests}; narrow the input collection or raise the trusted run budget. No model requests were made`
+    })
+  }
+  if (estimatedInputTokens > limits.maxInputTokens) {
+    return yield* new Domain.ReviewError({
+      stage: "planning",
+      message: `preflight estimates ${estimatedInputTokens} input tokens, above limits.maxInputTokens ${limits.maxInputTokens}; narrow the input collection or raise the trusted run budget. No model requests were made`
+    })
+  }
   return { ...prepared, packs }
 })
 
@@ -331,6 +389,14 @@ export interface PlanReport {
   readonly base: string
   readonly head: string
   readonly files: number
+  readonly collectionBytes: number
+  readonly collection: ReadonlyArray<{
+    readonly id: string
+    readonly path: string
+    readonly oldPath: string
+    readonly status: "added" | "modified" | "deleted" | "renamed"
+    readonly changedRanges: number
+  }>
   readonly rules: number
   readonly cases: number
   readonly requests: number
@@ -350,11 +416,25 @@ export const plan = Effect.fn("Review.plan")(function* (
   options: Options
 ) {
   const prepared = yield* prepare(diff, rules, options)
+  const collectionBytes = diff.files.reduce((total, file) =>
+    total + Buffer.byteLength(file.oldSource ?? "") + Buffer.byteLength(file.newSource ?? ""), 0)
   return {
     schemaVersion: 1,
     base: diff.base,
     head: diff.head,
     files: diff.files.length,
+    collectionBytes,
+    collection: diff.files.map((file) => ({
+      id: file.id,
+      path: file.path,
+      oldPath: file.oldPath,
+      status: file.oldPath === "/dev/null"
+        ? "added" as const
+        : file.newPath === "/dev/null"
+        ? "deleted" as const
+        : file.oldPath !== file.newPath ? "renamed" as const : "modified" as const,
+      changedRanges: file.hunks.length
+    })),
     rules: rules.length,
     cases: prepared.pairs.length,
     requests: prepared.packs.length,

@@ -55,7 +55,7 @@ it.describe("RuleCatalog", () => {
       it.expect(RuleCatalog.appliesToPath(rules[0]!, "src/domain/User.test.ts")).toBe(false)
     })).pipe(Effect.provide(NodeServices.layer)))
 
-  it.effect("rejects unavailable assessment planners before review", () =>
+  it.effect("loads repository-specific assessment planner declarations", () =>
     Effect.scoped(Effect.gen(function*() {
       const fs = yield* FileSystem.FileSystem
       const root = yield* fs.makeTempDirectoryScoped({ prefix: "neuralint-planner-" })
@@ -66,8 +66,8 @@ it.describe("RuleCatalog", () => {
         rule.replace("planner: semantic-chunks", "planner: repository-specific")
       )
 
-      const error = yield* RuleCatalog.load(root).pipe(Effect.flip)
+      const rules = yield* RuleCatalog.load(root)
 
-      it.expect(error.message).toContain("assessment planner repository-specific is not available")
+      it.expect(rules[0]?.assessment?.planner).toBe("repository-specific")
     })).pipe(Effect.provide(NodeServices.layer)))
 })

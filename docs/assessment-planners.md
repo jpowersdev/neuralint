@@ -1,8 +1,8 @@
 # Assessment planner protocol
 
-Status: built-in planner foundation implemented; custom planner transports remain proposed
+Status: built-in planners and trusted JavaScript module planners implemented; manifest and command transports remain proposed
 
-This document specifies how neuralint turns a caller-selected collection of files into bounded semantic assessment cases. The current implementation includes `AssessmentCase`, the `semantic-chunks` and `filenames` planners, fail-early case-size validation, and `check --plan`. Custom planner callbacks, manifests, and commands remain planned. The earlier `semantic.evidence` field is accepted temporarily for compatibility but ignored.
+This document specifies how neuralint turns a caller-selected collection of files into bounded semantic assessment cases. The current implementation includes `AssessmentCase`, the `semantic-chunks` and `filenames` planners, repository-defined JavaScript module planners, fail-early validation, and `check --plan`. Precomputed manifest and separate command transports remain planned. The earlier `semantic.evidence` field is accepted temporarily for compatibility but ignored.
 
 ## Product boundary
 
@@ -343,22 +343,21 @@ Its text and versioned JSON output should include:
 - unsplittable or unassessable cases;
 - whether model execution would proceed.
 
-## Custom command transport
+## Trusted JavaScript module transport
 
-A future command adapter may configure a planner as an argument vector, never an interpolated shell string:
+A repository may configure a JavaScript module inside its root:
 
 ```yaml
 assessmentPlanners:
   effect-service-contract-tests:
-    command:
-      - node
-      - tools/neuralint/effect-service-contract-tests.mjs
-    timeoutMs: 2000
+    module: tools/neuralint/effect-service-contract-tests.mjs
+    export: plan # optional; defaults to the module's default export
+    partitioning: independent-cases
 ```
 
-Neuralint writes one `PlannerRequest` JSON value to stdin and accepts one `PlannerResult` JSON value from stdout. Stderr is reserved for diagnostics. The process receives cancellation and is terminated on timeout.
+The exported synchronous or asynchronous function receives one `PlannerRequest` value and returns one `PlannerResult` value. Custom modules execute only when the caller passes `--allow-custom-planners`; `check --plan --allow-custom-planners` inspects their output without inference. Neuralint validates the complete result before packing or inference. Referenced files must belong to the caller-selected collection, ranges must be valid, every subject must overlap a changed span, coverage must be complete, and case IDs must be unique.
 
-A custom planner is trusted executable code and can read files or environment outside the protocol. Output validation limits what neuralint accepts and sends onward, but it is not an operating-system sandbox. CI must load executable planner configuration from a trusted source, not silently execute planner changes introduced by an untrusted pull request. A precomputed planner-result manifest is the safer transport when that trust boundary cannot be guaranteed.
+The module path must resolve inside the repository root, but a custom planner remains trusted executable code and can read files or environment outside the protocol. Output validation limits what neuralint accepts and sends onward; it is not an operating-system sandbox. CI must load executable planner configuration from a trusted source, not silently execute planner changes introduced by an untrusted pull request. A precomputed planner-result manifest remains the safer future transport when that trust boundary cannot be guaranteed.
 
 ## Validation
 
@@ -416,11 +415,10 @@ Implemented:
 
 Remaining:
 
-1. Add complete planner-result schema validation for external planners and full run-level cost budgets.
-2. Add precomputed-manifest and library callback transports.
-3. Add trusted command planners after the execution threat model is implemented.
-4. Validate the first custom cross-file vertical slice with an Effect service-to-test planner.
-5. Add independently calibrated semantic-concentration limits beyond the current changed-span and Tree-sitter bounds.
-6. Remove compatibility handling for the old evidence presets before 1.0.
+1. Add a precomputed-manifest transport for environments that cannot trust repository modules.
+2. Validate the first production cross-file vertical slice with an Effect service-to-test planner.
+3. Add independently calibrated semantic-concentration limits beyond the current changed-span and Tree-sitter bounds.
+4. Load executable planner configuration from a trusted base in pull-request workflows.
+5. Remove compatibility handling for the old evidence presets before 1.0.
 
 The first implementation should not attempt universal repository relationship inference. Neuralint supplies the bounded protocol; repositories supply their own deterministic relationship knowledge.

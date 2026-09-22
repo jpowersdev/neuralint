@@ -171,6 +171,31 @@ failOn: error
 
 `failOn` is the lowest definitive severity that makes `check` exit 1. The default `error` reports `info` and `warning` findings without blocking, while `error` and `critical` findings block. Accepted values are `info`, `warning`, `error`, `critical`, and `never`.
 
+Repository-specific planners can be registered as trusted JavaScript modules:
+
+```yaml
+assessmentPlanners:
+  effect-service-tests:
+    module: tools/neuralint/effect-service-tests.mjs
+    export: plan
+    partitioning: independent-cases
+```
+
+Rules select them with `assessment.planner: effect-service-tests`. Modules receive the caller-selected collection and return bounded, source-linked cases. Execute them explicitly with `neuralint check --allow-custom-planners` (and add `--plan` to inspect their cases without inference). They run as trusted repository code; use only configuration from a trusted source in pull-request CI. The complete protocol and minimum-sufficient-evidence guidance are in [`docs/assessment-planners.md`](docs/assessment-planners.md).
+
+Preflight resource and cost budgets also live in configuration:
+
+```yaml
+limits:
+  maxFiles: 500
+  maxCollectionBytes: 5000000
+  maxCases: 1000
+  maxRequests: 20
+  maxInputTokens: 500000
+```
+
+`check` and `check --plan` fail before inference when the collection or complete plan exceeds these limits. Neuralint never silently truncates cases to fit a run budget.
+
 Command-line `--base` and `--fail-on` override the configured values. In the absence of a configuration file, `check` defaults to `main` and `failOn: error`.
 
 ## Rule management

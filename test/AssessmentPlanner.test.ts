@@ -1,5 +1,7 @@
 import * as it from "@effect/vitest"
+import * as NodeServices from "@effect/platform-node/NodeServices"
 import * as Effect from "effect/Effect"
+import * as FileSystem from "effect/FileSystem"
 import * as Schema from "effect/Schema"
 
 import * as AssessmentPlanner from "../src/AssessmentPlanner.js"
@@ -83,6 +85,65 @@ it.describe("AssessmentPlanner", () => {
       it.expect(assessment?.locations).toHaveLength(2)
     })))
 
+  it.effect("requires explicit permission before executing custom planner modules", () =>
+    AssessmentPlanner.plan(diff, [makeRule("service-tests")], {
+      root: ".",
+      customPlanners: {
+        "service-tests": { module: "service-tests.mjs", partitioning: "independent-cases" }
+      }
+    }).pipe(Effect.map((plan) => {
+      it.expect(plan.diagnostics).toEqual([
+        "rule SEMANTIC001 requires custom planner service-tests; pass --allow-custom-planners to execute trusted repository planner modules"
+      ])
+    })))
+
+  it.effect("loads a repository-defined planner module and validates source-linked projections", () =>
+    Effect.scoped(Effect.gen(function*() {
+      const fs = yield* FileSystem.FileSystem
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "neuralint-custom-planner-" })
+      yield* fs.writeFileString(`${root}/service-tests.mjs`, `export default async function plan(request) {
+  return {
+    schemaVersion: 1,
+    planner: "service-tests",
+    coverage: { status: "complete", basis: "all selected files were inspected", filesConsidered: request.collection.files.length },
+    cases: [{
+      id: "AccountsService",
+      subjects: [{
+        label: "service surface",
+        sources: [{ fileId: "F001", side: "after", range: { startLine: 1, endLine: 1 } }],
+        facts: { service: "AccountsService", methods: ["create"] }
+      }],
+      evidence: [{
+        label: "related tests",
+        sources: [{ fileId: "F002", side: "after", range: { startLine: 1, endLine: 1 } }],
+        facts: { tests: ["creates an account"] }
+      }],
+      completeness: { status: "complete", basis: "service and test conventions were fully matched", filesConsidered: request.collection.files.length }
+    }]
+  }
+}`)
+      const rule = makeRule("service-tests")
+      const plan = yield* AssessmentPlanner.plan(diff, [rule], {
+        root,
+        customPlanners: {
+          "service-tests": {
+            module: "service-tests.mjs",
+            partitioning: "independent-cases"
+          }
+        },
+        allowCustomPlanners: true
+      })
+
+      it.expect(plan.diagnostics).toEqual([])
+      it.expect(plan.rules[0]?.cases[0]?.id).toBe("AccountsService")
+      it.expect(plan.rules[0]?.cases[0]?.subjects[0]?.facts).toEqual({
+        service: "AccountsService",
+        methods: ["create"]
+      })
+      it.expect(plan.rules[0]?.cases[0]?.evidence[0]?.facts).toEqual({ tests: ["creates an account"] })
+      it.expect(plan.rules[0]?.cases[0]?.locations[0]?.path).toBe("src/Accounts.ts")
+    })).pipe(Effect.provide(NodeServices.layer)))
+
   it.effect("preflights cases and request estimates without a decision model", () =>
     Review.plan(diff, [makeRule("filenames")], { maxStateChars: 60_000 }).pipe(Effect.map((plan) => {
       it.expect(plan.cases).toBe(1)
@@ -94,4 +155,23 @@ it.describe("AssessmentPlanner", () => {
         cases: 1
       }])
     })))
+
+  it.effect("fails preflight before inference when collection limits are exceeded", () =>
+    Review.plan(diff, [makeRule()], {
+      maxStateChars: 60_000,
+      limits: {
+        maxFiles: 1,
+        maxCollectionBytes: 5_000_000,
+        maxCases: 1_000,
+        maxRequests: 20,
+        maxInputTokens: 500_000
+      }
+    }).pipe(
+      Effect.flip,
+      Effect.map((error) => {
+        it.expect(error.stage).toBe("planning")
+        it.expect(error.message).toContain("above limits.maxFiles 1")
+        it.expect(error.message).toContain("No model requests were made")
+      })
+    ))
 })

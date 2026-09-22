@@ -24,6 +24,8 @@ it.describe("ProjectConfig", () => {
       ])
       it.expect(config.base).toBe("origin/main")
       it.expect(config.failOn).toBe("error")
+      it.expect(config.assessmentPlanners).toEqual({})
+      it.expect(config.limits).toEqual(ProjectConfig.defaultLimits)
       it.expect(yield* fs.readFileString(`${root}/.neuralint/config.yaml`)).toContain("failOn: error")
       it.expect(rules).toHaveLength(1)
       it.expect(rules[0]?.id).toBe("EXAMPLE_NO_SECRET_LOGGING")
@@ -31,6 +33,29 @@ it.describe("ProjectConfig", () => {
       it.expect(rules[0]?.semantic?.evidence).toBeUndefined()
       it.expect(second.created).toEqual([])
       it.expect((yield* ProjectConfig.load(root)).base).toBe("origin/main")
+    })).pipe(Effect.provide(NodeServices.layer)))
+
+  it.effect("loads repository-defined assessment planner modules", () =>
+    Effect.scoped(Effect.gen(function*() {
+      const fs = yield* FileSystem.FileSystem
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "neuralint-planner-config-" })
+      yield* fs.makeDirectory(`${root}/.neuralint`, { recursive: true })
+      yield* fs.writeFileString(`${root}/.neuralint/config.yaml`, `version: 1
+base: origin/main
+assessmentPlanners:
+  service-tests:
+    module: tools/service-tests.mjs
+    export: plan
+    partitioning: independent-cases
+`)
+
+      const config = yield* ProjectConfig.load(root)
+
+      it.expect(config.assessmentPlanners["service-tests"]).toEqual({
+        module: "tools/service-tests.mjs",
+        export: "plan",
+        partitioning: "independent-cases"
+      })
     })).pipe(Effect.provide(NodeServices.layer)))
 
   it.effect("defaults legacy configuration to error severity", () =>
@@ -42,6 +67,12 @@ it.describe("ProjectConfig", () => {
 
       const config = yield* ProjectConfig.load(root)
 
-      it.expect(config).toEqual({ version: 1, base: "origin/main", failOn: "error" })
+      it.expect(config).toEqual({
+        version: 1,
+        base: "origin/main",
+        failOn: "error",
+        assessmentPlanners: {},
+        limits: ProjectConfig.defaultLimits
+      })
     })).pipe(Effect.provide(NodeServices.layer)))
 })
