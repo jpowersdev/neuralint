@@ -6,6 +6,9 @@ export type RuleId = typeof RuleId.Type
 export const Severity = Schema.Literals(["info", "warning", "error", "critical"])
 export type Severity = typeof Severity.Type
 
+export const FailOn = Schema.Literals(["info", "warning", "error", "critical", "never"])
+export type FailOn = typeof FailOn.Type
+
 export const RuleScope = Schema.Struct({
   include: Schema.Array(Schema.NonEmptyString),
   exclude: Schema.Array(Schema.NonEmptyString)

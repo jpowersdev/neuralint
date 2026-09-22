@@ -11,7 +11,8 @@ export const configFileName = "config.yaml"
 
 export const ProjectConfig = Schema.Struct({
   version: Schema.Literal(1),
-  base: Schema.NonEmptyString
+  base: Schema.NonEmptyString,
+  failOn: Schema.optionalKey(Domain.FailOn)
 })
 export type ProjectConfig = typeof ProjectConfig.Type
 
@@ -20,7 +21,9 @@ export interface InitializationResult {
   readonly existing: ReadonlyArray<string>
 }
 
-const defaults: ProjectConfig = { version: 1, base: "main" }
+export const defaultFailOn: Domain.FailOn = "error"
+
+const defaults = { version: 1, base: "main", failOn: defaultFailOn } as const
 
 const exampleRule = {
   version: 1,
@@ -68,9 +71,10 @@ const decode = (path: string, source: string) =>
       try: (): unknown => YAML.parse(source),
       catch: (cause) => new Domain.ProjectConfigError({ path, message: `invalid YAML: ${String(cause)}` })
     })
-    return yield* Schema.decodeUnknownEffect(ProjectConfig)(parsed).pipe(
+    const config = yield* Schema.decodeUnknownEffect(ProjectConfig)(parsed).pipe(
       Effect.mapError((cause) => new Domain.ProjectConfigError({ path, message: cause.message }))
     )
+    return { ...config, failOn: config.failOn ?? defaultFailOn }
   })
 
 export const load = Effect.fn("ProjectConfig.load")(function* (root: string) {
@@ -109,7 +113,7 @@ export const initialize = Effect.fn("ProjectConfig.initialize")(function* (root:
   if (yield* fs.exists(config)) {
     existing.push(path.relative(root, config))
   } else {
-    yield* fs.writeFileString(config, YAML.stringify({ version: 1, base })).pipe(
+    yield* fs.writeFileString(config, YAML.stringify({ version: 1, base, failOn: defaultFailOn })).pipe(
       Effect.mapError((cause) => new Domain.ProjectConfigError({ path: config, message: String(cause) }))
     )
     created.push(path.relative(root, config))

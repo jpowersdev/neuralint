@@ -166,9 +166,12 @@ Stdin is treated as newly proposed code rather than compared with Git. JSON find
 ```yaml
 version: 1
 base: origin/main
+failOn: error
 ```
 
-Command-line `--base` overrides the configured value. In the absence of a configuration file, `check` remains backward compatible and defaults to `main`.
+`failOn` is the lowest definitive severity that makes `check` exit 1. The default `error` reports `info` and `warning` findings without blocking, while `error` and `critical` findings block. Accepted values are `info`, `warning`, `error`, `critical`, and `never`.
+
+Command-line `--base` and `--fail-on` override the configured values. In the absence of a configuration file, `check` defaults to `main` and `failOn: error`.
 
 ## Rule management
 
@@ -272,9 +275,11 @@ A finding means Jev classified a changed span as matching a rule's violation con
 
 Exit codes:
 
-- `0`: no visible findings;
-- `1`: at least one definitive candidate violation;
-- `2`: configuration/provider failure, or an inconclusive finding when `--advisories` is enabled.
+- `0`: no definitive finding at or above the configured `failOn` severity; lower-severity findings and inconclusive advisories may still be present;
+- `1`: at least one definitive finding at or above `failOn`;
+- `2`: configuration, provider, or runtime failure.
+
+Override enforcement for one invocation with `--fail-on`. For example, `--fail-on warning` tightens the gate, while `--fail-on never` reports every finding without failing the check.
 
 ## Data handling
 

@@ -39,6 +39,10 @@ const check = Command.make("check", {
     Flag.withDescription("Include inconclusive semantic matches"),
     Flag.withDefault(false)
   ),
+  failOn: Flag.Literals("fail-on", ["info", "warning", "error", "critical", "never"] as const).pipe(
+    Flag.withDescription("Lowest definitive severity that exits 1"),
+    Flag.optional
+  ),
   rule: Flag.String("rule").pipe(
     Flag.withDescription("Evaluate only the rule with this ID"),
     Flag.optional
@@ -67,6 +71,7 @@ const check = Command.make("check", {
   Effect.gen(function*() {
     const config = yield* ProjectConfig.load(options.root)
     const base = Option.getOrElse(options.base, () => config.base)
+    const failOn = Option.getOrElse(options.failOn, () => config.failOn)
     const catalog = yield* RuleCatalog.load(options.root)
     const rules = yield* Option.match(options.rule, {
       onNone: () => Effect.succeed(catalog),
@@ -107,7 +112,7 @@ const check = Command.make("check", {
       : { ...report, findings: report.findings.filter((finding) => finding.status === "violation") }
     const output = yield* Report.render(visibleReport, options.format)
     yield* Console.log(output.trimEnd())
-    yield* setExitCode(Report.exitCode(visibleReport))
+    yield* setExitCode(Report.exitCode(visibleReport, failOn))
   }).pipe(
     Effect.catchTags({
       GitError: (error) => fail(`${error.operation}: ${error.message}`),

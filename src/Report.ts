@@ -55,8 +55,20 @@ export const renderJson = Effect.fn("Report.renderJson")(function* (report: Doma
 export const render = (report: Domain.ReviewReport, format: OutputFormat) =>
   format === "json" ? renderJson(report) : Effect.succeed(renderText(report))
 
-export const exitCode = (report: Domain.ReviewReport): number => {
-  if (report.findings.some((finding) => finding.status === "inconclusive")) return 2
-  if (report.findings.some((finding) => finding.status === "violation")) return 1
-  return 0
+const severityRank: Readonly<Record<Domain.Severity, number>> = {
+  info: 0,
+  warning: 1,
+  error: 2,
+  critical: 3
+}
+
+export const exitCode = (
+  report: Domain.ReviewReport,
+  failOn: Domain.FailOn = "error"
+): number => {
+  if (failOn === "never") return 0
+  const threshold = severityRank[failOn]
+  return report.findings.some((finding) =>
+    finding.status === "violation" && severityRank[finding.severity] >= threshold
+  ) ? 1 : 0
 }

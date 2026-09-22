@@ -23,9 +23,23 @@ it.describe("ProjectConfig", () => {
         ".neuralint/rules/no-secret-logging.yaml"
       ])
       it.expect(config.base).toBe("origin/main")
+      it.expect(config.failOn).toBe("error")
+      it.expect(yield* fs.readFileString(`${root}/.neuralint/config.yaml`)).toContain("failOn: error")
       it.expect(rules).toHaveLength(1)
       it.expect(rules[0]?.id).toBe("EXAMPLE_NO_SECRET_LOGGING")
       it.expect(second.created).toEqual([])
       it.expect((yield* ProjectConfig.load(root)).base).toBe("origin/main")
+    })).pipe(Effect.provide(NodeServices.layer)))
+
+  it.effect("defaults legacy configuration to error severity", () =>
+    Effect.scoped(Effect.gen(function*() {
+      const fs = yield* FileSystem.FileSystem
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "neuralint-config-" })
+      yield* fs.makeDirectory(`${root}/.neuralint`, { recursive: true })
+      yield* fs.writeFileString(`${root}/.neuralint/config.yaml`, "version: 1\nbase: origin/main\n")
+
+      const config = yield* ProjectConfig.load(root)
+
+      it.expect(config).toEqual({ version: 1, base: "origin/main", failOn: "error" })
     })).pipe(Effect.provide(NodeServices.layer)))
 })
