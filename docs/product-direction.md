@@ -44,12 +44,12 @@ Pre-edit denial should remain conservative. Definitive, locally decidable candid
 The default path is fast, read-only, and intended to complete within a few seconds:
 
 ```text
-repository rules × deterministic changed spans
-  → optional local Tree-sitter scope bundles
-  → deterministic applicability routing
+caller-selected file collection × repository rules
+  → rule-selected assessment planners
+  → bounded, source-linked semantic cases
+  → deterministic applicability routing and preflight
   → dual-budget Jev decision packs
-  → optional packed evidence refinement
-  → changed-construct findings
+  → deterministic findings
   → authored generic guidance
 ```
 
@@ -66,7 +66,7 @@ Jev finding + rule + evidence
   → pull-request summary or comment
 ```
 
-A separate verification model stage is not part of the preferred architecture. For rules requesting enclosing-symbol or complete-file evidence, an inconclusive first decision may receive one additional bounded Jev refinement pack containing deterministic context; this is not one request per finding. Broader verification should only be introduced if confirmed precision remains inadequate. Evidence-insufficient results are deferred rather than represented as confirmed findings.
+A separate verification model stage is not part of the preferred architecture. The caller controls the available file collection, while each rule selects an assessment planner that deterministically projects that collection into bounded semantic cases. The default planner uses changed spans and local Tree-sitter context; repository-specific planners may group related files and emit compact source-linked facts. Broader verification should only be introduced if confirmed precision remains inadequate. Partial, oversized, or otherwise evidence-insufficient plans are reported explicitly rather than represented as confirmed findings.
 
 ## Rule-pack lifecycle
 
@@ -91,7 +91,7 @@ Rule authoring remains deliberately constrained:
 - report boundary;
 - explicit nonviolations and exceptions;
 - authored generic guidance;
-- one evidence-scope preset;
+- one assessment planner, defaulting to semantic chunks;
 - 2–4 contrastive prompt examples;
 - a larger external fixture suite;
 - pinned provenance and human ownership.
@@ -113,6 +113,7 @@ Future lifecycle evaluation should compare no integration, context only, guard o
 
 See:
 
+- [`assessment-planners.md`](assessment-planners.md)
 - [`../benchmark/jev-matrix/README.md`](../benchmark/jev-matrix/README.md)
 - [`../benchmark/remediation/SPEC.md`](../benchmark/remediation/SPEC.md)
 - [`../benchmark/remediation/results/REPORT.md`](../benchmark/remediation/results/REPORT.md)

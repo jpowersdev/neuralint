@@ -257,6 +257,8 @@ repository
 
 The runtime always derives deterministic changed spans. For `enclosing-symbol`, it parses the complete file locally when a bundled Tree-sitter grammar is available, then sends bounded ancestor ranges and associated comments rather than the complete syntax tree. `complete-file` sends the selected file subject to the evidence-size limit. Related-definition and repository retrieval remain under development.
 
+The current evidence presets are planned to be replaced by caller-selected file collections and rule-selected assessment planners. The proposed protocol, built-in `semantic-chunks` and `filenames` planners, custom compact projections, and fail-early preflight contract are documented in [`docs/assessment-planners.md`](docs/assessment-planners.md).
+
 ## Fast execution model
 
 ```text
