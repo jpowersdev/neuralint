@@ -12,15 +12,15 @@
     "primaryMissed": 0,
     "primaryDefinitive": 30,
     "primaryInconclusive": 0,
-    "unanticipatedUnique": 9,
-    "findings": 40,
-    "definitiveFindings": 40,
+    "unanticipatedUnique": 19,
+    "findings": 50,
+    "definitiveFindings": 50,
     "inconclusiveFindings": 0,
-    "latencyMs": 1565,
-    "requests": 4,
-    "inputTokens": 205626,
-    "outputTokens": 42598,
-    "costUsd": 0.008636292
+    "latencyMs": 1829,
+    "requests": 6,
+    "inputTokens": 275300,
+    "outputTokens": 42606,
+    "costUsd": 0.011562600000000001
   },
   "primary": [
     {
@@ -30,8 +30,8 @@
       "path": "src/changes/01-effect-gen-wrapper.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.93,
-      "violationProbability": 0.93
+      "screeningProbability": 0.89,
+      "violationProbability": 0.89
     },
     {
       "caseId": "cast-external-json",
@@ -40,8 +40,8 @@
       "path": "src/changes/02-cast-external-json.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.98,
-      "violationProbability": 0.98
+      "screeningProbability": 0.97,
+      "violationProbability": 0.97
     },
     {
       "caseId": "weaken-user-id",
@@ -60,8 +60,8 @@
       "path": "src/changes/04-open-status-string.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.97,
-      "violationProbability": 0.97
+      "screeningProbability": 0.94,
+      "violationProbability": 0.94
     },
     {
       "caseId": "optional-state-bag",
@@ -80,8 +80,8 @@
       "path": "src/changes/06-undefined-domain-absence.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.97,
-      "violationProbability": 0.97
+      "screeningProbability": 0.94,
+      "violationProbability": 0.94
     },
     {
       "caseId": "throw-expected-error",
@@ -90,8 +90,8 @@
       "path": "src/changes/07-throw-expected-error.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.96,
-      "violationProbability": 0.96
+      "screeningProbability": 0.97,
+      "violationProbability": 0.97
     },
     {
       "caseId": "leak-sdk-error",
@@ -100,8 +100,8 @@
       "path": "src/changes/08-leak-sdk-error.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.96,
-      "violationProbability": 0.96
+      "screeningProbability": 0.95,
+      "violationProbability": 0.95
     },
     {
       "caseId": "swallow-all-causes",
@@ -110,8 +110,8 @@
       "path": "src/changes/09-swallow-all-causes.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.94,
-      "violationProbability": 0.94
+      "screeningProbability": 0.95,
+      "violationProbability": 0.95
     },
     {
       "caseId": "global-mailer",
@@ -130,8 +130,8 @@
       "path": "src/changes/11-leak-filesystem-requirement.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.93,
-      "violationProbability": 0.93
+      "screeningProbability": 0.9,
+      "violationProbability": 0.9
     },
     {
       "caseId": "inline-provide-client",
@@ -140,8 +140,8 @@
       "path": "src/changes/12-inline-provide-client.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.91,
-      "violationProbability": 0.91
+      "screeningProbability": 0.85,
+      "violationProbability": 0.85
     },
     {
       "caseId": "per-call-client-layer",
@@ -160,8 +160,8 @@
       "path": "src/changes/14-effectful-uppercase.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.95,
-      "violationProbability": 0.95
+      "screeningProbability": 0.9,
+      "violationProbability": 0.9
     },
     {
       "caseId": "node-fs-domain",
@@ -170,8 +170,8 @@
       "path": "src/changes/15-node-fs-domain.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.93,
-      "violationProbability": 0.93
+      "screeningProbability": 0.96,
+      "violationProbability": 0.96
     },
     {
       "caseId": "promise-service-contract",
@@ -180,8 +180,8 @@
       "path": "src/changes/16-promise-service-contract.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.97,
-      "violationProbability": 0.97
+      "screeningProbability": 0.94,
+      "violationProbability": 0.94
     },
     {
       "caseId": "unscoped-temp-directory",
@@ -190,8 +190,8 @@
       "path": "src/changes/17-unscoped-temp-directory.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.96,
-      "violationProbability": 0.96
+      "screeningProbability": 0.89,
+      "violationProbability": 0.89
     },
     {
       "caseId": "daemon-layer-worker",
@@ -200,8 +200,8 @@
       "path": "src/changes/18-daemon-layer-worker.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.93,
-      "violationProbability": 0.93
+      "screeningProbability": 0.87,
+      "violationProbability": 0.87
     },
     {
       "caseId": "fire-and-forget-fiber",
@@ -210,8 +210,8 @@
       "path": "src/changes/19-fire-and-forget-fiber.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.96,
-      "violationProbability": 0.96
+      "screeningProbability": 0.95,
+      "violationProbability": 0.95
     },
     {
       "caseId": "unbounded-provider-fanout",
@@ -220,8 +220,8 @@
       "path": "src/changes/20-unbounded-provider-fanout.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.96,
-      "violationProbability": 0.96
+      "screeningProbability": 0.94,
+      "violationProbability": 0.94
     },
     {
       "caseId": "unbounded-payment-retry",
@@ -230,8 +230,8 @@
       "path": "src/changes/21-unbounded-payment-retry.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.95,
-      "violationProbability": 0.95
+      "screeningProbability": 0.94,
+      "violationProbability": 0.94
     },
     {
       "caseId": "manual-poll-loop",
@@ -240,8 +240,8 @@
       "path": "src/changes/22-manual-poll-loop.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.98,
-      "violationProbability": 0.98
+      "screeningProbability": 0.96,
+      "violationProbability": 0.96
     },
     {
       "caseId": "callback-event-service",
@@ -260,8 +260,8 @@
       "path": "src/changes/24-collect-subscription.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.96,
-      "violationProbability": 0.96
+      "screeningProbability": 0.93,
+      "violationProbability": 0.93
     },
     {
       "caseId": "unchecked-fetch-json",
@@ -270,8 +270,8 @@
       "path": "src/changes/25-unchecked-fetch-json.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.96,
-      "violationProbability": 0.96
+      "screeningProbability": 0.97,
+      "violationProbability": 0.97
     },
     {
       "caseId": "manual-ttl-map",
@@ -280,8 +280,8 @@
       "path": "src/changes/26-manual-ttl-map.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.93,
-      "violationProbability": 0.93
+      "screeningProbability": 0.94,
+      "violationProbability": 0.94
     },
     {
       "caseId": "raw-environment-secret",
@@ -290,8 +290,8 @@
       "path": "src/changes/27-raw-environment-secret.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.98,
-      "violationProbability": 0.98
+      "screeningProbability": 0.96,
+      "violationProbability": 0.96
     },
     {
       "caseId": "real-sleep-test",
@@ -310,8 +310,8 @@
       "path": "src/changes/29-mock-private-module.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.97,
-      "violationProbability": 0.97
+      "screeningProbability": 0.95,
+      "violationProbability": 0.95
     },
     {
       "caseId": "remove-operation-span",
@@ -320,14 +320,14 @@
       "path": "src/changes/30-remove-operation-span.ts",
       "retained": true,
       "status": "violation",
-      "screeningProbability": 0.95,
-      "violationProbability": 0.95
+      "screeningProbability": 0.92,
+      "violationProbability": 0.92
     }
   ],
   "diff": "diff --git a/src/changes/01-effect-gen-wrapper.ts b/src/changes/01-effect-gen-wrapper.ts\nindex d7dac27..6c29bda 100644\n--- a/src/changes/01-effect-gen-wrapper.ts\n+++ b/src/changes/01-effect-gen-wrapper.ts\n@@ -1,4 +1,4 @@\n import * as Effect from \"effect/Effect\"\n-export const load = Effect.fn(\"Users.load\")(function* (id: string) {\n+export const load = (id: string) => Effect.gen(function* () {\n   return yield* Effect.succeed(id)\n })\ndiff --git a/src/changes/02-cast-external-json.ts b/src/changes/02-cast-external-json.ts\nindex 5a652c5..549bbe8 100644\n--- a/src/changes/02-cast-external-json.ts\n+++ b/src/changes/02-cast-external-json.ts\n@@ -1,4 +1,4 @@\n import * as Effect from \"effect/Effect\"\n import * as Schema from \"effect/Schema\"\n const User = Schema.Struct({ id: Schema.String })\n-export const decodeUser = (input: unknown) => Schema.decodeUnknownEffect(User)(input)\n+export const decodeUser = (input: unknown) => Effect.succeed(input as typeof User.Type)\ndiff --git a/src/changes/03-weaken-user-id.ts b/src/changes/03-weaken-user-id.ts\nindex 6551975..876e3ee 100644\n--- a/src/changes/03-weaken-user-id.ts\n+++ b/src/changes/03-weaken-user-id.ts\n@@ -1,4 +1,4 @@\n import * as Schema from \"effect/Schema\"\n export const UserId = Schema.NonEmptyString.pipe(Schema.brand(\"UserId\"))\n export type UserId = typeof UserId.Type\n-export interface Request { readonly userId: UserId }\n+export interface Request { readonly userId: string }\ndiff --git a/src/changes/04-open-status-string.ts b/src/changes/04-open-status-string.ts\nindex d1fcca5..d50361e 100644\n--- a/src/changes/04-open-status-string.ts\n+++ b/src/changes/04-open-status-string.ts\n@@ -1,2 +1,2 @@\n import * as Schema from \"effect/Schema\"\n-export const Status = Schema.Literals([\"pending\", \"running\", \"complete\"])\n+export const Status = Schema.String\ndiff --git a/src/changes/05-optional-state-bag.ts b/src/changes/05-optional-state-bag.ts\nindex b932102..f38d510 100644\n--- a/src/changes/05-optional-state-bag.ts\n+++ b/src/changes/05-optional-state-bag.ts\n@@ -1,5 +1,6 @@\n import * as Schema from \"effect/Schema\"\n-export const State = Schema.Union([\n-  Schema.Struct({ _tag: Schema.Literal(\"Running\"), startedAt: Schema.String }),\n-  Schema.Struct({ _tag: Schema.Literal(\"Complete\"), result: Schema.String }),\n-])\n+export const State = Schema.Struct({\n+  status: Schema.Literals([\"running\", \"complete\"]),\n+  startedAt: Schema.optional(Schema.String),\n+  result: Schema.optional(Schema.String),\n+})\ndiff --git a/src/changes/06-undefined-domain-absence.ts b/src/changes/06-undefined-domain-absence.ts\nindex 14f8bc6..da23797 100644\n--- a/src/changes/06-undefined-domain-absence.ts\n+++ b/src/changes/06-undefined-domain-absence.ts\n@@ -1,3 +1,3 @@\n import * as Effect from \"effect/Effect\"\n import * as Option from \"effect/Option\"\n-interface Users { readonly find: (id: string) => Effect.Effect<Option.Option<string>> }\n+interface Users { readonly find: (id: string) => Effect.Effect<string | undefined> }\ndiff --git a/src/changes/07-throw-expected-error.ts b/src/changes/07-throw-expected-error.ts\nindex af45ed3..89c7693 100644\n--- a/src/changes/07-throw-expected-error.ts\n+++ b/src/changes/07-throw-expected-error.ts\n@@ -1,4 +1,6 @@\n import * as Effect from \"effect/Effect\"\n import * as Schema from \"effect/Schema\"\n-class MissingName extends Schema.TaggedError<MissingName>()(\"MissingName\", {}) {}\n-export const requireName = (name: string | undefined) => name ? Effect.succeed(name) : Effect.fail(new MissingName())\n+export const requireName = (name: string | undefined) => Effect.sync(() => {\n+  if (!name) throw new Error(\"missing name\")\n+  return name\n+})\ndiff --git a/src/changes/08-leak-sdk-error.ts b/src/changes/08-leak-sdk-error.ts\nindex e6c3721..f07493f 100644\n--- a/src/changes/08-leak-sdk-error.ts\n+++ b/src/changes/08-leak-sdk-error.ts\n@@ -1,4 +1,3 @@\n import * as Effect from \"effect/Effect\"\n import * as Schema from \"effect/Schema\"\n-class ProviderError extends Schema.TaggedError<ProviderError>()(\"ProviderError\", { operation: Schema.String, cause: Schema.Defect }) {}\n-export const invoke = Effect.tryPromise({ try: () => sdk.invoke(), catch: cause => new ProviderError({ operation: \"invoke\", cause }) })\n+export const invoke = Effect.tryPromise(() => sdk.invoke())\ndiff --git a/src/changes/09-swallow-all-causes.ts b/src/changes/09-swallow-all-causes.ts\nindex e6341d5..963342b 100644\n--- a/src/changes/09-swallow-all-causes.ts\n+++ b/src/changes/09-swallow-all-causes.ts\n@@ -1,2 +1,2 @@\n import * as Effect from \"effect/Effect\"\n-export const run = operation.pipe(Effect.catchTag(\"NotFound\", () => Effect.succeed(\"missing\")))\n+export const run = operation.pipe(Effect.catchAllCause(() => Effect.succeed(\"ok\")))\ndiff --git a/src/changes/10-global-mailer.ts b/src/changes/10-global-mailer.ts\nindex 2099ece..6888c6f 100644\n--- a/src/changes/10-global-mailer.ts\n+++ b/src/changes/10-global-mailer.ts\n@@ -1,4 +1,4 @@\n-import * as Context from \"effect/Context\"\n import * as Effect from \"effect/Effect\"\n-interface Mailer { readonly send: (to: string) => Effect.Effect<void> }\n-export class Mailers extends Context.Service<Mailers, Mailer>()(\"app/Mailers\") {}\n+export const mailer = {\n+  send: (to: string) => Effect.tryPromise(() => sdk.send(to)),\n+}\ndiff --git a/src/changes/11-leak-filesystem-requirement.ts b/src/changes/11-leak-filesystem-requirement.ts\nindex bcd6ffb..de98409 100644\n--- a/src/changes/11-leak-filesystem-requirement.ts\n+++ b/src/changes/11-leak-filesystem-requirement.ts\n@@ -1,6 +1,5 @@\n import * as Effect from \"effect/Effect\"\n-interface Documents { readonly load: (id: string) => Effect.Effect<string, Error> }\n-const make = Effect.gen(function* () {\n-  const fs = yield* FileSystem.FileSystem\n-  return { load: (id: string) => fs.readFileString(id) } satisfies Documents\n-})\n+interface Documents { readonly load: (id: string) => Effect.Effect<string, Error, FileSystem.FileSystem> }\n+const make = Effect.succeed({\n+  load: (id: string) => Effect.flatMap(FileSystem.FileSystem, fs => fs.readFileString(id)),\n+} satisfies Documents)\ndiff --git a/src/changes/12-inline-provide-client.ts b/src/changes/12-inline-provide-client.ts\nindex b591906..bd50c40 100644\n--- a/src/changes/12-inline-provide-client.ts\n+++ b/src/changes/12-inline-provide-client.ts\n@@ -1,5 +1,4 @@\n import * as Effect from \"effect/Effect\"\n export const load = Effect.fn(\"Users.load\")(function* () {\n-  const client = yield* ApiClient\n-  return yield* client.load()\n+  return yield* ApiClient.pipe(Effect.flatMap(client => client.load()), Effect.provide(ApiClientLive))\n })\ndiff --git a/src/changes/13-per-call-client-layer.ts b/src/changes/13-per-call-client-layer.ts\nindex 1bdef5b..5acb7d9 100644\n--- a/src/changes/13-per-call-client-layer.ts\n+++ b/src/changes/13-per-call-client-layer.ts\n@@ -1,2 +1,3 @@\n import * as Effect from \"effect/Effect\"\n-export const UsersLive = Layer.effect(Users, makeUsers).pipe(Layer.provide(ApiClientLive))\n+export const loadUser = (id: string) =>\n+  Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(ApiClientLive))\ndiff --git a/src/changes/14-effectful-uppercase.ts b/src/changes/14-effectful-uppercase.ts\nindex acb663a..edfabfd 100644\n--- a/src/changes/14-effectful-uppercase.ts\n+++ b/src/changes/14-effectful-uppercase.ts\n@@ -1 +1,2 @@\n-export const normalizeName = (name: string): string => name.trim().toUpperCase()\n+import * as Effect from \"effect/Effect\"\n+export const normalizeName = (name: string) => Effect.sync(() => name.trim().toUpperCase())\ndiff --git a/src/changes/15-node-fs-domain.ts b/src/changes/15-node-fs-domain.ts\nindex 411d096..a4c1726 100644\n--- a/src/changes/15-node-fs-domain.ts\n+++ b/src/changes/15-node-fs-domain.ts\n@@ -1,6 +1,2 @@\n-import * as Effect from \"effect/Effect\"\n-import * as FileSystem from \"effect/FileSystem\"\n-export const load = Effect.fn(\"Documents.load\")(function* (path: string) {\n-  const fs = yield* FileSystem.FileSystem\n-  return yield* fs.readFileString(path)\n-})\n+import { readFile } from \"node:fs/promises\"\n+export const load = async (path: string) => readFile(path, \"utf8\")\ndiff --git a/src/changes/16-promise-service-contract.ts b/src/changes/16-promise-service-contract.ts\nindex caa8675..7c7f2b1 100644\n--- a/src/changes/16-promise-service-contract.ts\n+++ b/src/changes/16-promise-service-contract.ts\n@@ -1,2 +1 @@\n-import * as Effect from \"effect/Effect\"\n-interface Vendor { readonly invoke: (id: string) => Effect.Effect<string, VendorError> }\n+interface Vendor { readonly invoke: (id: string) => Promise<string> }\ndiff --git a/src/changes/17-unscoped-temp-directory.ts b/src/changes/17-unscoped-temp-directory.ts\nindex f536f82..84a735e 100644\n--- a/src/changes/17-unscoped-temp-directory.ts\n+++ b/src/changes/17-unscoped-temp-directory.ts\n@@ -1,5 +1,5 @@\n import * as Effect from \"effect/Effect\"\n-export const work = Effect.scoped(Effect.gen(function* () {\n-  const directory = yield* fs.makeTempDirectoryScoped()\n+export const work = Effect.gen(function* () {\n+  const directory = yield* fs.makeTempDirectory()\n   return yield* process(directory)\n-}))\n+})\ndiff --git a/src/changes/18-daemon-layer-worker.ts b/src/changes/18-daemon-layer-worker.ts\nindex 379b28d..bf6ad55 100644\n--- a/src/changes/18-daemon-layer-worker.ts\n+++ b/src/changes/18-daemon-layer-worker.ts\n@@ -1,2 +1,2 @@\n import * as Effect from \"effect/Effect\"\n-export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkScoped))\n+export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkDaemon, Effect.asVoid))\ndiff --git a/src/changes/19-fire-and-forget-fiber.ts b/src/changes/19-fire-and-forget-fiber.ts\nindex b51b97a..9ea85bd 100644\n--- a/src/changes/19-fire-and-forget-fiber.ts\n+++ b/src/changes/19-fire-and-forget-fiber.ts\n@@ -1,2 +1,2 @@\n import * as Effect from \"effect/Effect\"\n-export const handle = work.pipe(Effect.forkScoped, Effect.flatMap(Fiber.join))\n+export const handle = work.pipe(Effect.forkDaemon, Effect.asVoid)\ndiff --git a/src/changes/20-unbounded-provider-fanout.ts b/src/changes/20-unbounded-provider-fanout.ts\nindex 619c351..1f55574 100644\n--- a/src/changes/20-unbounded-provider-fanout.ts\n+++ b/src/changes/20-unbounded-provider-fanout.ts\n@@ -1,2 +1,2 @@\n import * as Effect from \"effect/Effect\"\n-export const loadAll = (ids: ReadonlyArray<string>) => Effect.forEach(ids, load, { concurrency: 8 })\n+export const loadAll = (ids: ReadonlyArray<string>) => Effect.forEach(ids, load, { concurrency: \"unbounded\" })\ndiff --git a/src/changes/21-unbounded-payment-retry.ts b/src/changes/21-unbounded-payment-retry.ts\nindex c70960b..4d3c16f 100644\n--- a/src/changes/21-unbounded-payment-retry.ts\n+++ b/src/changes/21-unbounded-payment-retry.ts\n@@ -1,3 +1,3 @@\n import * as Effect from \"effect/Effect\"\n import * as Schedule from \"effect/Schedule\"\n-export const submit = payment.pipe(Effect.retry(Schedule.exponential(\"100 millis\").pipe(Schedule.upTo({ times: 3 }))))\n+export const submit = payment.pipe(Effect.retry(Schedule.forever))\ndiff --git a/src/changes/22-manual-poll-loop.ts b/src/changes/22-manual-poll-loop.ts\nindex 2e44e9a..1abfcf3 100644\n--- a/src/changes/22-manual-poll-loop.ts\n+++ b/src/changes/22-manual-poll-loop.ts\n@@ -1,3 +1,7 @@\n import * as Effect from \"effect/Effect\"\n-import * as Schedule from \"effect/Schedule\"\n-export const poll = runPass.pipe(Effect.repeat(Schedule.spaced(\"1 second\")))\n+export const poll = Effect.gen(function* () {\n+  while (true) {\n+    yield* runPass\n+    yield* Effect.sleep(\"1 second\")\n+  }\n+})\ndiff --git a/src/changes/23-callback-event-service.ts b/src/changes/23-callback-event-service.ts\nindex 4699d40..d6f9285 100644\n--- a/src/changes/23-callback-event-service.ts\n+++ b/src/changes/23-callback-event-service.ts\n@@ -1,2 +1,3 @@\n-import * as Stream from \"effect/Stream\"\n-interface Events { readonly events: Stream.Stream<Event, EventError> }\n+interface Events {\n+  readonly onEvent: (listener: (event: Event) => void) => () => void\n+}\ndiff --git a/src/changes/24-collect-subscription.ts b/src/changes/24-collect-subscription.ts\nindex 8bd09a8..eaa0110 100644\n--- a/src/changes/24-collect-subscription.ts\n+++ b/src/changes/24-collect-subscription.ts\n@@ -1,2 +1,2 @@\n import * as Stream from \"effect/Stream\"\n-export const firstHundred = events.pipe(Stream.take(100), Stream.runCollect)\n+export const allEvents = events.pipe(Stream.runCollect)\ndiff --git a/src/changes/25-unchecked-fetch-json.ts b/src/changes/25-unchecked-fetch-json.ts\nindex 9af63c0..8a7e928 100644\n--- a/src/changes/25-unchecked-fetch-json.ts\n+++ b/src/changes/25-unchecked-fetch-json.ts\n@@ -1,6 +1,4 @@\n-import * as Effect from \"effect/Effect\"\n-import * as Schema from \"effect/Schema\"\n-export const request = Effect.fn(\"Provider.request\")(function* () {\n-  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n-})\n+export const request = async () => {\n+  const response = await fetch(\"/users\")\n+  return response.json()\n+}\ndiff --git a/src/changes/26-manual-ttl-map.ts b/src/changes/26-manual-ttl-map.ts\nindex fc38748..11cb934 100644\n--- a/src/changes/26-manual-ttl-map.ts\n+++ b/src/changes/26-manual-ttl-map.ts\n@@ -1,3 +1,8 @@\n-import * as Cache from \"effect/Cache\"\n-const cache = yield* Cache.make({ capacity: 500, timeToLive: \"5 minutes\", lookup })\n-export const get = (id: string) => Cache.get(cache, id)\n+const cache = new Map<string, { value: User; expiresAt: number }>()\n+export const get = async (id: string) => {\n+  const hit = cache.get(id)\n+  if (hit && hit.expiresAt > Date.now()) return hit.value\n+  const value = await lookup(id)\n+  cache.set(id, { value, expiresAt: Date.now() + 300000 })\n+  return value\n+}\ndiff --git a/src/changes/27-raw-environment-secret.ts b/src/changes/27-raw-environment-secret.ts\nindex d90d43e..048b889 100644\n--- a/src/changes/27-raw-environment-secret.ts\n+++ b/src/changes/27-raw-environment-secret.ts\n@@ -1,2 +1 @@\n-import * as Config from \"effect/Config\"\n-export const apiKey = Config.redacted(\"VENDOR_API_KEY\")\n+export const apiKey = process.env.VENDOR_API_KEY ?? \"\"\ndiff --git a/src/changes/28-real-sleep-test.ts b/src/changes/28-real-sleep-test.ts\nindex d277d86..a4eac95 100644\n--- a/src/changes/28-real-sleep-test.ts\n+++ b/src/changes/28-real-sleep-test.ts\n@@ -1,7 +1,6 @@\n import * as Effect from \"effect/Effect\"\n-import * as TestClock from \"effect/TestClock\"\n it.effect(\"finishes\", () => Effect.gen(function* () {\n   const fiber = yield* worker.pipe(Effect.fork)\n-  yield* TestClock.adjust(\"1 second\")\n+  yield* Effect.sleep(\"1100 millis\")\n   yield* Fiber.join(fiber)\n }))\ndiff --git a/src/changes/29-mock-private-module.ts b/src/changes/29-mock-private-module.ts\nindex b897020..e90c71d 100644\n--- a/src/changes/29-mock-private-module.ts\n+++ b/src/changes/29-mock-private-module.ts\n@@ -1,2 +1,3 @@\n-import * as Effect from \"effect/Effect\"\n-it.effect(\"loads\", () => Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(UsersTestLayer)))\n+import { vi } from \"vitest\"\n+vi.mock(\"../src/internal/database.js\", () => ({ query: vi.fn(() => row) }))\n+it(\"loads\", async () => expect(await load(id)).toEqual(user))\ndiff --git a/src/changes/30-remove-operation-span.ts b/src/changes/30-remove-operation-span.ts\nindex 605ca9c..0bdaa45 100644\n--- a/src/changes/30-remove-operation-span.ts\n+++ b/src/changes/30-remove-operation-span.ts\n@@ -1,5 +1,2 @@\n import * as Effect from \"effect/Effect\"\n-export const load = Effect.fn(\"Users.load\")(function* (id: string) {\n-  yield* Effect.annotateCurrentSpan({ userId: id })\n-  return yield* repository.load(id)\n-})\n+export const load = (id: string) => repository.load(id)\n",
   "report": {
     "schemaVersion": 1,
-    "base": "e1c3dfd9f1238ee907971d580c260872aae2975e",
+    "base": "21a9be8a2344148467e0d14d2e254a5d0dadbe57",
     "head": "HEAD",
     "filesReviewed": 30,
     "rulesLoaded": 30,
@@ -343,6 +343,7 @@
         "path": "src/changes/01-effect-gen-wrapper.ts",
         "hunkId": "F001:H001",
         "spanId": "Se9abe271c5:O2-2:N2-2",
+        "assessmentCaseId": "Se9abe271c5:O2-2:N2-2",
         "hunkHeader": "@@ -1,4 +1,4 @@",
         "relevantDiff": "-export const load = Effect.fn(\"Users.load\")(function* (id: string) {\n+export const load = (id: string) => Effect.gen(function* () {",
         "locations": [
@@ -355,8 +356,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.91,
-        "violationProbability": 0.91
+        "screeningProbability": 0.8,
+        "violationProbability": 0.8
       },
       {
         "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
@@ -369,6 +370,7 @@
         "path": "src/changes/01-effect-gen-wrapper.ts",
         "hunkId": "F001:H001",
         "spanId": "Se9abe271c5:O2-2:N2-2",
+        "assessmentCaseId": "Se9abe271c5:O2-2:N2-2",
         "hunkHeader": "@@ -1,4 +1,4 @@",
         "relevantDiff": "-export const load = Effect.fn(\"Users.load\")(function* (id: string) {\n+export const load = (id: string) => Effect.gen(function* () {",
         "locations": [
@@ -381,8 +383,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.93,
-        "violationProbability": 0.93
+        "screeningProbability": 0.89,
+        "violationProbability": 0.89
       },
       {
         "ruleId": "EFFECT_DECODE_EXTERNAL_VALUES",
@@ -395,6 +397,7 @@
         "path": "src/changes/02-cast-external-json.ts",
         "hunkId": "F002:H001",
         "spanId": "S7fa66f6e40:O4-4:N4-4",
+        "assessmentCaseId": "S7fa66f6e40:O4-4:N4-4",
         "hunkHeader": "@@ -1,4 +1,4 @@",
         "relevantDiff": "-export const decodeUser = (input: unknown) => Schema.decodeUnknownEffect(User)(input)\n+export const decodeUser = (input: unknown) => Effect.succeed(input as typeof User.Type)",
         "locations": [
@@ -407,8 +410,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.98,
-        "violationProbability": 0.98
+        "screeningProbability": 0.97,
+        "violationProbability": 0.97
       },
       {
         "ruleId": "EFFECT_BRANDED_IDENTITIES",
@@ -421,6 +424,7 @@
         "path": "src/changes/03-weaken-user-id.ts",
         "hunkId": "F003:H001",
         "spanId": "S1384c192f9:O4-4:N4-4",
+        "assessmentCaseId": "S1384c192f9:O4-4:N4-4",
         "hunkHeader": "@@ -1,4 +1,4 @@",
         "relevantDiff": "-export interface Request { readonly userId: UserId }\n+export interface Request { readonly userId: string }",
         "locations": [
@@ -447,6 +451,7 @@
         "path": "src/changes/04-open-status-string.ts",
         "hunkId": "F004:H001",
         "spanId": "Sb160bd7141:O2-2:N2-2",
+        "assessmentCaseId": "Sb160bd7141:O2-2:N2-2",
         "hunkHeader": "@@ -1,2 +1,2 @@",
         "relevantDiff": "-export const Status = Schema.Literals([\"pending\", \"running\", \"complete\"])\n+export const Status = Schema.String",
         "locations": [
@@ -459,8 +464,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.97,
-        "violationProbability": 0.97
+        "screeningProbability": 0.94,
+        "violationProbability": 0.94
       },
       {
         "ruleId": "EFFECT_TAGGED_STATE_VARIANTS",
@@ -473,6 +478,7 @@
         "path": "src/changes/05-optional-state-bag.ts",
         "hunkId": "F005:H001",
         "spanId": "Sfb8cdaa00e:O2-5:N2-6",
+        "assessmentCaseId": "Sfb8cdaa00e:O2-5:N2-6",
         "hunkHeader": "@@ -1,5 +1,6 @@",
         "relevantDiff": "-export const State = Schema.Union([\n-  Schema.Struct({ _tag: Schema.Literal(\"Running\"), startedAt: Schema.String }),\n-  Schema.Struct({ _tag: Schema.Literal(\"Complete\"), result: Schema.String }),\n-])\n+export const State = Schema.Struct({\n+  status: Schema.Literals([\"running\", \"complete\"]),\n+  startedAt: Schema.optional(Schema.String),\n+  result: Schema.optional(Schema.String),\n+})",
         "locations": [
@@ -499,6 +505,7 @@
         "path": "src/changes/06-undefined-domain-absence.ts",
         "hunkId": "F006:H001",
         "spanId": "S6595258cfd:O3-3:N3-3",
+        "assessmentCaseId": "S6595258cfd:O3-3:N3-3",
         "hunkHeader": "@@ -1,3 +1,3 @@",
         "relevantDiff": "-interface Users { readonly find: (id: string) => Effect.Effect<Option.Option<string>> }\n+interface Users { readonly find: (id: string) => Effect.Effect<string | undefined> }",
         "locations": [
@@ -511,8 +518,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.97,
-        "violationProbability": 0.97
+        "screeningProbability": 0.94,
+        "violationProbability": 0.94
       },
       {
         "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
@@ -525,6 +532,7 @@
         "path": "src/changes/07-throw-expected-error.ts",
         "hunkId": "F007:H001",
         "spanId": "S3da5efa1e9:O3-4:N3-6",
+        "assessmentCaseId": "S3da5efa1e9:O3-4:N3-6",
         "hunkHeader": "@@ -1,4 +1,6 @@",
         "relevantDiff": "-class MissingName extends Schema.TaggedError<MissingName>()(\"MissingName\", {}) {}\n-export const requireName = (name: string | undefined) => name ? Effect.succeed(name) : Effect.fail(new MissingName())\n+export const requireName = (name: string | undefined) => Effect.sync(() => {\n+  if (!name) throw new Error(\"missing name\")\n+  return name\n+})",
         "locations": [
@@ -537,8 +545,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.96,
-        "violationProbability": 0.96
+        "screeningProbability": 0.97,
+        "violationProbability": 0.97
       },
       {
         "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
@@ -551,6 +559,7 @@
         "path": "src/changes/08-leak-sdk-error.ts",
         "hunkId": "F008:H001",
         "spanId": "Sc208559ff9:O3-4:N3-3",
+        "assessmentCaseId": "Sc208559ff9:O3-4:N3-3",
         "hunkHeader": "@@ -1,4 +1,3 @@",
         "relevantDiff": "-class ProviderError extends Schema.TaggedError<ProviderError>()(\"ProviderError\", { operation: Schema.String, cause: Schema.Defect }) {}\n-export const invoke = Effect.tryPromise({ try: () => sdk.invoke(), catch: cause => new ProviderError({ operation: \"invoke\", cause }) })\n+export const invoke = Effect.tryPromise(() => sdk.invoke())",
         "locations": [
@@ -563,20 +572,48 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.96,
-        "violationProbability": 0.96
+        "screeningProbability": 0.95,
+        "violationProbability": 0.95
       },
       {
-        "ruleId": "EFFECT_NARROW_ERROR_RECOVERY",
-        "ruleTitle": "Recover only at a boundary with a truthful response",
-        "ruleDescription": "Recovery should target typed failures at the narrowest boundary that can retry, fallback, translate, or otherwise respond truthfully; defects and interruption should remain distinct.",
-        "violationCondition": "Changed code catches all errors/causes, swallows a failure, converts defects to success, or retries broadly without a boundary-specific truthful policy.",
-        "complianceCondition": "Recovery uses catchTag/catchTags/typed predicates or an explicit supervision policy, preserves interruption, and leaves exhausted or unhandled failures visible.",
+        "ruleId": "EFFECT_TYPED_EXPECTED_ERRORS",
+        "ruleTitle": "Model expected failures as tagged values",
+        "ruleDescription": "Expected domain and operational failures should be typed tagged values, normally Schema.TaggedError when serialization or schema support matters.",
+        "violationCondition": "Changed code throws, rejects, defects, or returns a generic Error for an expected failure that callers should recover from.",
+        "complianceCondition": "The operation fails with a specific tagged error carrying structured fields and callers recover by tag or typed reason.",
+        "severity": "error",
+        "status": "violation",
+        "path": "src/changes/08-leak-sdk-error.ts",
+        "hunkId": "F008:H001",
+        "spanId": "Sc208559ff9:O3-4:N3-3",
+        "assessmentCaseId": "Sc208559ff9:O3-4:N3-3",
+        "hunkHeader": "@@ -1,4 +1,3 @@",
+        "relevantDiff": "-class ProviderError extends Schema.TaggedError<ProviderError>()(\"ProviderError\", { operation: Schema.String, cause: Schema.Defect }) {}\n-export const invoke = Effect.tryPromise({ try: () => sdk.invoke(), catch: cause => new ProviderError({ operation: \"invoke\", cause }) })\n+export const invoke = Effect.tryPromise(() => sdk.invoke())",
+        "locations": [
+          {
+            "path": "src/changes/08-leak-sdk-error.ts",
+            "side": "new",
+            "startLine": 3,
+            "endLine": 3,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.81,
+        "violationProbability": 0.81
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "ruleTitle": "Translate infrastructure failures at adapter boundaries",
+        "ruleDescription": "Adapters should map low-level SDK, persistence, transport, and parsing failures into specific boundary/domain errors while preserving useful operation and cause information.",
+        "violationCondition": "Changed adapter code leaks a foreign error through the application contract or collapses it into vague prose without operation, cause, or relevant identity context.",
+        "complianceCondition": "The adapter maps the foreign failure once into a typed error with enough structured context for diagnosis and preserves the underlying cause safely.",
         "severity": "error",
         "status": "violation",
         "path": "src/changes/09-swallow-all-causes.ts",
         "hunkId": "F009:H001",
         "spanId": "S0eac06e6bc:O2-2:N2-2",
+        "assessmentCaseId": "S0eac06e6bc:O2-2:N2-2",
         "hunkHeader": "@@ -1,2 +1,2 @@",
         "relevantDiff": "-export const run = operation.pipe(Effect.catchTag(\"NotFound\", () => Effect.succeed(\"missing\")))\n+export const run = operation.pipe(Effect.catchAllCause(() => Effect.succeed(\"ok\")))",
         "locations": [
@@ -589,8 +626,62 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.94,
-        "violationProbability": 0.94
+        "screeningProbability": 0.86,
+        "violationProbability": 0.86
+      },
+      {
+        "ruleId": "EFFECT_NARROW_ERROR_RECOVERY",
+        "ruleTitle": "Recover only at a boundary with a truthful response",
+        "ruleDescription": "Recovery should target typed failures at the narrowest boundary that can retry, fallback, translate, or otherwise respond truthfully; defects and interruption should remain distinct.",
+        "violationCondition": "Changed code catches all errors/causes, swallows a failure, converts defects to success, or retries broadly without a boundary-specific truthful policy.",
+        "complianceCondition": "Recovery uses catchTag/catchTags/typed predicates or an explicit supervision policy, preserves interruption, and leaves exhausted or unhandled failures visible.",
+        "severity": "error",
+        "status": "violation",
+        "path": "src/changes/09-swallow-all-causes.ts",
+        "hunkId": "F009:H001",
+        "spanId": "S0eac06e6bc:O2-2:N2-2",
+        "assessmentCaseId": "S0eac06e6bc:O2-2:N2-2",
+        "hunkHeader": "@@ -1,2 +1,2 @@",
+        "relevantDiff": "-export const run = operation.pipe(Effect.catchTag(\"NotFound\", () => Effect.succeed(\"missing\")))\n+export const run = operation.pipe(Effect.catchAllCause(() => Effect.succeed(\"ok\")))",
+        "locations": [
+          {
+            "path": "src/changes/09-swallow-all-causes.ts",
+            "side": "new",
+            "startLine": 2,
+            "endLine": 2,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.95,
+        "violationProbability": 0.95
+      },
+      {
+        "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
+        "ruleTitle": "Translate infrastructure failures at adapter boundaries",
+        "ruleDescription": "Adapters should map low-level SDK, persistence, transport, and parsing failures into specific boundary/domain errors while preserving useful operation and cause information.",
+        "violationCondition": "Changed adapter code leaks a foreign error through the application contract or collapses it into vague prose without operation, cause, or relevant identity context.",
+        "complianceCondition": "The adapter maps the foreign failure once into a typed error with enough structured context for diagnosis and preserves the underlying cause safely.",
+        "severity": "error",
+        "status": "violation",
+        "path": "src/changes/10-global-mailer.ts",
+        "hunkId": "F010:H001",
+        "spanId": "S0f72ba00cf:O3-4:N2-4",
+        "assessmentCaseId": "S0f72ba00cf:O3-4:N2-4",
+        "hunkHeader": "@@ -1,4 +1,4 @@",
+        "relevantDiff": "-interface Mailer { readonly send: (to: string) => Effect.Effect<void> }\n-export class Mailers extends Context.Service<Mailers, Mailer>()(\"app/Mailers\") {}\n+export const mailer = {\n+  send: (to: string) => Effect.tryPromise(() => sdk.send(to)),\n+}",
+        "locations": [
+          {
+            "path": "src/changes/10-global-mailer.ts",
+            "side": "new",
+            "startLine": 2,
+            "endLine": 4,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.83,
+        "violationProbability": 0.83
       },
       {
         "ruleId": "EFFECT_CAPABILITY_SERVICES",
@@ -603,6 +694,7 @@
         "path": "src/changes/10-global-mailer.ts",
         "hunkId": "F010:H001",
         "spanId": "S0f72ba00cf:O3-4:N2-4",
+        "assessmentCaseId": "S0f72ba00cf:O3-4:N2-4",
         "hunkHeader": "@@ -1,4 +1,4 @@",
         "relevantDiff": "-interface Mailer { readonly send: (to: string) => Effect.Effect<void> }\n-export class Mailers extends Context.Service<Mailers, Mailer>()(\"app/Mailers\") {}\n+export const mailer = {\n+  send: (to: string) => Effect.tryPromise(() => sdk.send(to)),\n+}",
         "locations": [
@@ -629,6 +721,7 @@
         "path": "src/changes/11-leak-filesystem-requirement.ts",
         "hunkId": "F011:H001",
         "spanId": "S7cec2d53f6:O2-6:N2-5",
+        "assessmentCaseId": "S7cec2d53f6:O2-6:N2-5",
         "hunkHeader": "@@ -1,6 +1,5 @@",
         "relevantDiff": "-interface Documents { readonly load: (id: string) => Effect.Effect<string, Error> }\n-const make = Effect.gen(function* () {\n-  const fs = yield* FileSystem.FileSystem\n-  return { load: (id: string) => fs.readFileString(id) } satisfies Documents\n-})\n+interface Documents { readonly load: (id: string) => Effect.Effect<string, Error, FileSystem.FileSystem> }\n+const make = Effect.succeed({\n+  load: (id: string) => Effect.flatMap(FileSystem.FileSystem, fs => fs.readFileString(id)),\n+} satisfies Documents)",
         "locations": [
@@ -641,8 +734,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.93,
-        "violationProbability": 0.93
+        "screeningProbability": 0.9,
+        "violationProbability": 0.9
       },
       {
         "ruleId": "EFFECT_ROOT_LAYER_COMPOSITION",
@@ -655,6 +748,7 @@
         "path": "src/changes/12-inline-provide-client.ts",
         "hunkId": "F012:H001",
         "spanId": "Sb8b30eeea6:O3-4:N3-3",
+        "assessmentCaseId": "Sb8b30eeea6:O3-4:N3-3",
         "hunkHeader": "@@ -1,5 +1,4 @@",
         "relevantDiff": "-  const client = yield* ApiClient\n-  return yield* client.load()\n+  return yield* ApiClient.pipe(Effect.flatMap(client => client.load()), Effect.provide(ApiClientLive))",
         "locations": [
@@ -667,8 +761,35 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.91,
-        "violationProbability": 0.91
+        "screeningProbability": 0.85,
+        "violationProbability": 0.85
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "ruleTitle": "Represent operational capabilities as Effect services",
+        "ruleDescription": "Reusable operational capabilities should be exposed through cohesive Context services and Layers rather than mutable singletons, direct construction in consumers, or unrelated function namespaces.",
+        "violationCondition": "Changed code introduces a reusable operational capability as a global/singleton or constructs its implementation directly inside consumers, bypassing Effect service composition.",
+        "complianceCondition": "A cohesive service contract describes the capability, its implementation is supplied by a Layer, and pure domain logic remains ordinary pure functions.",
+        "severity": "warning",
+        "status": "violation",
+        "path": "src/changes/13-per-call-client-layer.ts",
+        "hunkId": "F013:H001",
+        "spanId": "S5ad36cb5d5:O2-2:N2-3",
+        "assessmentCaseId": "S5ad36cb5d5:O2-2:N2-3",
+        "hunkHeader": "@@ -1,2 +1,3 @@",
+        "relevantDiff": "-export const UsersLive = Layer.effect(Users, makeUsers).pipe(Layer.provide(ApiClientLive))\n+export const loadUser = (id: string) =>\n+  Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(ApiClientLive))",
+        "locations": [
+          {
+            "path": "src/changes/13-per-call-client-layer.ts",
+            "side": "new",
+            "startLine": 2,
+            "endLine": 3,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.8,
+        "violationProbability": 0.8
       },
       {
         "ruleId": "EFFECT_REUSE_STATEFUL_LAYERS",
@@ -681,6 +802,7 @@
         "path": "src/changes/13-per-call-client-layer.ts",
         "hunkId": "F013:H001",
         "spanId": "S5ad36cb5d5:O2-2:N2-3",
+        "assessmentCaseId": "S5ad36cb5d5:O2-2:N2-3",
         "hunkHeader": "@@ -1,2 +1,3 @@",
         "relevantDiff": "-export const UsersLive = Layer.effect(Users, makeUsers).pipe(Layer.provide(ApiClientLive))\n+export const loadUser = (id: string) =>\n+  Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(ApiClientLive))",
         "locations": [
@@ -707,6 +829,7 @@
         "path": "src/changes/13-per-call-client-layer.ts",
         "hunkId": "F013:H001",
         "spanId": "S5ad36cb5d5:O2-2:N2-3",
+        "assessmentCaseId": "S5ad36cb5d5:O2-2:N2-3",
         "hunkHeader": "@@ -1,2 +1,3 @@",
         "relevantDiff": "-export const UsersLive = Layer.effect(Users, makeUsers).pipe(Layer.provide(ApiClientLive))\n+export const loadUser = (id: string) =>\n+  Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(ApiClientLive))",
         "locations": [
@@ -719,8 +842,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.92,
-        "violationProbability": 0.92
+        "screeningProbability": 0.88,
+        "violationProbability": 0.88
       },
       {
         "ruleId": "EFFECT_PURE_LOGIC_STAYS_PURE",
@@ -733,6 +856,7 @@
         "path": "src/changes/14-effectful-uppercase.ts",
         "hunkId": "F014:H001",
         "spanId": "Se17bab7354:O1-1:N1-2",
+        "assessmentCaseId": "Se17bab7354:O1-1:N1-2",
         "hunkHeader": "@@ -1 +1,2 @@",
         "relevantDiff": "-export const normalizeName = (name: string): string => name.trim().toUpperCase()\n+import * as Effect from \"effect/Effect\"\n+export const normalizeName = (name: string) => Effect.sync(() => name.trim().toUpperCase())",
         "locations": [
@@ -745,46 +869,21 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.95,
-        "violationProbability": 0.95
+        "screeningProbability": 0.9,
+        "violationProbability": 0.9
       },
       {
-        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
-        "ruleTitle": "Define reusable workflows with Effect.fn",
-        "ruleDescription": "Reusable functions returning Effect should use Effect.fn when they represent a useful traced operation or Effect.fnUntraced for intentionally untraced helpers.",
-        "violationCondition": "A reusable function merely returns Effect.gen, becomes an anonymous Effect-returning function, or removes an appropriate Effect.fn/Effect.fnUntraced boundary.",
-        "complianceCondition": "Inline workflow code may use Effect.gen; reusable workflows use Effect.fn with a stable name when traced or Effect.fnUntraced when tracing is intentionally unnecessary.",
-        "severity": "warning",
-        "status": "violation",
-        "path": "src/changes/14-effectful-uppercase.ts",
-        "hunkId": "F014:H001",
-        "spanId": "Se17bab7354:O1-1:N1-2",
-        "hunkHeader": "@@ -1 +1,2 @@",
-        "relevantDiff": "-export const normalizeName = (name: string): string => name.trim().toUpperCase()\n+import * as Effect from \"effect/Effect\"\n+export const normalizeName = (name: string) => Effect.sync(() => name.trim().toUpperCase())",
-        "locations": [
-          {
-            "path": "src/changes/14-effectful-uppercase.ts",
-            "side": "new",
-            "startLine": 1,
-            "endLine": 2,
-            "role": "primary",
-            "precision": "span"
-          }
-        ],
-        "screeningProbability": 0.82,
-        "violationProbability": 0.82
-      },
-      {
-        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
-        "ruleTitle": "Use Effect platform services in application code",
-        "ruleDescription": "Application and domain code should use Effect services for filesystem, path, time, randomness, processes, HTTP, configuration, and other supported platform capabilities.",
-        "violationCondition": "Changed ordinary application/domain code directly imports or calls a replaced Node/browser global capability instead of depending on the corresponding Effect service.",
-        "complianceCondition": "Host-specific operations are isolated in an adapter/entrypoint or use the Effect platform service so dependencies, errors, and tests remain explicit.",
+        "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
+        "ruleTitle": "Instrument capability and integration boundaries",
+        "ruleDescription": "Meaningful public operations and integration boundaries should have stable Effect.fn/withSpan names plus structured context that supports diagnosis without exposing secrets.",
+        "violationCondition": "Changed code removes the only useful tracing boundary from a capability/integration operation, emits unstructured context-only logs, or records credentials/unbounded sensitive payloads.",
+        "complianceCondition": "The operation has a stable span where useful, attaches bounded structured identity/operation fields, preserves correlation, and excludes secrets.",
         "severity": "warning",
         "status": "violation",
         "path": "src/changes/15-node-fs-domain.ts",
         "hunkId": "F015:H001",
         "spanId": "S4ee8f4c8fa:O1-6:N1-2",
+        "assessmentCaseId": "S4ee8f4c8fa:O1-6:N1-2",
         "hunkHeader": "@@ -1,6 +1,2 @@",
         "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as FileSystem from \"effect/FileSystem\"\n-export const load = Effect.fn(\"Documents.load\")(function* (path: string) {\n-  const fs = yield* FileSystem.FileSystem\n-  return yield* fs.readFileString(path)\n-})\n+import { readFile } from \"node:fs/promises\"\n+export const load = async (path: string) => readFile(path, \"utf8\")",
         "locations": [
@@ -797,8 +896,35 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.93,
-        "violationProbability": 0.93
+        "screeningProbability": 0.83,
+        "violationProbability": 0.83
+      },
+      {
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "ruleTitle": "Use Effect platform services in application code",
+        "ruleDescription": "Application and domain code should use Effect services for filesystem, path, time, randomness, processes, HTTP, configuration, and other supported platform capabilities.",
+        "violationCondition": "Changed ordinary application/domain code directly imports or calls a replaced Node/browser global capability instead of depending on the corresponding Effect service.",
+        "complianceCondition": "Host-specific operations are isolated in an adapter/entrypoint or use the Effect platform service so dependencies, errors, and tests remain explicit.",
+        "severity": "warning",
+        "status": "violation",
+        "path": "src/changes/15-node-fs-domain.ts",
+        "hunkId": "F015:H001",
+        "spanId": "S4ee8f4c8fa:O1-6:N1-2",
+        "assessmentCaseId": "S4ee8f4c8fa:O1-6:N1-2",
+        "hunkHeader": "@@ -1,6 +1,2 @@",
+        "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as FileSystem from \"effect/FileSystem\"\n-export const load = Effect.fn(\"Documents.load\")(function* (path: string) {\n-  const fs = yield* FileSystem.FileSystem\n-  return yield* fs.readFileString(path)\n-})\n+import { readFile } from \"node:fs/promises\"\n+export const load = async (path: string) => readFile(path, \"utf8\")",
+        "locations": [
+          {
+            "path": "src/changes/15-node-fs-domain.ts",
+            "side": "new",
+            "startLine": 1,
+            "endLine": 2,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.96,
+        "violationProbability": 0.96
       },
       {
         "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
@@ -811,6 +937,7 @@
         "path": "src/changes/16-promise-service-contract.ts",
         "hunkId": "F016:H001",
         "spanId": "S7f1f7a8093:O1-2:N1-1",
+        "assessmentCaseId": "S7f1f7a8093:O1-2:N1-1",
         "hunkHeader": "@@ -1,2 +1 @@",
         "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-interface Vendor { readonly invoke: (id: string) => Effect.Effect<string, VendorError> }\n+interface Vendor { readonly invoke: (id: string) => Promise<string> }",
         "locations": [
@@ -823,8 +950,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.97,
-        "violationProbability": 0.97
+        "screeningProbability": 0.94,
+        "violationProbability": 0.94
       },
       {
         "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
@@ -837,6 +964,7 @@
         "path": "src/changes/17-unscoped-temp-directory.ts",
         "hunkId": "F017:H001",
         "spanId": "S7e20672c06:O2-3:N2-3",
+        "assessmentCaseId": "S7e20672c06:O2-3:N2-3",
         "hunkHeader": "@@ -1,5 +1,5 @@",
         "relevantDiff": "-export const work = Effect.scoped(Effect.gen(function* () {\n-  const directory = yield* fs.makeTempDirectoryScoped()\n+export const work = Effect.gen(function* () {\n+  const directory = yield* fs.makeTempDirectory()",
         "locations": [
@@ -849,8 +977,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.96,
-        "violationProbability": 0.96
+        "screeningProbability": 0.89,
+        "violationProbability": 0.89
       },
       {
         "ruleId": "EFFECT_SCOPED_RESOURCE_OWNERSHIP",
@@ -863,6 +991,7 @@
         "path": "src/changes/17-unscoped-temp-directory.ts",
         "hunkId": "F017:H001",
         "spanId": "S7e20672c06:O5-5:N5-5",
+        "assessmentCaseId": "S7e20672c06:O5-5:N5-5",
         "hunkHeader": "@@ -1,5 +1,5 @@",
         "relevantDiff": "-}))\n+})",
         "locations": [
@@ -875,8 +1004,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.84,
-        "violationProbability": 0.84
+        "screeningProbability": 0.9,
+        "violationProbability": 0.9
       },
       {
         "ruleId": "EFFECT_SCOPED_BACKGROUND_WORK",
@@ -889,6 +1018,7 @@
         "path": "src/changes/18-daemon-layer-worker.ts",
         "hunkId": "F018:H001",
         "spanId": "Sf20dfb537a:O2-2:N2-2",
+        "assessmentCaseId": "Sf20dfb537a:O2-2:N2-2",
         "hunkHeader": "@@ -1,2 +1,2 @@",
         "relevantDiff": "-export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkScoped))\n+export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkDaemon, Effect.asVoid))",
         "locations": [
@@ -901,8 +1031,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.93,
-        "violationProbability": 0.93
+        "screeningProbability": 0.87,
+        "violationProbability": 0.87
       },
       {
         "ruleId": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
@@ -915,6 +1045,7 @@
         "path": "src/changes/18-daemon-layer-worker.ts",
         "hunkId": "F018:H001",
         "spanId": "Sf20dfb537a:O2-2:N2-2",
+        "assessmentCaseId": "Sf20dfb537a:O2-2:N2-2",
         "hunkHeader": "@@ -1,2 +1,2 @@",
         "relevantDiff": "-export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkScoped))\n+export const WorkerLive = Layer.effectDiscard(runForever.pipe(Effect.forkDaemon, Effect.asVoid))",
         "locations": [
@@ -927,20 +1058,21 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.9,
-        "violationProbability": 0.9
+        "screeningProbability": 0.81,
+        "violationProbability": 0.81
       },
       {
-        "ruleId": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
-        "ruleTitle": "Keep child fibers owned by a parent Scope",
-        "ruleDescription": "Concurrent work should remain attached to an explicit parent operation or Scope unless a reviewed design establishes a daemon lifetime and supervision policy.",
-        "violationCondition": "Changed code uses detached/daemon fibers or fire-and-forget execution merely to reduce latency, with no owner, supervision, or cancellation path.",
-        "complianceCondition": "Child work is joined, scoped, supervised, or otherwise owned so parent interruption and shutdown produce defined behavior.",
+        "ruleId": "EFFECT_SCOPED_BACKGROUND_WORK",
+        "ruleTitle": "Fork long-lived work into its owning Layer scope",
+        "ruleDescription": "Streams, listeners, subscriptions, workers, and forever loops owned by a Layer should be forked into that Layer's Scope so acquisition completes and release interrupts them.",
+        "violationCondition": "Changed Layer construction runs forever work inline, detaches it, or starts background work without connecting its Fiber lifetime to the owning scope.",
+        "complianceCondition": "The owner uses forkScoped, FiberSet/FiberMap, or forkIn(capturedScope), and Layer acquisition completes while cleanup interrupts the work.",
         "severity": "critical",
         "status": "violation",
         "path": "src/changes/19-fire-and-forget-fiber.ts",
         "hunkId": "F019:H001",
         "spanId": "S4663d35ba8:O2-2:N2-2",
+        "assessmentCaseId": "S4663d35ba8:O2-2:N2-2",
         "hunkHeader": "@@ -1,2 +1,2 @@",
         "relevantDiff": "-export const handle = work.pipe(Effect.forkScoped, Effect.flatMap(Fiber.join))\n+export const handle = work.pipe(Effect.forkDaemon, Effect.asVoid)",
         "locations": [
@@ -953,8 +1085,35 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.96,
-        "violationProbability": 0.96
+        "screeningProbability": 0.85,
+        "violationProbability": 0.85
+      },
+      {
+        "ruleId": "EFFECT_STRUCTURED_FIBER_OWNERSHIP",
+        "ruleTitle": "Keep child fibers owned by a parent Scope",
+        "ruleDescription": "Concurrent work should remain attached to an explicit parent operation or Scope unless a reviewed design establishes a daemon lifetime and supervision policy.",
+        "violationCondition": "Changed code uses detached/daemon fibers or fire-and-forget execution merely to reduce latency, with no owner, supervision, or cancellation path.",
+        "complianceCondition": "Child work is joined, scoped, supervised, or otherwise owned so parent interruption and shutdown produce defined behavior.",
+        "severity": "critical",
+        "status": "violation",
+        "path": "src/changes/19-fire-and-forget-fiber.ts",
+        "hunkId": "F019:H001",
+        "spanId": "S4663d35ba8:O2-2:N2-2",
+        "assessmentCaseId": "S4663d35ba8:O2-2:N2-2",
+        "hunkHeader": "@@ -1,2 +1,2 @@",
+        "relevantDiff": "-export const handle = work.pipe(Effect.forkScoped, Effect.flatMap(Fiber.join))\n+export const handle = work.pipe(Effect.forkDaemon, Effect.asVoid)",
+        "locations": [
+          {
+            "path": "src/changes/19-fire-and-forget-fiber.ts",
+            "side": "new",
+            "startLine": 2,
+            "endLine": 2,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.95,
+        "violationProbability": 0.95
       },
       {
         "ruleId": "EFFECT_BOUNDED_CONCURRENCY",
@@ -967,6 +1126,7 @@
         "path": "src/changes/20-unbounded-provider-fanout.ts",
         "hunkId": "F020:H001",
         "spanId": "S388807c4d5:O2-2:N2-2",
+        "assessmentCaseId": "S388807c4d5:O2-2:N2-2",
         "hunkHeader": "@@ -1,2 +1,2 @@",
         "relevantDiff": "-export const loadAll = (ids: ReadonlyArray<string>) => Effect.forEach(ids, load, { concurrency: 8 })\n+export const loadAll = (ids: ReadonlyArray<string>) => Effect.forEach(ids, load, { concurrency: \"unbounded\" })",
         "locations": [
@@ -979,8 +1139,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.96,
-        "violationProbability": 0.96
+        "screeningProbability": 0.94,
+        "violationProbability": 0.94
       },
       {
         "ruleId": "EFFECT_BOUNDED_IDEMPOTENT_RETRY",
@@ -993,6 +1153,7 @@
         "path": "src/changes/21-unbounded-payment-retry.ts",
         "hunkId": "F021:H001",
         "spanId": "S3e4d08c27d:O3-3:N3-3",
+        "assessmentCaseId": "S3e4d08c27d:O3-3:N3-3",
         "hunkHeader": "@@ -1,3 +1,3 @@",
         "relevantDiff": "-export const submit = payment.pipe(Effect.retry(Schedule.exponential(\"100 millis\").pipe(Schedule.upTo({ times: 3 }))))\n+export const submit = payment.pipe(Effect.retry(Schedule.forever))",
         "locations": [
@@ -1005,34 +1166,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.95,
-        "violationProbability": 0.95
-      },
-      {
-        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
-        "ruleTitle": "Define reusable workflows with Effect.fn",
-        "ruleDescription": "Reusable functions returning Effect should use Effect.fn when they represent a useful traced operation or Effect.fnUntraced for intentionally untraced helpers.",
-        "violationCondition": "A reusable function merely returns Effect.gen, becomes an anonymous Effect-returning function, or removes an appropriate Effect.fn/Effect.fnUntraced boundary.",
-        "complianceCondition": "Inline workflow code may use Effect.gen; reusable workflows use Effect.fn with a stable name when traced or Effect.fnUntraced when tracing is intentionally unnecessary.",
-        "severity": "warning",
-        "status": "violation",
-        "path": "src/changes/22-manual-poll-loop.ts",
-        "hunkId": "F022:H001",
-        "spanId": "S11e7e242bc:O2-3:N2-7",
-        "hunkHeader": "@@ -1,3 +1,7 @@",
-        "relevantDiff": "-import * as Schedule from \"effect/Schedule\"\n-export const poll = runPass.pipe(Effect.repeat(Schedule.spaced(\"1 second\")))\n+export const poll = Effect.gen(function* () {\n+  while (true) {\n+    yield* runPass\n+    yield* Effect.sleep(\"1 second\")\n+  }\n+})",
-        "locations": [
-          {
-            "path": "src/changes/22-manual-poll-loop.ts",
-            "side": "new",
-            "startLine": 2,
-            "endLine": 7,
-            "role": "primary",
-            "precision": "span"
-          }
-        ],
-        "screeningProbability": 0.84,
-        "violationProbability": 0.84
+        "screeningProbability": 0.94,
+        "violationProbability": 0.94
       },
       {
         "ruleId": "EFFECT_SCHEDULE_REPEATED_WORK",
@@ -1045,6 +1180,7 @@
         "path": "src/changes/22-manual-poll-loop.ts",
         "hunkId": "F022:H001",
         "spanId": "S11e7e242bc:O2-3:N2-7",
+        "assessmentCaseId": "S11e7e242bc:O2-3:N2-7",
         "hunkHeader": "@@ -1,3 +1,7 @@",
         "relevantDiff": "-import * as Schedule from \"effect/Schedule\"\n-export const poll = runPass.pipe(Effect.repeat(Schedule.spaced(\"1 second\")))\n+export const poll = Effect.gen(function* () {\n+  while (true) {\n+    yield* runPass\n+    yield* Effect.sleep(\"1 second\")\n+  }\n+})",
         "locations": [
@@ -1057,8 +1193,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.98,
-        "violationProbability": 0.98
+        "screeningProbability": 0.96,
+        "violationProbability": 0.96
       },
       {
         "ruleId": "EFFECT_STREAM_FOR_MANY_VALUES",
@@ -1071,6 +1207,7 @@
         "path": "src/changes/23-callback-event-service.ts",
         "hunkId": "F023:H001",
         "spanId": "S6a42b99070:O1-2:N1-3",
+        "assessmentCaseId": "S6a42b99070:O1-2:N1-3",
         "hunkHeader": "@@ -1,2 +1,3 @@",
         "relevantDiff": "-import * as Stream from \"effect/Stream\"\n-interface Events { readonly events: Stream.Stream<Event, EventError> }\n+interface Events {\n+  readonly onEvent: (listener: (event: Event) => void) => () => void\n+}",
         "locations": [
@@ -1097,6 +1234,7 @@
         "path": "src/changes/24-collect-subscription.ts",
         "hunkId": "F024:H001",
         "spanId": "S30b00a8c0b:O2-2:N2-2",
+        "assessmentCaseId": "S30b00a8c0b:O2-2:N2-2",
         "hunkHeader": "@@ -1,2 +1,2 @@",
         "relevantDiff": "-export const firstHundred = events.pipe(Stream.take(100), Stream.runCollect)\n+export const allEvents = events.pipe(Stream.runCollect)",
         "locations": [
@@ -1109,8 +1247,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.96,
-        "violationProbability": 0.96
+        "screeningProbability": 0.93,
+        "violationProbability": 0.93
       },
       {
         "ruleId": "EFFECT_BOUNDARY_ERROR_TRANSLATION",
@@ -1123,6 +1261,7 @@
         "path": "src/changes/25-unchecked-fetch-json.ts",
         "hunkId": "F025:H001",
         "spanId": "See2e3994e1:O1-6:N1-4",
+        "assessmentCaseId": "See2e3994e1:O1-6:N1-4",
         "hunkHeader": "@@ -1,6 +1,4 @@",
         "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as Schema from \"effect/Schema\"\n-export const request = Effect.fn(\"Provider.request\")(function* () {\n-  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n-})\n+export const request = async () => {\n+  const response = await fetch(\"/users\")\n+  return response.json()\n+}",
         "locations": [
@@ -1139,16 +1278,17 @@
         "violationProbability": 0.85
       },
       {
-        "ruleId": "EFFECT_HTTP_ADAPTER_CONTRACT",
-        "ruleTitle": "Own the complete HTTP boundary in a named adapter",
-        "ruleDescription": "Outgoing HTTP adapters should construct requests, attach auth, classify statuses, decode unknown bodies, map typed failures, and apply cancellation/retry policy in one named boundary.",
-        "violationCondition": "Changed HTTP code returns response.json unchecked, treats non-2xx as success, leaks transport errors, omits cancellation, or scatters auth/decoding/retry through business code.",
-        "complianceCondition": "A named HttpClient/raw-fetch adapter owns request and response semantics, decodes through Schema, maps typed errors, redacts evidence, and retries only idempotent operations.",
+        "ruleId": "EFFECT_DECODE_EXTERNAL_VALUES",
+        "ruleTitle": "Decode unknown values at external boundaries",
+        "ruleDescription": "Files, environment input, HTTP payloads, database rows, SDK responses, and other untrusted values should be decoded through Schema rather than asserted into domain types.",
+        "violationCondition": "Changed boundary code casts, manually narrows, or directly consumes untrusted data as a domain value without Schema decoding or an equivalent validated boundary.",
+        "complianceCondition": "The boundary preserves unknown and uses Schema decoding, an HttpApi/SQL decoder, or another established validated constructor before domain use.",
         "severity": "error",
         "status": "violation",
         "path": "src/changes/25-unchecked-fetch-json.ts",
         "hunkId": "F025:H001",
         "spanId": "See2e3994e1:O1-6:N1-4",
+        "assessmentCaseId": "See2e3994e1:O1-6:N1-4",
         "hunkHeader": "@@ -1,6 +1,4 @@",
         "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as Schema from \"effect/Schema\"\n-export const request = Effect.fn(\"Provider.request\")(function* () {\n-  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n-})\n+export const request = async () => {\n+  const response = await fetch(\"/users\")\n+  return response.json()\n+}",
         "locations": [
@@ -1161,8 +1301,35 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.96,
-        "violationProbability": 0.96
+        "screeningProbability": 0.94,
+        "violationProbability": 0.94
+      },
+      {
+        "ruleId": "EFFECT_HTTP_ADAPTER_CONTRACT",
+        "ruleTitle": "Own the complete HTTP boundary in a named adapter",
+        "ruleDescription": "Outgoing HTTP adapters should construct requests, attach auth, classify statuses, decode unknown bodies, map typed failures, and apply cancellation/retry policy in one named boundary.",
+        "violationCondition": "Changed HTTP code returns response.json unchecked, treats non-2xx as success, leaks transport errors, omits cancellation, or scatters auth/decoding/retry through business code.",
+        "complianceCondition": "A named HttpClient/raw-fetch adapter owns request and response semantics, decodes through Schema, maps typed errors, redacts evidence, and retries only idempotent operations.",
+        "severity": "error",
+        "status": "violation",
+        "path": "src/changes/25-unchecked-fetch-json.ts",
+        "hunkId": "F025:H001",
+        "spanId": "See2e3994e1:O1-6:N1-4",
+        "assessmentCaseId": "See2e3994e1:O1-6:N1-4",
+        "hunkHeader": "@@ -1,6 +1,4 @@",
+        "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as Schema from \"effect/Schema\"\n-export const request = Effect.fn(\"Provider.request\")(function* () {\n-  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n-})\n+export const request = async () => {\n+  const response = await fetch(\"/users\")\n+  return response.json()\n+}",
+        "locations": [
+          {
+            "path": "src/changes/25-unchecked-fetch-json.ts",
+            "side": "new",
+            "startLine": 1,
+            "endLine": 4,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.97,
+        "violationProbability": 0.97
       },
       {
         "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
@@ -1175,6 +1342,7 @@
         "path": "src/changes/25-unchecked-fetch-json.ts",
         "hunkId": "F025:H001",
         "spanId": "See2e3994e1:O1-6:N1-4",
+        "assessmentCaseId": "See2e3994e1:O1-6:N1-4",
         "hunkHeader": "@@ -1,6 +1,4 @@",
         "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as Schema from \"effect/Schema\"\n-export const request = Effect.fn(\"Provider.request\")(function* () {\n-  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n-})\n+export const request = async () => {\n+  const response = await fetch(\"/users\")\n+  return response.json()\n+}",
         "locations": [
@@ -1187,20 +1355,21 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.91,
-        "violationProbability": 0.91
+        "screeningProbability": 0.87,
+        "violationProbability": 0.87
       },
       {
-        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
-        "ruleTitle": "Define reusable workflows with Effect.fn",
-        "ruleDescription": "Reusable functions returning Effect should use Effect.fn when they represent a useful traced operation or Effect.fnUntraced for intentionally untraced helpers.",
-        "violationCondition": "A reusable function merely returns Effect.gen, becomes an anonymous Effect-returning function, or removes an appropriate Effect.fn/Effect.fnUntraced boundary.",
-        "complianceCondition": "Inline workflow code may use Effect.gen; reusable workflows use Effect.fn with a stable name when traced or Effect.fnUntraced when tracing is intentionally unnecessary.",
+        "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
+        "ruleTitle": "Use Effect platform services in application code",
+        "ruleDescription": "Application and domain code should use Effect services for filesystem, path, time, randomness, processes, HTTP, configuration, and other supported platform capabilities.",
+        "violationCondition": "Changed ordinary application/domain code directly imports or calls a replaced Node/browser global capability instead of depending on the corresponding Effect service.",
+        "complianceCondition": "Host-specific operations are isolated in an adapter/entrypoint or use the Effect platform service so dependencies, errors, and tests remain explicit.",
         "severity": "warning",
         "status": "violation",
         "path": "src/changes/25-unchecked-fetch-json.ts",
         "hunkId": "F025:H001",
         "spanId": "See2e3994e1:O1-6:N1-4",
+        "assessmentCaseId": "See2e3994e1:O1-6:N1-4",
         "hunkHeader": "@@ -1,6 +1,4 @@",
         "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as Schema from \"effect/Schema\"\n-export const request = Effect.fn(\"Provider.request\")(function* () {\n-  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n-})\n+export const request = async () => {\n+  const response = await fetch(\"/users\")\n+  return response.json()\n+}",
         "locations": [
@@ -1213,8 +1382,35 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.88,
-        "violationProbability": 0.88
+        "screeningProbability": 0.89,
+        "violationProbability": 0.89
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "ruleTitle": "Convert Promise and callback APIs once at the edge",
+        "ruleDescription": "Foreign Promise/callback APIs should be wrapped once with Effect interop in an adapter; raw Promises must not escape through application service contracts.",
+        "violationCondition": "Changed application code exposes a Promise-returning service method, uses async/await for business control flow, or repeatedly wraps the same foreign SDK away from its adapter.",
+        "complianceCondition": "The adapter uses Effect.tryPromise/async with typed error mapping and cancellation where supported; consumers receive Effects.",
+        "severity": "error",
+        "status": "violation",
+        "path": "src/changes/25-unchecked-fetch-json.ts",
+        "hunkId": "F025:H001",
+        "spanId": "See2e3994e1:O1-6:N1-4",
+        "assessmentCaseId": "See2e3994e1:O1-6:N1-4",
+        "hunkHeader": "@@ -1,6 +1,4 @@",
+        "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-import * as Schema from \"effect/Schema\"\n-export const request = Effect.fn(\"Provider.request\")(function* () {\n-  const response = yield* client.get(\"/users\").pipe(Effect.flatMap(HttpClientResponse.filterStatusOk))\n-  return yield* HttpClientResponse.schemaBodyJson(UserResponse)(response)\n-})\n+export const request = async () => {\n+  const response = await fetch(\"/users\")\n+  return response.json()\n+}",
+        "locations": [
+          {
+            "path": "src/changes/25-unchecked-fetch-json.ts",
+            "side": "new",
+            "startLine": 1,
+            "endLine": 4,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.95,
+        "violationProbability": 0.95
       },
       {
         "ruleId": "EFFECT_CACHE_LIFETIME",
@@ -1227,6 +1423,7 @@
         "path": "src/changes/26-manual-ttl-map.ts",
         "hunkId": "F026:H001",
         "spanId": "S004d74187e:O1-3:N1-8",
+        "assessmentCaseId": "S004d74187e:O1-3:N1-8",
         "hunkHeader": "@@ -1,3 +1,8 @@",
         "relevantDiff": "-import * as Cache from \"effect/Cache\"\n-const cache = yield* Cache.make({ capacity: 500, timeToLive: \"5 minutes\", lookup })\n-export const get = (id: string) => Cache.get(cache, id)\n+const cache = new Map<string, { value: User; expiresAt: number }>()\n+export const get = async (id: string) => {\n+  const hit = cache.get(id)\n+  if (hit && hit.expiresAt > Date.now()) return hit.value\n+  const value = await lookup(id)\n+  cache.set(id, { value, expiresAt: Date.now() + 300000 })\n+  return value\n+}",
         "locations": [
@@ -1239,8 +1436,62 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.93,
-        "violationProbability": 0.93
+        "screeningProbability": 0.94,
+        "violationProbability": 0.94
+      },
+      {
+        "ruleId": "EFFECT_CAPABILITY_SERVICES",
+        "ruleTitle": "Represent operational capabilities as Effect services",
+        "ruleDescription": "Reusable operational capabilities should be exposed through cohesive Context services and Layers rather than mutable singletons, direct construction in consumers, or unrelated function namespaces.",
+        "violationCondition": "Changed code introduces a reusable operational capability as a global/singleton or constructs its implementation directly inside consumers, bypassing Effect service composition.",
+        "complianceCondition": "A cohesive service contract describes the capability, its implementation is supplied by a Layer, and pure domain logic remains ordinary pure functions.",
+        "severity": "warning",
+        "status": "violation",
+        "path": "src/changes/26-manual-ttl-map.ts",
+        "hunkId": "F026:H001",
+        "spanId": "S004d74187e:O1-3:N1-8",
+        "assessmentCaseId": "S004d74187e:O1-3:N1-8",
+        "hunkHeader": "@@ -1,3 +1,8 @@",
+        "relevantDiff": "-import * as Cache from \"effect/Cache\"\n-const cache = yield* Cache.make({ capacity: 500, timeToLive: \"5 minutes\", lookup })\n-export const get = (id: string) => Cache.get(cache, id)\n+const cache = new Map<string, { value: User; expiresAt: number }>()\n+export const get = async (id: string) => {\n+  const hit = cache.get(id)\n+  if (hit && hit.expiresAt > Date.now()) return hit.value\n+  const value = await lookup(id)\n+  cache.set(id, { value, expiresAt: Date.now() + 300000 })\n+  return value\n+}",
+        "locations": [
+          {
+            "path": "src/changes/26-manual-ttl-map.ts",
+            "side": "new",
+            "startLine": 1,
+            "endLine": 8,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.83,
+        "violationProbability": 0.83
+      },
+      {
+        "ruleId": "EFFECT_PROMISE_INTEROP_BOUNDARY",
+        "ruleTitle": "Convert Promise and callback APIs once at the edge",
+        "ruleDescription": "Foreign Promise/callback APIs should be wrapped once with Effect interop in an adapter; raw Promises must not escape through application service contracts.",
+        "violationCondition": "Changed application code exposes a Promise-returning service method, uses async/await for business control flow, or repeatedly wraps the same foreign SDK away from its adapter.",
+        "complianceCondition": "The adapter uses Effect.tryPromise/async with typed error mapping and cancellation where supported; consumers receive Effects.",
+        "severity": "error",
+        "status": "violation",
+        "path": "src/changes/26-manual-ttl-map.ts",
+        "hunkId": "F026:H001",
+        "spanId": "S004d74187e:O1-3:N1-8",
+        "assessmentCaseId": "S004d74187e:O1-3:N1-8",
+        "hunkHeader": "@@ -1,3 +1,8 @@",
+        "relevantDiff": "-import * as Cache from \"effect/Cache\"\n-const cache = yield* Cache.make({ capacity: 500, timeToLive: \"5 minutes\", lookup })\n-export const get = (id: string) => Cache.get(cache, id)\n+const cache = new Map<string, { value: User; expiresAt: number }>()\n+export const get = async (id: string) => {\n+  const hit = cache.get(id)\n+  if (hit && hit.expiresAt > Date.now()) return hit.value\n+  const value = await lookup(id)\n+  cache.set(id, { value, expiresAt: Date.now() + 300000 })\n+  return value\n+}",
+        "locations": [
+          {
+            "path": "src/changes/26-manual-ttl-map.ts",
+            "side": "new",
+            "startLine": 1,
+            "endLine": 8,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.9,
+        "violationProbability": 0.9
       },
       {
         "ruleId": "EFFECT_CONFIG_BOUNDARY",
@@ -1253,6 +1504,7 @@
         "path": "src/changes/27-raw-environment-secret.ts",
         "hunkId": "F027:H001",
         "spanId": "Se6ecf00c05:O1-2:N1-1",
+        "assessmentCaseId": "Se6ecf00c05:O1-2:N1-1",
         "hunkHeader": "@@ -1,2 +1 @@",
         "relevantDiff": "-import * as Config from \"effect/Config\"\n-export const apiKey = Config.redacted(\"VENDOR_API_KEY\")\n+export const apiKey = process.env.VENDOR_API_KEY ?? \"\"",
         "locations": [
@@ -1265,8 +1517,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.98,
-        "violationProbability": 0.98
+        "screeningProbability": 0.96,
+        "violationProbability": 0.96
       },
       {
         "ruleId": "EFFECT_PLATFORM_CAPABILITIES",
@@ -1279,6 +1531,7 @@
         "path": "src/changes/27-raw-environment-secret.ts",
         "hunkId": "F027:H001",
         "spanId": "Se6ecf00c05:O1-2:N1-1",
+        "assessmentCaseId": "Se6ecf00c05:O1-2:N1-1",
         "hunkHeader": "@@ -1,2 +1 @@",
         "relevantDiff": "-import * as Config from \"effect/Config\"\n-export const apiKey = Config.redacted(\"VENDOR_API_KEY\")\n+export const apiKey = process.env.VENDOR_API_KEY ?? \"\"",
         "locations": [
@@ -1291,8 +1544,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.9,
-        "violationProbability": 0.9
+        "screeningProbability": 0.93,
+        "violationProbability": 0.93
       },
       {
         "ruleId": "EFFECT_DETERMINISTIC_TEST_TIME",
@@ -1305,6 +1558,7 @@
         "path": "src/changes/28-real-sleep-test.ts",
         "hunkId": "F028:H001",
         "spanId": "S9056eb0b12:O5-5:N4-4",
+        "assessmentCaseId": "S9056eb0b12:O5-5:N4-4",
         "hunkHeader": "@@ -1,7 +1,6 @@",
         "relevantDiff": "-  yield* TestClock.adjust(\"1 second\")\n+  yield* Effect.sleep(\"1100 millis\")",
         "locations": [
@@ -1328,9 +1582,37 @@
         "complianceCondition": "Tests provide controlled service Layers, use disposable scoped fixtures, and assert externally meaningful success, typed failure, interruption, and finalization behavior.",
         "severity": "warning",
         "status": "violation",
+        "path": "src/changes/28-real-sleep-test.ts",
+        "hunkId": "F028:H001",
+        "spanId": "S9056eb0b12:O5-5:N4-4",
+        "assessmentCaseId": "S9056eb0b12:O5-5:N4-4",
+        "hunkHeader": "@@ -1,7 +1,6 @@",
+        "relevantDiff": "-  yield* TestClock.adjust(\"1 second\")\n+  yield* Effect.sleep(\"1100 millis\")",
+        "locations": [
+          {
+            "path": "src/changes/28-real-sleep-test.ts",
+            "side": "new",
+            "startLine": 4,
+            "endLine": 4,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.85,
+        "violationProbability": 0.85
+      },
+      {
+        "ruleId": "EFFECT_TEST_PUBLIC_BOUNDARIES",
+        "ruleTitle": "Test behavior through services and production boundaries",
+        "ruleDescription": "Tests should exercise public service contracts, real schemas, controlled Layers, scoped resources, and generated transport clients rather than mocking implementation modules or reimplementing production logic.",
+        "violationCondition": "Changed tests mock modules/private methods, bypass production decoding/contracts, operate on a developer's real workspace, or reproduce the implementation they intend to verify.",
+        "complianceCondition": "Tests provide controlled service Layers, use disposable scoped fixtures, and assert externally meaningful success, typed failure, interruption, and finalization behavior.",
+        "severity": "warning",
+        "status": "violation",
         "path": "src/changes/29-mock-private-module.ts",
         "hunkId": "F029:H001",
         "spanId": "Sc11737d984:O1-2:N1-3",
+        "assessmentCaseId": "Sc11737d984:O1-2:N1-3",
         "hunkHeader": "@@ -1,2 +1,3 @@",
         "relevantDiff": "-import * as Effect from \"effect/Effect\"\n-it.effect(\"loads\", () => Users.pipe(Effect.flatMap(users => users.load(id)), Effect.provide(UsersTestLayer)))\n+import { vi } from \"vitest\"\n+vi.mock(\"../src/internal/database.js\", () => ({ query: vi.fn(() => row) }))\n+it(\"loads\", async () => expect(await load(id)).toEqual(user))",
         "locations": [
@@ -1343,8 +1625,8 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.97,
-        "violationProbability": 0.97
+        "screeningProbability": 0.95,
+        "violationProbability": 0.95
       },
       {
         "ruleId": "EFFECT_OPERATION_OBSERVABILITY",
@@ -1357,6 +1639,7 @@
         "path": "src/changes/30-remove-operation-span.ts",
         "hunkId": "F030:H001",
         "spanId": "S65cd2e8ec6:O2-5:N2-2",
+        "assessmentCaseId": "S65cd2e8ec6:O2-5:N2-2",
         "hunkHeader": "@@ -1,5 +1,2 @@",
         "relevantDiff": "-export const load = Effect.fn(\"Users.load\")(function* (id: string) {\n-  yield* Effect.annotateCurrentSpan({ userId: id })\n-  return yield* repository.load(id)\n-})\n+export const load = (id: string) => repository.load(id)",
         "locations": [
@@ -1369,14 +1652,41 @@
             "precision": "span"
           }
         ],
-        "screeningProbability": 0.95,
-        "violationProbability": 0.95
+        "screeningProbability": 0.92,
+        "violationProbability": 0.92
+      },
+      {
+        "ruleId": "EFFECT_REUSABLE_FUNCTIONS",
+        "ruleTitle": "Define reusable workflows with Effect.fn",
+        "ruleDescription": "Reusable functions returning Effect should use Effect.fn when they represent a useful traced operation or Effect.fnUntraced for intentionally untraced helpers.",
+        "violationCondition": "A reusable function merely returns Effect.gen, becomes an anonymous Effect-returning function, or removes an appropriate Effect.fn/Effect.fnUntraced boundary.",
+        "complianceCondition": "Inline workflow code may use Effect.gen; reusable workflows use Effect.fn with a stable name when traced or Effect.fnUntraced when tracing is intentionally unnecessary.",
+        "severity": "warning",
+        "status": "violation",
+        "path": "src/changes/30-remove-operation-span.ts",
+        "hunkId": "F030:H001",
+        "spanId": "S65cd2e8ec6:O2-5:N2-2",
+        "assessmentCaseId": "S65cd2e8ec6:O2-5:N2-2",
+        "hunkHeader": "@@ -1,5 +1,2 @@",
+        "relevantDiff": "-export const load = Effect.fn(\"Users.load\")(function* (id: string) {\n-  yield* Effect.annotateCurrentSpan({ userId: id })\n-  return yield* repository.load(id)\n-})\n+export const load = (id: string) => repository.load(id)",
+        "locations": [
+          {
+            "path": "src/changes/30-remove-operation-span.ts",
+            "side": "new",
+            "startLine": 2,
+            "endLine": 2,
+            "role": "primary",
+            "precision": "span"
+          }
+        ],
+        "screeningProbability": 0.83,
+        "violationProbability": 0.83
       }
     ],
     "usage": {
-      "requests": 4,
-      "inputTokens": 205626,
-      "outputTokens": 42598
+      "requests": 6,
+      "inputTokens": 275300,
+      "outputTokens": 42606
     }
   }
 }

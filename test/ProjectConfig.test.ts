@@ -27,6 +27,8 @@ it.describe("ProjectConfig", () => {
       it.expect(yield* fs.readFileString(`${root}/.neuralint/config.yaml`)).toContain("failOn: error")
       it.expect(rules).toHaveLength(1)
       it.expect(rules[0]?.id).toBe("EXAMPLE_NO_SECRET_LOGGING")
+      it.expect(rules[0]?.assessment?.planner).toBe("semantic-chunks")
+      it.expect(rules[0]?.semantic?.evidence).toBeUndefined()
       it.expect(second.created).toEqual([])
       it.expect((yield* ProjectConfig.load(root)).base).toBe("origin/main")
     })).pipe(Effect.provide(NodeServices.layer)))

@@ -48,10 +48,15 @@ export const RuleSemanticGuidance = Schema.Struct({
   reportWhen: Schema.NonEmptyString,
   doNotReport: Schema.NonEmptyString,
   guidance: Schema.NonEmptyString,
-  evidence: RuleEvidenceScope,
+  evidence: Schema.optionalKey(RuleEvidenceScope),
   examples: Schema.Array(RuleExample)
 })
 export type RuleSemanticGuidance = typeof RuleSemanticGuidance.Type
+
+export const RuleAssessment = Schema.Struct({
+  planner: Schema.NonEmptyString
+})
+export type RuleAssessment = typeof RuleAssessment.Type
 
 export const RuleDiagnostic = Schema.Struct({
   id: Schema.NonEmptyString,
@@ -71,6 +76,7 @@ export const ReviewRule = Schema.Struct({
   criteria: RuleCriteria,
   thresholds: RuleThresholds,
   semantic: Schema.optionalKey(RuleSemanticGuidance),
+  assessment: Schema.optionalKey(RuleAssessment),
   diagnostics: Schema.optionalKey(Schema.Array(RuleDiagnostic))
 })
 export type ReviewRule = typeof ReviewRule.Type
@@ -126,6 +132,7 @@ export const Finding = Schema.Struct({
   path: Schema.String,
   hunkId: Schema.String,
   spanId: Schema.optionalKey(Schema.String),
+  assessmentCaseId: Schema.optionalKey(Schema.String),
   hunkHeader: Schema.String,
   relevantDiff: Schema.String,
   locations: Schema.optionalKey(Schema.Array(FindingLocation)),

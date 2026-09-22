@@ -19,6 +19,19 @@ const rule = Schema.decodeUnknownSync(Domain.ReviewRule)({
   thresholds: { screenAt: 0.3, violationAt: 0.8 }
 })
 
+const filenameRule = Schema.decodeUnknownSync(Domain.ReviewRule)({
+  version: 1,
+  id: "FILES001",
+  title: "Test files accompany source changes",
+  description: "Source changes include a corresponding test change.",
+  severity: "warning",
+  scope: { include: ["src/**/*.ts", "test/**/*.ts"], exclude: [] },
+  instructions: "Assess the complete selected filename manifest.",
+  criteria: { violation: "Source changed without a test file.", compliant: "A corresponding test file changed." },
+  thresholds: { screenAt: 0.3, violationAt: 0.8 },
+  assessment: { planner: "filenames" }
+})
+
 const diff: Domain.DiffSet = {
   base: "abc123",
   head: "HEAD",
@@ -52,14 +65,17 @@ const modelLayer = Layer.effect(
         ? state as Record<string, unknown>
         : undefined
       const stage = stateObject?.["stage"]
-      const rawEvidence = stateObject?.["changes"]
+      const rawEvidence = stateObject?.["cases"]
       const evidence = stage === "matrix" && Array.isArray(rawEvidence)
-        ? rawEvidence as ReadonlyArray<{ readonly id?: string; readonly after?: string }>
+        ? rawEvidence as ReadonlyArray<{ readonly id?: string; readonly content?: string }>
         : []
-      const riskySpan = evidence.find((item) => item.after?.includes("risky"))?.id?.split(":changed-span")[0]
+      const riskySpan = evidence.find((item) => item.content?.includes("risky"))?.id
+      const filenameCase = evidence.find((item) => item.content?.includes('"planner":"filenames"'))?.id
       const answers: Record<string, DecisionModel.ProviderAnswer> = Object.create(null)
       for (const key of Object.keys(decisions)) {
-        const probability = riskySpan !== undefined && key.endsWith(riskySpan) ? 0.92 : 0.1
+        const probability = filenameCase !== undefined && key === `FILES001::${filenameCase}`
+          ? 0.92
+          : riskySpan !== undefined && key.endsWith(riskySpan) ? 0.92 : 0.1
         answers[key] = { _tag: "Probability", probability }
       }
       return Effect.succeed({ answers, usage: { inputTokens: 100, outputTokens: 2 } })
@@ -85,6 +101,18 @@ it.describe("Review", () => {
         precision: "span"
       }])
       it.expect(report.filesReviewed).toBe(2)
+      it.expect(report.usage.requests).toBe(1)
+    }).pipe(Effect.provide(modelLayer)))
+
+  it.effect("evaluates a filename collection as one global case", () =>
+    Effect.gen(function*() {
+      const report = yield* Review.run(diff, [filenameRule], { maxStateChars: 10_000 })
+
+      it.expect(report.findings).toHaveLength(1)
+      it.expect(report.findings[0]?.ruleId).toBe("FILES001")
+      it.expect(report.findings[0]?.assessmentCaseId).toMatch(/^FILENAMES:/)
+      it.expect(report.findings[0]?.relevantDiff).toContain("modified src/a.ts")
+      it.expect(report.findings[0]?.locations).toHaveLength(2)
       it.expect(report.usage.requests).toBe(1)
     }).pipe(Effect.provide(modelLayer)))
 })

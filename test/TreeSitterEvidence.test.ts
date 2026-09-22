@@ -23,6 +23,14 @@ it.describe("TreeSitterEvidence", () => {
     it.expect(bundle?.comments.map((comment) => comment.source).join("\n")).toContain("Synchronous on purpose")
   })
 
+  it.it("caps blank-free local blocks below whole-file size", async () => {
+    const source = Array.from({ length: 200 }, (_, index) => `const value${index} = ${index}`).join("\n")
+    const bundle = await TreeSitterEvidence.build("src/values.ts", source, { startLine: 100, endLine: 100 })
+
+    it.expect(bundle).toBeDefined()
+    it.expect((bundle?.localBlock.endLine ?? 0) - (bundle?.localBlock.startLine ?? 0) + 1).toBeLessThanOrEqual(80)
+  })
+
   it.it("falls back when no grammar is available or parsing fails", async () => {
     it.expect(await TreeSitterEvidence.build("notes.md", "hello", { startLine: 1, endLine: 1 })).toBeUndefined()
     it.expect(await TreeSitterEvidence.build("src/broken.ts", "function broken( {", { startLine: 1, endLine: 1 })).toBeUndefined()

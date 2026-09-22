@@ -17,12 +17,13 @@ instructions: Check the changed code.
 criteria:
   violation: The issue exists.
   compliant: The issue does not exist.
+assessment:
+  planner: semantic-chunks
 semantic:
   context: The issue loses an important invariant.
   reportWhen: The changed code demonstrably loses the invariant.
   doNotReport: The invariant is preserved or the evidence is unavailable.
   guidance: Restore the invariant at its owning boundary.
-  evidence: enclosing-symbol
   examples:
     - outcome: violation
       explanation: The changed operation loses the invariant.
@@ -48,9 +49,25 @@ it.describe("RuleCatalog", () => {
 
       it.expect(rules).toHaveLength(1)
       it.expect(rules[0]?.id).toBe("TEST001")
-      it.expect(rules[0]?.semantic?.evidence).toBe("enclosing-symbol")
+      it.expect(rules[0]?.assessment?.planner).toBe("semantic-chunks")
       it.expect(rules[0]?.semantic?.examples).toHaveLength(2)
       it.expect(RuleCatalog.appliesToPath(rules[0]!, "src/domain/User.ts")).toBe(true)
       it.expect(RuleCatalog.appliesToPath(rules[0]!, "src/domain/User.test.ts")).toBe(false)
+    })).pipe(Effect.provide(NodeServices.layer)))
+
+  it.effect("rejects unavailable assessment planners before review", () =>
+    Effect.scoped(Effect.gen(function*() {
+      const fs = yield* FileSystem.FileSystem
+      const root = yield* fs.makeTempDirectoryScoped({ prefix: "neuralint-planner-" })
+      const directory = `${root}/.neuralint/rules`
+      yield* fs.makeDirectory(directory, { recursive: true })
+      yield* fs.writeFileString(
+        `${directory}/test.yaml`,
+        rule.replace("planner: semantic-chunks", "planner: repository-specific")
+      )
+
+      const error = yield* RuleCatalog.load(root).pipe(Effect.flip)
+
+      it.expect(error.message).toContain("assessment planner repository-specific is not available")
     })).pipe(Effect.provide(NodeServices.layer)))
 })

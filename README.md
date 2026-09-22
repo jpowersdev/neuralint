@@ -39,14 +39,14 @@ Current capabilities:
 - Jev packs constrained by the documented 64k aggregate and 32k binding budgets;
 - bounded, concurrent decision-matrix requests with deterministic oversize splitting;
 - text and versioned JSON output;
-- optional rule background, exceptions, guidance, evidence scope, and contrastive examples.
+- optional rule background, exceptions, guidance, assessment planner, and contrastive examples.
 
 Still planned:
 
 - portable, deterministic rule context for any coding harness;
 - a host-neutral pre-edit guard and thin integrations for supported harnesses;
 - first-party Git pre-push integration for `check`;
-- related-definition and repository evidence retrieval;
+- repository-defined custom assessment planners;
 - focused human-review remediation as a CLI command;
 - rule generation and whole-pack behavioral regression;
 - provider abstraction, redaction, and local/self-hosted deployment options.
@@ -179,7 +179,7 @@ Command-line `--base` and `--fail-on` override the configured values. In the abs
 # Validate schemas, IDs, examples, and thresholds
 neuralint rules validate
 
-# Show ID, severity, evidence scope, and title
+# Show ID, severity, assessment planner, and title
 neuralint rules list
 
 # Run deterministic and Jev quality checks
@@ -230,12 +230,13 @@ criteria:
 thresholds:
   screenAt: 0.35
   violationAt: 0.8
+assessment:
+  planner: semantic-chunks
 semantic:
   context: Logs are retained and exposed more broadly than production secrets.
   reportWhen: A changed logger or trace field receives a secret value.
   doNotReport: Do not report secret names, presence checks, or safely redacted values.
   guidance: Remove the value and retain only non-sensitive operation metadata.
-  evidence: enclosing-symbol
   examples:
     - outcome: violation
       explanation: The bearer token itself is logged.
@@ -245,19 +246,12 @@ semantic:
       code: logger.info("configured", { hasToken: config.apiToken.length > 0 })
 ```
 
-Semantic guidance accepts 2–4 examples and requires both violation and nonviolation outcomes. Evidence scope is one of:
+Semantic guidance accepts 2–4 examples and requires both violation and nonviolation outcomes. Rules use one assessment planner:
 
-```text
-changed-span
-enclosing-symbol
-complete-file
-related-definitions
-repository
-```
+- `semantic-chunks` (default) derives bounded changed spans and automatically attaches local Tree-sitter scopes and comments when supported;
+- `filenames` emits one collection-level case containing only matching paths and change statuses.
 
-The runtime always derives deterministic changed spans. For `enclosing-symbol`, it parses the complete file locally when a bundled Tree-sitter grammar is available, then sends bounded ancestor ranges and associated comments rather than the complete syntax tree. `complete-file` sends the selected file subject to the evidence-size limit. Related-definition and repository retrieval remain under development.
-
-The current evidence presets are planned to be replaced by caller-selected file collections and rule-selected assessment planners. The proposed protocol, built-in `semantic-chunks` and `filenames` planners, custom compact projections, and fail-early preflight contract are documented in [`docs/assessment-planners.md`](docs/assessment-planners.md).
+Use `filenames` for co-change, placement, manifest, migration, or documentation policies. It is global and unsplittable; preflight fails before inference when its complete manifest cannot fit. The custom planner protocol and minimum-sufficient-evidence guidance are documented in [`docs/assessment-planners.md`](docs/assessment-planners.md). The legacy `semantic.evidence` field is accepted temporarily but ignored.
 
 ## Fast execution model
 
@@ -271,7 +265,7 @@ merge-base(base, HEAD) → deterministic changed spans
                         → span-localized findings
 ```
 
-Base request count is determined by matrix size and the documented provider budgets. Inconclusive findings that request enclosing-symbol or complete-file evidence may receive one additional packed refinement stage; neuralint never performs one request per finding.
+Base request count is determined by planned rule × case size and the documented provider budgets. `neuralint check --plan` performs planner execution and request estimation without calling Jev. Oversized unsplittable cases fail before inference rather than being silently truncated.
 
 A finding means Jev classified a changed span as matching a rule's violation condition. It is not mathematical proof. Probabilities route findings and uncertainty; severity comes from the authored rule.
 
@@ -285,7 +279,7 @@ Override enforcement for one invocation with `--fail-on`. For example, `--fail-o
 
 ## Data handling
 
-`check` is read-only with respect to reviewed source code. It invokes Git to compute a diff and sends applicable rule text plus changed evidence to the configured TypeSafe API endpoint. Evidence-scoped rules may also send bounded unchanged source, enclosing syntax scopes, associated comments, or a complete file.
+`check` is read-only with respect to reviewed source code. It invokes Git to compute a diff and sends applicable rule text plus planned assessment cases to the configured TypeSafe API endpoint. Semantic cases may include bounded unchanged syntax scopes and associated comments; filename cases contain no source content.
 
 Diffs and contextual evidence may contain proprietary code or secrets. Do not run neuralint on data you are not authorized to send to that endpoint. The alpha does not yet provide redaction. JSON and text reports also contain relevant diff content and must be handled accordingly.
 
@@ -304,11 +298,11 @@ Benchmarks are supporting evidence, not production reliability claims.
 | Measure | Result |
 |---|---:|
 | Rule/change decisions | 900 |
-| Jev requests | 2 in the direct matrix spike; 4 in the span/evidence production packer |
-| Production-packer latency | **1.565 seconds** |
+| Jev requests | 2 in the direct matrix spike; 6 in the rule-coherent assessment planner |
+| Assessment-planner latency | **1.829 seconds** |
 | Expected findings retained | **30/30** |
 | Expected findings definitive | **30/30** |
-| Production-packer estimated cost | **$0.00864** |
+| Assessment-planner estimated cost | **$0.01156** |
 
 The corpus is positive-heavy and unexpected findings are not exhaustively adjudicated, so this establishes feasibility and expected-candidate recall—not precision.
 

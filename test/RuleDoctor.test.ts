@@ -52,7 +52,7 @@ const explanationResult = {
 }
 
 it.describe("RuleDoctor", () => {
-  it.effect("optionally asks Luna to explain Jev concerns without modifying policy", () =>
+  it.effect("optionally asks Astra to explain Jev concerns without modifying policy", () =>
     Effect.scoped(Effect.gen(function*() {
       const fs = yield* FileSystem.FileSystem
       const root = yield* fs.makeTempDirectoryScoped({ prefix: "neuralint-doctor-" })

@@ -17,6 +17,12 @@ const decodeRule = Effect.fn("RuleCatalog.decodeRule")(function* (path: string, 
   const rule = yield* Schema.decodeUnknownEffect(Domain.ReviewRule)(parsed).pipe(
     Effect.mapError((cause) => new Domain.RuleCatalogError({ path, message: cause.message }))
   )
+  if (rule.assessment !== undefined && rule.assessment.planner !== "semantic-chunks" && rule.assessment.planner !== "filenames") {
+    return yield* new Domain.RuleCatalogError({
+      path,
+      message: `assessment planner ${rule.assessment.planner} is not available; supported planners: semantic-chunks, filenames`
+    })
+  }
   if (rule.semantic !== undefined) {
     const outcomes = new Set(rule.semantic.examples.map((example) => example.outcome))
     if (rule.semantic.examples.length < 2 || rule.semantic.examples.length > 4 || !outcomes.has("violation") || !outcomes.has("nonviolation")) {

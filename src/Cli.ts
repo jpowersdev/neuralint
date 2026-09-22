@@ -63,6 +63,10 @@ const check = Command.make("check", {
     Flag.withDescription("Unchanged lines retained around each diff hunk"),
     Flag.withDefault(20)
   ),
+  plan: Flag.Boolean("plan").pipe(
+    Flag.withDescription("Preflight assessment cases and request budgets without calling Jev"),
+    Flag.withDefault(false)
+  ),
   maxStateChars: Flag.Int("max-state-chars").pipe(
     Flag.withDescription("Maximum patch characters in one Jev evidence pack"),
     Flag.withDefault(60_000)
@@ -106,6 +110,25 @@ const check = Command.make("check", {
         return DirectInput.fromText(filename, source, options.startLine)
       })
       : yield* Git.diff(options.root, base, options.context)
+    if (options.plan) {
+      const plan = yield* Review.plan(diff, rules, { maxStateChars: options.maxStateChars })
+      const rendered = options.format === "json"
+        ? `${JSON.stringify(plan, null, 2)}\n`
+        : [
+            `neuralint plan ${plan.base}..${plan.head}`,
+            `${plan.files} file(s), ${plan.rules} rule(s), ${plan.cases} assessment case(s)`,
+            `${plan.requests} estimated Jev request(s), ${plan.estimatedInputTokens} estimated input tokens`,
+            `Longest estimated binding: ${plan.longestBindingTokens} tokens`,
+            "",
+            ...plan.planners.map((planner) =>
+              `${planner.ruleId}\t${planner.planner}\t${planner.cases} case(s)\t${planner.partitioning}`),
+            "",
+            "Preflight complete. No model requests were made."
+          ].join("\n")
+      yield* Console.log(rendered.trimEnd())
+      yield* setExitCode(0)
+      return
+    }
     const report = yield* Review.run(diff, rules, { maxStateChars: options.maxStateChars })
     const visibleReport = options.advisories
       ? report
@@ -173,8 +196,8 @@ const rulesValidate = Command.make("validate", { root: ruleRoot }, (options) =>
 const rulesList = Command.make("list", { root: ruleRoot }, (options) =>
   RuleCatalog.load(options.root).pipe(
     Effect.flatMap((rules) => Console.log(rules.map((rule) => {
-      const evidence = rule.semantic?.evidence === undefined ? "changed-span" : rule.semantic.evidence
-      return `${rule.id}\t${rule.severity}\t${evidence}\t${rule.title}`
+      const planner = rule.assessment?.planner ?? "semantic-chunks"
+      return `${rule.id}\t${rule.severity}\t${planner}\t${rule.title}`
     }).join("\n"))),
     Effect.catchTag("RuleCatalogError", (error) => fail(`${error.path}: ${error.message}`))
   )

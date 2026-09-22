@@ -1,8 +1,8 @@
 # Assessment planner protocol
 
-Status: proposed
+Status: built-in planner foundation implemented; custom planner transports remain proposed
 
-This document specifies how neuralint should turn a caller-selected collection of files into bounded semantic assessment cases. It is a design contract for the next implementation; the current alpha still exposes the earlier `semantic.evidence` presets.
+This document specifies how neuralint turns a caller-selected collection of files into bounded semantic assessment cases. The current implementation includes `AssessmentCase`, the `semantic-chunks` and `filenames` planners, fail-early case-size validation, and `check --plan`. Custom planner callbacks, manifests, and commands remain planned. The earlier `semantic.evidence` field is accepted temporarily for compatibility but ignored.
 
 ## Product boundary
 
@@ -84,7 +84,7 @@ assessment:
 
 A planner controls assessment framing, not policy. The rule continues to own the violation boundary, exceptions, guidance, and contrastive examples.
 
-The current `semantic.evidence` presets should be removed when this protocol is implemented. Tree-sitter scopes become an internal part of `semantic-chunks`, not a rule-authored retrieval choice.
+The legacy `semantic.evidence` presets are ignored and should be removed after a compatibility period. Tree-sitter scopes are an internal part of `semantic-chunks`, not a rule-authored retrieval choice.
 
 ## Built-in planners
 
@@ -404,16 +404,23 @@ Planner fixture suites should include:
 
 Doctor cannot certify planner correctness. Human review and whole-pack behavioral regression remain required.
 
-## Migration plan
+## Implementation status and migration plan
+
+Implemented:
 
 1. Introduce `AssessmentCase` and collection completion metadata internally.
-2. Implement `semantic-chunks` using the current changed-span and Tree-sitter code.
+2. Implement `semantic-chunks` using deterministic changed spans and Tree-sitter context.
 3. Implement `filenames` and `check --plan`.
-4. Replace public `semantic.evidence` with rule-selected assessment planners.
-5. Add planner-result schema validation and preflight failure semantics.
-6. Add precomputed-manifest and library callback transports.
-7. Add trusted command planners after the execution threat model is implemented.
-8. Validate the first cross-file vertical slice with an Effect service-to-test planner.
-9. Remove compatibility handling for the old evidence presets before 1.0.
+4. Make rule-selected assessment planners the active runtime path while retaining ignored `semantic.evidence` compatibility.
+5. Fail preflight before model requests when a built-in case exceeds the configured state budget.
+
+Remaining:
+
+1. Add complete planner-result schema validation for external planners and full run-level cost budgets.
+2. Add precomputed-manifest and library callback transports.
+3. Add trusted command planners after the execution threat model is implemented.
+4. Validate the first custom cross-file vertical slice with an Effect service-to-test planner.
+5. Add independently calibrated semantic-concentration limits beyond the current changed-span and Tree-sitter bounds.
+6. Remove compatibility handling for the old evidence presets before 1.0.
 
 The first implementation should not attempt universal repository relationship inference. Neuralint supplies the bounded protocol; repositories supply their own deterministic relationship knowledge.

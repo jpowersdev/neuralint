@@ -44,12 +44,14 @@ const exampleRule = {
     screenAt: 0.35,
     violationAt: 0.8
   },
+  assessment: {
+    planner: "semantic-chunks"
+  },
   semantic: {
     context: "Logs are routinely retained, aggregated, and exposed to more people and systems than production secrets. A useful diagnostic should identify the operation without recording the credential itself.",
     reportWhen: "The changed code sends an actual secret value, or an object containing one, to a logger or tracing field.",
     doNotReport: "Do not report secret identifiers, environment-variable names, boolean presence checks, or values passed through an established irreversible redaction mechanism.",
     guidance: "Remove the secret value from the log and retain only bounded, non-sensitive operation metadata. Use the repository's redaction abstraction when diagnostic correlation is required.",
-    evidence: "enclosing-symbol",
     examples: [
       {
         outcome: "violation",

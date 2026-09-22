@@ -87,6 +87,17 @@ const localBlock = (lines: ReadonlyArray<string>, target: ChangedSpan.LineRange)
   while (startLine > 1 && lines[startLine - 2]?.trim() !== "") startLine--
   let endLine = target.endLine
   while (endLine < lines.length && lines[endLine]?.trim() !== "") endLine++
+  if (endLine - startLine + 1 > maximumScopeLines) {
+    const targetLines = target.endLine - target.startLine + 1
+    const remaining = Math.max(0, maximumScopeLines - targetLines)
+    const before = Math.floor(remaining / 2)
+    startLine = Math.max(startLine, target.startLine - before)
+    endLine = Math.min(endLine, startLine + maximumScopeLines - 1)
+    if (endLine < target.endLine) {
+      endLine = target.endLine
+      startLine = Math.max(1, endLine - maximumScopeLines + 1)
+    }
+  }
   return sourceRange(lines, startLine, endLine)
 }
 
@@ -207,3 +218,12 @@ export const render = (bundle: EvidenceBundle): string => [
   ...bundle.comments.map((comment, index) =>
     `ASSOCIATED COMMENT ${index + 1} [${comment.startLine}-${comment.endLine}]:\n${comment.source}`)
 ].join("\n\n")
+
+export const renderCompact = (bundle: EvidenceBundle): string => {
+  const scope = bundle.scopes.at(-1) ?? bundle.localBlock
+  return [
+    `ENCLOSING SEMANTIC SCOPE [${scope.startLine}-${scope.endLine}]${scope.nodeTypes === undefined ? "" : ` (${scope.nodeTypes.join(", ")})`}:\n${scope.source}`,
+    ...bundle.comments.map((comment, index) =>
+      `ASSOCIATED COMMENT ${index + 1} [${comment.startLine}-${comment.endLine}]:\n${comment.source}`)
+  ].join("\n\n")
+}

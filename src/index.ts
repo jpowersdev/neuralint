@@ -1,4 +1,5 @@
 export * as Ai from "./Ai.js"
+export * as AssessmentPlanner from "./AssessmentPlanner.js"
 export * as ChangedSpan from "./ChangedSpan.js"
 export * as Corpus from "./Corpus.js"
 export * as JevPacker from "./JevPacker.js"
